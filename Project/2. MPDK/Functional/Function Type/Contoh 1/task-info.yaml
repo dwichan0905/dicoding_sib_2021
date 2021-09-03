@@ -16,6 +16,8 @@ files:
         println(multiplyResult)
     }
   learner_created: false
-status: Unchecked
+status: Solved
+feedback:
+  time: Fri, 03 Sep 2021 11:46:16 UTC
 record: -1
 post_submission_on_open: true

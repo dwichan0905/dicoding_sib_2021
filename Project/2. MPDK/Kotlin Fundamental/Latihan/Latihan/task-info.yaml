@@ -4,13 +4,13 @@ files:
   visible: true
   placeholders:
   - offset: 641
-    length: 47
+    length: 14
     placeholder_text: val result = 0
     initial_state:
       length: 14
       offset: 641
     initialized_from_dependency: false
-    selected: true
+    selected: false
     status: Solved
     encrypted_possible_answer: |-
       val valueCNotNull = if (valueC == null){
@@ -61,5 +61,5 @@ files:
 status: Solved
 feedback:
   message: Congratulations!
-  time: Mon, 30 Aug 2021 17:06:04 UTC
+  time: Thu, 02 Sep 2021 16:51:06 UTC
 record: -1

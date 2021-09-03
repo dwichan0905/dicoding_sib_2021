@@ -10,7 +10,5 @@ files:
     }
   learner_created: false
 status: Solved
-feedback:
-  time: Mon, 30 Aug 2021 17:01:37 UTC
 record: -1
 post_submission_on_open: true

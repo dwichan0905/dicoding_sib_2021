@@ -11,7 +11,7 @@ import id.dwichan.chromebookpedia.R
 import id.dwichan.chromebookpedia.data.entity.Chromebook
 import id.dwichan.chromebookpedia.databinding.ItemChromebookBinding
 
-class ChromebookAdapter: Adapter<ChromebookAdapter.ChromebookViewHolder>() {
+class ChromebookAdapter : Adapter<ChromebookAdapter.ChromebookViewHolder>() {
 
     private val items = ArrayList<Chromebook>()
     private var onItemActionListener: OnItemActionListener? = null
@@ -40,13 +40,13 @@ class ChromebookAdapter: Adapter<ChromebookAdapter.ChromebookViewHolder>() {
 
     override fun getItemCount(): Int = items.size
 
-    inner class ChromebookViewHolder(itemView: View):
+    inner class ChromebookViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
         private val binding = ItemChromebookBinding.bind(itemView)
 
         fun bind(chromebook: Chromebook) {
-            with (binding) {
+            with(binding) {
                 Glide.with(itemView.context)
                     .load(chromebook.image)
                     .into(imageLaptop)

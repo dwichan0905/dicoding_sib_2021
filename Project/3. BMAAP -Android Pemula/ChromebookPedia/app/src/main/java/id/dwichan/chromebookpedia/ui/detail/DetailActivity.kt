@@ -33,7 +33,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun applyData(chromebook: Chromebook) {
-        with (binding) {
+        with(binding) {
             Glide.with(this@DetailActivity)
                 .load(chromebook.image)
                 .error(R.drawable.laptop)
@@ -53,13 +53,15 @@ class DetailActivity : AppCompatActivity() {
                 val shareIntent = ShareCompat.IntentBuilder(applicationContext).apply {
                     setChooserTitle(getString(R.string.share_to, chromebook.name))
                     setType("text/plain")
-                    setText("""
+                    setText(
+                        """
                         *${chromebook.name}*
                         
                         ${chromebook.description}
                         
                         Terdapat varian warna: ${chromebook.color}
-                    """.trimIndent())
+                    """.trimIndent()
+                    )
                 }.intent
                 shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(shareIntent)

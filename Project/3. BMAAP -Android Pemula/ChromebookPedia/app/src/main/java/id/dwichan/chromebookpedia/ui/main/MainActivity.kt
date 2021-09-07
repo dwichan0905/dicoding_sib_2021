@@ -1,10 +1,10 @@
 package id.dwichan.chromebookpedia.ui.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.dwichan.chromebookpedia.R
 import id.dwichan.chromebookpedia.data.ChromebooksData

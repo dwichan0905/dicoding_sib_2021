@@ -17,7 +17,6 @@
     <string name="example_graphics">Intel UHD Graphics</string>
     <string name="nothing_here">-- tidak ada apa-apa lagi di sini --</string>
     <string name="desc_share_button">Bagikan laptop ini</string>
-    <string name="error">Something went wrong!</string>
     <string name="company">Di produksi oleh %s</string>
     <string name="color_variant">Varian Warna</string>
     <string name="example_color_variant">Charcoal White, Blazy Blue</string>

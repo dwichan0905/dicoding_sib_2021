@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Chromebook (
+data class Chromebook(
     var image: Int = 0,
     var name: String? = null,
     var company: String? = null,

@@ -158,7 +158,7 @@ object ChromebooksData {
             for (position in images.indices) {
                 if (images[position] != 0) {
                     val chromebook = Chromebook()
-                    with (chromebook) {
+                    with(chromebook) {
                         this.image = images[position]
                         this.name = names[position]
                         this.company = companies[position]

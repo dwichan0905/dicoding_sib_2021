@@ -14,6 +14,7 @@ import id.dwichan.chromebookpedia.databinding.ItemChromebookBinding
 class ChromebookAdapter: Adapter<ChromebookAdapter.ChromebookViewHolder>() {
 
     private val items = ArrayList<Chromebook>()
+    private var onItemActionListener: OnItemActionListener? = null
 
     @SuppressLint("NotifyDataSetChanged")
     fun setChromebooks(chromebooks: ArrayList<Chromebook>) {
@@ -22,21 +23,8 @@ class ChromebookAdapter: Adapter<ChromebookAdapter.ChromebookViewHolder>() {
         notifyDataSetChanged()
     }
 
-    inner class ChromebookViewHolder(itemView: View):
-        RecyclerView.ViewHolder(itemView) {
-
-        private val binding = ItemChromebookBinding.bind(itemView)
-
-        fun bind(chromebook: Chromebook) {
-            with (binding) {
-                Glide.with(itemView.context)
-                    .load(chromebook.image)
-                    .into(imageLaptop)
-
-                textLaptopName.text = chromebook.name
-                textStorage.text = chromebook.storage
-            }
-        }
+    fun setOnItemActionListener(listener: OnItemActionListener) {
+        this.onItemActionListener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChromebookViewHolder {
@@ -51,4 +39,29 @@ class ChromebookAdapter: Adapter<ChromebookAdapter.ChromebookViewHolder>() {
     }
 
     override fun getItemCount(): Int = items.size
+
+    inner class ChromebookViewHolder(itemView: View):
+        RecyclerView.ViewHolder(itemView) {
+
+        private val binding = ItemChromebookBinding.bind(itemView)
+
+        fun bind(chromebook: Chromebook) {
+            with (binding) {
+                Glide.with(itemView.context)
+                    .load(chromebook.image)
+                    .into(imageLaptop)
+
+                textLaptopName.text = chromebook.name
+                textStorage.text = chromebook.storage
+
+                root.setOnClickListener {
+                    onItemActionListener?.onItemClick(chromebook)
+                }
+            }
+        }
+    }
+
+    interface OnItemActionListener {
+        fun onItemClick(chromebook: Chromebook)
+    }
 }

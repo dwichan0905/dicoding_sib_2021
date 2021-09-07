@@ -3,4 +3,27 @@
     <string name="example_laptop_name">ASUS Chromebook C425</string>
     <string name="example_laptop_memory">4 GB</string>
     <string name="example_laptop_storages">32/64/128 GB</string>
+    <string name="example_company">Diproduksi oleh ASUS</string>
+    <string name="example_long_text">Lorem ipsum dolor sit amet, consecteteur adispicing. Lorem ipsum dolor sit amet, consecteteur adispicing. Lorem ipsum dolor sit amet, consecteteur adispicing elit. Lorem ipsum dolor sit amet, consecteteur adispicing. Lorem ipsum dolor sit amet, consecteteur adispicing elit.</string>
+    <string name="description">Deskripsi</string>
+    <string name="specification">Spesifikasi Perangkat</string>
+    <string name="processor">Prosesor</string>
+    <string name="memory">Memori/RAM</string>
+    <string name="example_processor">Intel Core i3–550 @ 3.40 GHz</string>
+    <string name="storage">Penyimpanan</string>
+    <string name="display">Layar</string>
+    <string name="example_display">14 inch, IPS, Corning Gorilla Glass Victus</string>
+    <string name="graphic">Grafis</string>
+    <string name="example_graphics">Intel UHD Graphics</string>
+    <string name="nothing_here">-- tidak ada apa-apa lagi di sini --</string>
+    <string name="desc_share_button">Bagikan laptop ini</string>
+    <string name="error">Something went wrong!</string>
+    <string name="company">Di produksi oleh %s</string>
+    <string name="color_variant">Varian Warna</string>
+    <string name="example_color_variant">Charcoal White, Blazy Blue</string>
+    <string name="share_to">Bagikan %s ke…</string>
+    <string name="about">Tentang</string>
+    <string name="my_name">Dwi Candra Permana</string>
+    <string name="my_email">dwichan@outlook.com</string>
+    <string name="notes">Catatan:\nData yang ada pada aplikasi ini merupakan data yang di ambil dari website resmi tiap vendor laptop</string>
 </resources>

@@ -3,7 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
     app:cardCornerRadius="8dp">
 
     <LinearLayout
@@ -42,6 +48,7 @@
                     android:id="@+id/image_memory"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_centerVertical="true"
                     android:layout_marginEnd="4dp"
                     android:src="@drawable/ic_baseline_memory_24" />
 
@@ -49,6 +56,7 @@
                     android:id="@+id/text_memory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginEnd="8dp"
                     android:layout_toEndOf="@+id/image_memory"
                     android:text="@string/example_laptop_memory" />
@@ -57,6 +65,7 @@
                     android:id="@+id/image_storage"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_centerVertical="true"
                     android:layout_marginEnd="4dp"
                     android:layout_toEndOf="@id/text_memory"
                     android:src="@drawable/ic_baseline_storage_24" />

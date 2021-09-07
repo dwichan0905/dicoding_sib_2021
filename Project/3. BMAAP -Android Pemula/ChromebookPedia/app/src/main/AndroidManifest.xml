@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChromebookPedia">
         <activity
+            android:name=".ui.about.AboutActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.detail.DetailActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.splash.SplashScreenActivity"
             android:exported="true">
             <intent-filter>

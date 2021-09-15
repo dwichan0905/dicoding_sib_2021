@@ -1,0 +1,48 @@
+let jspdf = document.createElement("script");
+ 
+jspdf.onload = function () {
+    console.log(".- Google Drive Document Script Downloader -.");
+    console.log("Converting Google Drive Document to images...");
+    let title = document.title.split(" - ");
+    let filename = "";
+    
+    for (let i = 0; i < (title.length - 1); i++) {
+        filename += title[i];
+        if (i < (title.length - 2)) filename += " - ";
+    }
+    
+    let pdf = new jsPDF({
+        orientation: 'landscape', // orientation
+        unit: 'px',
+        format: [825, 464] // [width, height], zoom 2x untuk hasil yang optimal
+    });
+
+    let elements = document.getElementsByTagName("img");
+    var page = 1
+    for (let i in elements) {
+        let img = elements[i];
+        if (!/^blob:/.test(img.src)) {
+            console.log("[E]: Invalid source, skipped!", img);
+            continue;
+        }
+        console.log("[I]: Adding image for Page " + page, img);
+        let can = document.createElement('canvas');
+        let con = can.getContext("2d");
+        can.width = img.width;
+        can.height = img.height;
+        con.drawImage(img, 0, 0, img.width, img.height);
+        let imgData = can.toDataURL("image/jpeg", 1.0);
+        pdf.addImage(imgData, 'JPEG', 0, 0);
+        pdf.addPage();
+        page++;
+    }
+    console.log("Cleaning up...");
+    pdf.deletePage(page);
+    var totalPages = pdf.internal.getNumberOfPages();
+    console.log("Done, let me create a file for you...");
+    pdf.save(filename);
+    console.log("Let's check your download section! The file name should be " + filename + " with " + totalPages + " pages.");
+};
+ 
+jspdf.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js';
+document.body.appendChild(jspdf);

@@ -1,0 +1,16 @@
+Saya sedang mencoba menerapkan aturan Material Design seperti width, height, margin, padding. Tolong berikan notes mengenai desain yang saya buat apabila ada desain saya yang bisa saya perbaiki atau improvisasi lagi di submission selanjutnya.
+
+Improvisasi lainnya yang diterapkan:
+- Menuliskan kode yang bersih (sudah melakukan Inspect Code, Refactor, Reformat, Optimize Import, dan Remove Unused Resource secara manual)
+- Melengkapi halaman detail dengan informasi
+- Terdapat improvisasi fitur (Share Button dan Splash Screen)
+- Membuat dan Mengimplementasikan Style baru (lihat keterangan di bawah)
+- Mengganti warna primary dan secondary brand pada Theme
+
+Catatan Style dan Theme yang digunakan:
+- Pewarnaan yang dibawa pada aplikasi berwarna hitam dan putih, sesuai dengan warna yang terdapat pada halaman website GitHub. (Mengganti warna primary dan secondary brand pada Theme.)
+- Penggunaan style baru "UsersList" untuk setiap item yang muncul pada RecyclerView di MainActivity (@layout/item_users). Terdapat 'Ripple Effects' saat pengguna mengetuk item yang muncul.
+- Penggunaan style baru "UserListDetails" untuk setiap TextView dalam item (text_user_name dan text_user_details) yang muncul pada RecyclerView di MainActivity (@layout/item_users)
+- Penggunaan style baru "UsersIcon" untuk mengatur ikon pada setiap item di RecycleView yang ada di MainActivity (@layout/item_users). Terdapat efek transisi saat perpindahan halaman dari MainActivity ke DetailActivity disini.
+- Penggunaan style baru "UserCounterDetail" untuk deskripsiberupa angka yang ada pada DetailActivity, seperti jumlah repository, jumlah follower, dan jumlah following.
+- Penggunaan style baru "UserCounterDetail.Caption" untuk keterangan yang ada pada DetailActivity, seperti repository, follower, dan following.

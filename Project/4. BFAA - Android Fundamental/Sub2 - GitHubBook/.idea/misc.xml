@@ -17,7 +17,36 @@
         <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub1 - GitHubBook/app/src/main/res/layout/item_option.xml" value="0.33" />
         <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub1 - GitHubBook/app/src/main/res/layout/item_users.xml" value="0.33" />
         <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub1 - GitHubBook/app/src/main/res/menu/menu_detail.xml" value="0.203125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/drawable/chip_outline.xml" value="0.2203125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/drawable/chip_outline_selected.xml" value="0.2203125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/drawable/ic_baseline_favorite_active_24.xml" value="0.2203125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/drawable/ic_baseline_favorite_off_24.xml" value="0.11302083333333333" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.2203125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/drawable/selector_tab.xml" value="0.11302083333333333" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/drawable/tab_selector.xml" value="0.2203125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/activity_animation_dialog.xml" value="0.33" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/activity_detail.xml" value="0.33" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/bottom_sheet_options.xml" value="0.1" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/content_detail.xml" value="0.20416666666666666" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/fragment_about.xml" value="0.1" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/fragment_favorite.xml" value="0.19010416666666666" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/fragment_follower_following.xml" value="0.20416666666666666" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/fragment_home.xml" value="0.33" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/fragment_more.xml" value="0.20416666666666666" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/fragment_repo_follow_list.xml" value="0.33" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/item_option.xml" value="0.20416666666666666" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/item_repos.xml" value="0.25" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/item_repository.xml" value="0.20416666666666666" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/item_users.xml" value="0.25" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/item_users_card.xml" value="0.33" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/layout_empty.xml" value="0.20102564102564102" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/layout_loading.xml" value="0.20416666666666666" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/layout_onboarding.xml" value="0.22" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/menu/menu_detail.xml" value="0.20416666666666666" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/menu/menu_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/menu/menu_main_bar.xml" value="0.20102564102564102" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/menu/menu_main_fragments.xml" value="0.20416666666666666" />
       </map>
     </option>
   </component>

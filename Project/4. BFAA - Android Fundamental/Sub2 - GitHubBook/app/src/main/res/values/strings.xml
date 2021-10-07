@@ -14,4 +14,23 @@
     <string name="share_text">Share %s to your friends…</string>
     <string name="share_title">Share this user</string>
     <string name="visit_link">Visit %s on GitHub</string>
+    <string name="home">Home</string>
+    <string name="favorite">Favorite</string>
+    <string name="about">About</string>
+    <string name="fragment_home_title">GitHub Users List</string>
+    <string name="fragment_favorite_title">Your Favorite Users</string>
+    <string name="fragment_about_title">About</string>
+    <string name="example_repo_name">dicoding_bfaa</string>
+    <string name="example_repo_path">dwichan0905/dicoding_bfaa</string>
+    <string name="tab_text_1">Repositories</string>
+    <string name="tab_text_2">Followers</string>
+    <string name="tab_text_3">Following</string>
+    <string name="welcome_message">Welcome to GitHubBook!\nUse Search feature to start looking for GitHub Users.</string>
+    <string name="success_message">Success!</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Find GitHub users…</string>
+    <string name="empty_favorite">Oops, nothing here :(\nYou can find your favorite user on Home tab!</string>
+    <string name="text_result">Found %d item(s) from keyword %s.</string>
+    <string name="text_not_found">Oops! I can\'t find anything with keyword %s :(\nMaybe you can try another search keyword so I can find it!</string>
+    <string name="find_progress">Finding %s…</string>
 </resources>

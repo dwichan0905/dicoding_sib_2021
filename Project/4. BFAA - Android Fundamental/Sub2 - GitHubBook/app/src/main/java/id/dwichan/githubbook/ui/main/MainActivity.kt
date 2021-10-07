@@ -1,17 +1,14 @@
 package id.dwichan.githubbook.ui.main
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityOptionsCompat
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import id.dwichan.githubbook.R
-import id.dwichan.githubbook.data.UserItem
 import id.dwichan.githubbook.databinding.ActivityMainBinding
-import id.dwichan.githubbook.databinding.ItemUsersBinding
-import id.dwichan.githubbook.ui.detail.DetailActivity
-import id.dwichan.githubbook.util.FileManagement
-import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,55 +20,13 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.title = getString(R.string.app_name)
+        val navController = findNavController(R.id.nav_host_fragment)
+        val appBarConfiguration = AppBarConfiguration.Builder(
+            R.id.navigation_home, R.id.navigation_favorite, R.id.navigation_more
+        ).build()
 
-        showUsersList()
-    }
-
-    private fun showUsersList() {
-        with(binding) {
-            val listItem = parseRawJSONToObjects(FileManagement.readJSONFile(this@MainActivity))
-            val adapter = UsersAdapter(listItem)
-
-            listUsers.layoutManager = LinearLayoutManager(this@MainActivity)
-            listUsers.adapter = adapter
-
-            adapter.onItemAction = object : UsersAdapter.OnItemActionListener {
-                override fun onClick(item: UserItem, itemBinding: ItemUsersBinding) {
-                    val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                    intent.putExtra(DetailActivity.EXTRA_USER, item)
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        this@MainActivity, itemBinding.imageUser, "UserIcon"
-                    )
-                    startActivity(intent, options.toBundle())
-                }
-            }
-        }
-    }
-
-    private fun parseRawJSONToObjects(rawJsonString: String): List<UserItem> {
-        val userItems = ArrayList<UserItem>()
-        val jsonObject = JSONObject(rawJsonString)
-        val usersJsonList = jsonObject.getJSONArray("users")
-
-        for (position in 0 until usersJsonList.length()) {
-            val user = usersJsonList.getJSONObject(position)
-            val userItem = UserItem()
-
-            userItem.username = user.getString("username")
-            userItem.name = user.getString("name")
-            userItem.avatar = user.getString("avatar")
-            userItem.company = user.getString("company")
-            userItem.location = user.getString("location")
-            userItem.repository = user.getInt("repository")
-            userItem.follower = user.getInt("follower")
-            userItem.following = user.getInt("following")
-
-            userItems.add(userItem)
-        }
-
-        return userItems
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        binding.navView.setupWithNavController(navController)
     }
 
     override fun onDestroy() {

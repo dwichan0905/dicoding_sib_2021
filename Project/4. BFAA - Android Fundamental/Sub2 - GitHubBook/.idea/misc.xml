@@ -25,7 +25,7 @@
         <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/drawable/selector_tab.xml" value="0.11302083333333333" />
         <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/drawable/tab_selector.xml" value="0.2203125" />
         <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/activity_animation_dialog.xml" value="0.33" />
-        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/activity_detail.xml" value="0.33" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/activity_detail.xml" value="0.25" />
         <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/bottom_sheet_options.xml" value="0.1" />
         <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/content_detail.xml" value="0.20416666666666666" />
@@ -41,6 +41,7 @@
         <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/item_users.xml" value="0.25" />
         <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/item_users_card.xml" value="0.33" />
         <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/layout_empty.xml" value="0.20102564102564102" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/layout_empty_not_found.xml" value="0.20416666666666666" />
         <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/layout_loading.xml" value="0.20416666666666666" />
         <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/layout/layout_onboarding.xml" value="0.22" />
         <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/4. BFAA - Android Fundamental/Sub2 - GitHubBook/app/src/main/res/menu/menu_detail.xml" value="0.20416666666666666" />

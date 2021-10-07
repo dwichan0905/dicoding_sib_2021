@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
@@ -12,9 +14,11 @@ import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import id.dwichan.githubbook.R
-import id.dwichan.githubbook.data.entity.User
+import id.dwichan.githubbook.data.network.response.UserDetailResponse
+import id.dwichan.githubbook.data.network.response.UserItem
 import id.dwichan.githubbook.databinding.ActivityDetailBinding
 import id.dwichan.githubbook.ui.animationdialog.AnimationDialogActivity
+import id.dwichan.githubbook.ui.detail.content.DetailViewModel
 import id.dwichan.githubbook.ui.detail.content.SectionsPagerAdapter
 import id.dwichan.githubbook.ui.options.OptionsBottomSheet
 import java.text.NumberFormat
@@ -23,7 +27,7 @@ class DetailActivity : AppCompatActivity() {
 
     companion object {
         const val MIN_WIDTH_TO_COLLAPSE = 110
-        const val EXTRA_USER = "extra_user"
+        const val EXTRA_USER_ITEM = "extra_user_item"
 
         @StringRes
         private val TAB_TITLES = intArrayOf(
@@ -33,6 +37,8 @@ class DetailActivity : AppCompatActivity() {
         )
     }
 
+    private val viewModel: DetailViewModel by viewModels()
+
     private var _binding: ActivityDetailBinding? = null
     private val binding get() = _binding!!
 
@@ -41,7 +47,10 @@ class DetailActivity : AppCompatActivity() {
     private var lastOffset = -1
     private var isFavorite = false
 
-    private lateinit var user: User
+    private lateinit var user: UserItem
+    private lateinit var userDetailResponse: UserDetailResponse
+
+    private var isLoading: Boolean = false
     private var menu: Menu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,19 +62,42 @@ class DetailActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        viewModel.isLoading.observe(this) { state ->
+            isLoading = state
+            setLoading(state)
+            showDescription(!state)
+        }
+
+        viewModel.isFailed.observe(this) { failed ->
+            if (failed == true) {
+                Toast.makeText(
+                    this,
+                    "Failed to fetch data!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                supportFinishAfterTransition()
+            }
+
+        }
+
+        viewModel.data.observe(this) {
+            userDetailResponse = it
+            setProfileDescription(it)
+        }
+
         val bundle = intent.extras
         if (bundle != null) {
-            user = bundle.getParcelable<User>(EXTRA_USER) as User
-            setProfileDescription(user)
-            setToolbarTitle(user.name, "@${user.username}")
-            initSectionPager(user.username)
+            user = bundle.getParcelable<UserItem>(EXTRA_USER_ITEM) as UserItem
+            viewModel.fetchUserData(user.login) // FIXME: Rotate = Update data, harusnya enggak gitu
         } else {
             Toast.makeText(
                 this,
                 "Failed to get User Data",
                 Toast.LENGTH_SHORT
             ).show()
+            supportFinishAfterTransition()
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -79,12 +111,14 @@ class DetailActivity : AppCompatActivity() {
             android.R.id.home -> supportFinishAfterTransition()
             R.id.menu_favorite -> setFavorite()
             R.id.menu_more -> {
-                val bundle = Bundle().apply {
-                    putParcelable(OptionsBottomSheet.EXTRA_USER, user)
-                }
-                OptionsBottomSheet().apply {
-                    arguments = bundle
-                    show(supportFragmentManager, OptionsBottomSheet.TAG)
+                if (!isLoading) {
+                    val bundle = Bundle().apply {
+                        putParcelable(OptionsBottomSheet.EXTRA_USER_DETAIL, userDetailResponse)
+                    }
+                    OptionsBottomSheet().apply {
+                        arguments = bundle
+                        show(supportFragmentManager, OptionsBottomSheet.TAG)
+                    }
                 }
             }
         }
@@ -130,28 +164,45 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setProfileDescription(item: User) {
+    private fun setProfileDescription(item: UserDetailResponse) {
         with(binding) {
             Glide.with(this@DetailActivity)
-                .load(resources.getIdentifier(item.avatar, null, packageName))
+                .load(item.avatarUrl)
                 .into(imageUserBackgroundDetail)
 
             Glide.with(this@DetailActivity)
-                .load(resources.getIdentifier(item.avatar, null, packageName))
+                .load(item.avatarUrl)
                 .error(R.drawable.ic_baseline_person_24)
                 .placeholder(R.drawable.ic_baseline_person_24)
                 .into(imageUserIcon)
 
-            textUserName.text = item.name
-            textUserUsername.text = item.username
-            textUserCompany.text = item.company
-            textUserLocation.text = item.location
-            textRepositories.text = NumberFormat.getInstance().format(item.repository)
-            textFollowers.text = NumberFormat.getInstance().format(item.follower)
+            val name: String = item.name ?: "Anonymous"
+            val login: String = item.login ?: "anonymous_user"
+            val company: String = item.company ?: "No company assigned"
+            val location: String = item.location ?: "Private Location"
+
+            textUserName.text = name
+            textUserUsername.text = login
+            textUserCompany.text = company
+            textUserLocation.text = location
+            textRepositories.text = NumberFormat.getInstance().format(item.publicRepos)
+            textFollowers.text = NumberFormat.getInstance().format(item.followers)
             textFollowing.text = NumberFormat.getInstance().format(item.following)
 
-            isFavorite = item.isFavorite
-            swapFavoriteIcon()
+            isFavorite = false // TODO: Still false because no db
+            if (!isFavorite) {
+                menu?.getItem(0)?.icon =
+                    AppCompatResources
+                        .getDrawable(this@DetailActivity, R.drawable.ic_baseline_favorite_off_24)
+            } else {
+                menu?.getItem(0)?.icon =
+                    AppCompatResources
+                        .getDrawable(this@DetailActivity, R.drawable.ic_baseline_favorite_on_24)
+            }
+
+            setToolbarTitle(name, login)
+            initSectionPager(item.login ?: "")
+            showDescription(true)
         }
     }
 
@@ -180,6 +231,18 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    private fun showDescription(state: Boolean) {
+        binding.appBar.visibility = if (state) View.VISIBLE else View.GONE
+        binding.contentDetail.root.visibility = if (state) View.VISIBLE else View.GONE
+    }
+
+    private fun setLoading(state: Boolean) {
+        binding.layoutLoading.root.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.lottieAnimationView.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.textMessage.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.textMessage.text = getString(R.string.fetch_user_details, user.login)
     }
 
     override fun onDestroy() {

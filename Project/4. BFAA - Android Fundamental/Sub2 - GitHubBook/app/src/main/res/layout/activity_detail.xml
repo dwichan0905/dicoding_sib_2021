@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:fitsSystemWindows="true"
+        android:visibility="gone"
         android:theme="@style/Theme.GitHubBook.AppBarOverlay">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -192,6 +193,13 @@
 
     <include
         android:id="@+id/content_detail"
+        android:visibility="gone"
         layout="@layout/content_detail" />
+
+    <include
+        android:id="@+id/layout_loading"
+        layout="@layout/layout_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

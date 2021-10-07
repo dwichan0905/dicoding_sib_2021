@@ -32,6 +32,18 @@
         app:lottie_speed="2.0"
         app:lottie_loop="false" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/anim_loading"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="binocular.json"
+        app:lottie_loop="false" />
+
     <TextView
         android:id="@+id/text_message"
         android:layout_width="0dp"

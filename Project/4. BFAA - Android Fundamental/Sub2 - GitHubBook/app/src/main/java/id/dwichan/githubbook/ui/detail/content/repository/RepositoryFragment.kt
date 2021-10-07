@@ -72,7 +72,7 @@ class RepositoryFragment : Fragment(), UsersAdapter.OnItemActionListener {
 
     override fun onClick(item: User, itemBinding: ItemUsersBinding) {
         val intent = Intent(context, DetailActivity::class.java)
-        intent.putExtra(DetailActivity.EXTRA_USER, item)
+        intent.putExtra(DetailActivity.EXTRA_USER_ITEM, item)
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
             requireActivity(), itemBinding.imageUser, "UserIcon"
         )

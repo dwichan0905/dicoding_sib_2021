@@ -33,4 +33,6 @@
     <string name="text_result">Found %d item(s) from keyword %s.</string>
     <string name="text_not_found">Oops! I can\'t find anything with keyword %s :(\nMaybe you can try another search keyword so I can find it!</string>
     <string name="find_progress">Finding %s…</string>
+    <string name="result_limited">(limited to 30 items only shown)</string>
+    <string name="fetch_user_details">Fetching %s data...</string>
 </resources>

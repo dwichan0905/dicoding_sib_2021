@@ -12,14 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import id.dwichan.githubbook.R
 import id.dwichan.githubbook.data.entity.Option
-import id.dwichan.githubbook.data.entity.User
+import id.dwichan.githubbook.data.network.response.UserDetailResponse
 import id.dwichan.githubbook.databinding.BottomSheetOptionsBinding
 
 class OptionsBottomSheet : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "OptionsBottomFragment"
-        const val EXTRA_USER = "extra_user"
+        const val EXTRA_USER_DETAIL = "extra_user_detail"
     }
 
     private var _binding: BottomSheetOptionsBinding? = null
@@ -37,7 +37,8 @@ class OptionsBottomSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (arguments != null) {
-            val user = requireArguments().getParcelable<User>(EXTRA_USER) as User
+            val user = requireArguments()
+                .getParcelable<UserDetailResponse>(EXTRA_USER_DETAIL) as UserDetailResponse
 
             binding.listOptions.apply {
                 layoutManager = LinearLayoutManager(context)
@@ -46,14 +47,14 @@ class OptionsBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    private fun getListOptions(user: User): List<Option> {
+    private fun getListOptions(user: UserDetailResponse): List<Option> {
         return listOf(
             Option(
                 icon = R.drawable.github_mark,
-                title = getString(R.string.visit_link, user.username),
+                title = getString(R.string.visit_link, user.login),
                 showNextIndicator = true,
                 onClick = {
-                    visitLink(user.username)
+                    visitLink(user.htmlUrl)
                     dismiss()
                 }
             ),
@@ -69,22 +70,22 @@ class OptionsBottomSheet : BottomSheetDialogFragment() {
         )
     }
 
-    private fun visitLink(username: String? = "") {
+    private fun visitLink(url: String? = "") {
         val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse("https://github.com/$username")
+        intent.data = Uri.parse(url)
         startActivity(intent)
     }
 
-    private fun shareUser(user: User) {
+    private fun shareUser(user: UserDetailResponse) {
         ShareCompat.IntentBuilder(context as Context)
             .setType("text/plain")
-            .setChooserTitle(getString(R.string.share_text, user.username))
+            .setChooserTitle(getString(R.string.share_text, user.login))
             .setText(
                 """
                     ${user.name}
-                    (S)he has ${user.repository} repositories.
+                    (S)he has ${user.publicRepos} repositories.
                     
-                    Visit: https://github.com/${user.username}
+                    Visit: ${user.htmlUrl}
                 """.trimIndent()
             )
             .startChooser()

@@ -66,7 +66,7 @@ class FollowerFragment : Fragment(), UsersAdapter.OnItemActionListener {
 
     // FIXME: Bug list nya selalu 0
     private suspend fun getFollowerList(adapter: FollowerAdapter) {
-        val client = ApiService.getApiService(requireContext()).getFollowers(username)
+        val client = ApiService.getApiService().getFollowers(username)
         activity?.runOnUiThread {
 
         }
@@ -74,7 +74,7 @@ class FollowerFragment : Fragment(), UsersAdapter.OnItemActionListener {
 
     override fun onClick(item: User, itemBinding: ItemUsersBinding) {
         val intent = Intent(context, DetailActivity::class.java)
-        intent.putExtra(DetailActivity.EXTRA_USER, item)
+        intent.putExtra(DetailActivity.EXTRA_USER_ITEM, item)
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
             requireActivity(), itemBinding.imageUser, "UserIcon"
         )

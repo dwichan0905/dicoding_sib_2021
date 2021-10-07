@@ -1,14 +1,12 @@
 package id.dwichan.githubbook.data.network.api
 
-import android.content.Context
-import com.chuckerteam.chucker.api.ChuckerCollector
-import com.chuckerteam.chucker.api.ChuckerInterceptor
 import id.dwichan.githubbook.BuildConfig
 import id.dwichan.githubbook.data.network.response.FollowerResponse
 import id.dwichan.githubbook.data.network.response.FollowingResponse
 import id.dwichan.githubbook.data.network.response.UserDetailResponse
 import id.dwichan.githubbook.data.network.response.UserSearchResponse
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -19,16 +17,10 @@ import retrofit2.http.Query
 
 interface ApiService {
     companion object {
-        fun getApiService(context: Context): ApiService {
+        fun getApiService(): ApiService {
+            val logging = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder()
-                .addInterceptor(
-                    ChuckerInterceptor.Builder(context)
-                        .collector(ChuckerCollector(context))
-                        .maxContentLength(250000L)
-                        .redactHeaders(emptySet())
-                        .alwaysReadResponseBody(false)
-                        .build()
-                )
+                .addInterceptor(logging)
                 .build()
             val retrofit = Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())

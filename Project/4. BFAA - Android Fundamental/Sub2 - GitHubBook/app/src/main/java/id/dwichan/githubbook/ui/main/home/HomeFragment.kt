@@ -6,26 +6,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import id.dwichan.githubbook.R
-import id.dwichan.githubbook.data.network.api.ApiService
 import id.dwichan.githubbook.data.network.response.UserItem
-import id.dwichan.githubbook.data.network.response.UserSearchResponse
 import id.dwichan.githubbook.databinding.FragmentHomeBinding
 import id.dwichan.githubbook.databinding.ItemUsersBinding
 import id.dwichan.githubbook.ui.detail.DetailActivity
 import id.dwichan.githubbook.ui.main.UsersAdapter
-import id.dwichan.githubbook.ui.main.favorite.FavoriteFragment
 import id.dwichan.githubbook.util.Convert
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import kotlin.math.floor
 
 class HomeFragment : Fragment() {
@@ -34,8 +28,12 @@ class HomeFragment : Fragment() {
         private const val SEARCH_SERVICE: String = Context.SEARCH_SERVICE
     }
 
+    private val viewModel: HomeViewModel by viewModels()
+
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    private var querySearch: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,13 +51,27 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setLoading(false)
-        setListVisible(false)
-        setNotFoundVisibility(false)
-        setOnBoardingVisibility(true)
+        viewModel.isLoading.observe(viewLifecycleOwner) { state ->
+            setLoading(state, querySearch)
+        }
+        viewModel.isOnBoarding.observe(viewLifecycleOwner) { state ->
+            setOnBoardingVisibility(state)
+        }
+        viewModel.isListVisible.observe(viewLifecycleOwner) { state ->
+            setListVisible(state)
+        }
+        viewModel.isNotFound.observe(viewLifecycleOwner) { state ->
+            setNotFoundVisibility(state, querySearch)
+        }
+        viewModel.data.observe(viewLifecycleOwner) { listUsers ->
+            showUsersList(listUsers)
+        }
+        viewModel.resultMessage.observe(viewLifecycleOwner) { message ->
+            binding.textResult.text = message
+        }
     }
 
-    private fun showUsersList(listItem: List<UserItem>, query: String = "") {
+    private fun showUsersList(listItem: List<UserItem>) {
         with(binding) {
             val adapter = UsersAdapter()
             val divider = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
@@ -71,15 +83,13 @@ class HomeFragment : Fragment() {
             adapter.onItemAction = object : UsersAdapter.OnItemActionListener {
                 override fun onClick(item: UserItem, itemBinding: ItemUsersBinding) {
                     val intent = Intent(context, DetailActivity::class.java)
-                    intent.putExtra(DetailActivity.EXTRA_USER, item)
+                    intent.putExtra(DetailActivity.EXTRA_USER_ITEM, item)
                     val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         requireActivity(), itemBinding.imageUser, "UserIcon"
                     )
                     startActivity(intent, options.toBundle())
                 }
             }
-
-            binding.textResult.text = getString(R.string.text_result, listItem.size, query)
         }
     }
 
@@ -103,49 +113,13 @@ class HomeFragment : Fragment() {
                         InputMethodManager.HIDE_IMPLICIT_ONLY
                     )
 
-                    getUsers(query)
+                    querySearch = query
+                    viewModel.requestFindUsers(query)
                     return true
                 }
                 override fun onQueryTextChange(newText: String): Boolean = false
             })
         }
-    }
-
-    private fun getUsers(query: String) {
-        val client = ApiService.getApiService(requireActivity()).searchUser(query)
-        client.enqueue(object: Callback<UserSearchResponse> {
-            override fun onResponse(
-                call: Call<UserSearchResponse>,
-                response: Response<UserSearchResponse>
-            ) {
-                if (response.isSuccessful) {
-                    val responseList = response.body()
-                    if (responseList != null) {
-                        setLoading(false)
-                        setOnBoardingVisibility(false)
-
-                        if (responseList.items.isNotEmpty()) {
-                            setListVisible(true)
-                            setNotFoundVisibility(false)
-                            showUsersList(responseList.items, query)
-                        } else {
-                            setNotFoundVisibility(true, query)
-                            setListVisible(false)
-                            showUsersList(ArrayList())
-                        }
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<UserSearchResponse>, t: Throwable) {
-                Toast.makeText(
-                    requireContext(),
-                    "Failure!",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
-        })
     }
 
     override fun onDestroyView() {
@@ -154,16 +128,22 @@ class HomeFragment : Fragment() {
     }
 
     private fun setOnBoardingVisibility(state: Boolean) {
-        binding.layoutOnboarding.root.isVisible = state
+        binding.layoutOnboarding.root.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutOnboarding.lottieAnimationView.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.textMessage.visibility = if (state) View.VISIBLE else View.GONE
     }
 
     private fun setNotFoundVisibility(state: Boolean, query: String = "") {
-        binding.layoutNotFound.root.isVisible = state
+        binding.layoutNotFound.root.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutNotFound.lottieAnimationView.isVisible = state
+        binding.layoutLoading.textMessage.visibility = if (state) View.VISIBLE else View.GONE
         binding.layoutNotFound.textMessage.text = getString(R.string.text_not_found, query)
     }
 
     private fun setLoading(state: Boolean, query: String = "") {
-        binding.layoutLoading.root.isVisible = state
+        binding.layoutLoading.root.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.lottieAnimationView.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.textMessage.visibility = if (state) View.VISIBLE else View.GONE
         binding.layoutLoading.textMessage.text = getString(R.string.find_progress, query)
     }
 

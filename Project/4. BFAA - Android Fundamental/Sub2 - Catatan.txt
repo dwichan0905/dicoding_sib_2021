@@ -1,15 +1,18 @@
+Saya sedang mencoba menerapkan aturan Material Design seperti width, height, margin, padding. Tolong berikan notes mengenai desain yang saya buat apabila ada desain saya yang bisa saya perbaiki atau improvisasi lagi di submission selanjutnya.
+
+Improvisasi lainnya yang diterapkan:
 1. Menerapkan tampilan aplikasi yang sesuai standar:
-- Tampilan aplikasi memiliki width, height, margin, dan padding yang sesuai.
-- Pemilihan warna yang sesuai tema aplikasi. 
-- Tidak ada komponen yang saling bertumpuk.
-- Penggunaan komponen yang sesuai dengan fungsinya.
+- Tampilan aplikasi memiliki width, height, margin, dan padding yang sesuai. (mencoba mengikuti panduan di material.io)
+- Pemilihan warna yang sesuai tema aplikasi. (menggunakan Material.io Color Tool)
+- Tidak ada komponen yang saling bertumpuk. (saya rasa tidak ada)
+- Penggunaan komponen yang sesuai dengan fungsinya. (aman)
   Contoh : Komponen ImageView yang dijadikan sebagai button navigasi.
-- Menggunakan SearchView pada fitur pencarian.
-- Aplikasi bisa memberikan pesan eror jika data tidak berhasil ditampilkan.
-2. Menuliskan kode dengan bersih.
+- Menggunakan SearchView pada fitur pencarian. (Sudah diterapkan)
+- Aplikasi bisa memberikan pesan eror jika data tidak berhasil ditampilkan. (muncul pesan Not Found kalau data tidak ada atau tidak berhasil tampil)
+2. Menuliskan kode dengan bersih. (Reformat code, optimize import, inspect code, remove unused resource)
 - Bersihkan comment dan kode yang tidak digunakan.
 - Indentasi yang sesuai.
 - Menghapus import yang tidak digunakan.
-3. Aplikasi bisa menjaga data yang sudah dimuat ketika terjadi pergantian orientasi dari potrait ke landscape atau sebaliknya.
-4. Mengasah penggunaan library networking selain LoopJ (seperti Retrofit, Fast Android Networking, dsb).
-5. Menerapkan Android Architecture Component (minimal ViewModel dan LiveData) dengan benar.
+3. Aplikasi bisa menjaga data yang sudah dimuat ketika terjadi pergantian orientasi dari potrait ke landscape atau sebaliknya. (sudah, dan mampu bertahan sekalipun dirotasi)
+4. Mengasah penggunaan library networking selain LoopJ (seperti Retrofit, Fast Android Networking, dsb). (sudah, menggunakan Retrofit)
+5. Menerapkan Android Architecture Component (minimal ViewModel dan LiveData) dengan benar. (sudah menggunakan keduanya)

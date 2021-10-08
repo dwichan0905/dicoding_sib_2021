@@ -10,20 +10,11 @@ data class UserDetailResponse(
 	@field:SerializedName("login")
 	val login: String? = null,
 
-	@field:SerializedName("type")
-	val type: String? = null,
-
 	@field:SerializedName("company")
 	val company: String? = null,
 
-	@field:SerializedName("id")
-	val id: Int? = null,
-
 	@field:SerializedName("public_repos")
 	val publicRepos: Int? = null,
-
-	@field:SerializedName("followers_url")
-	val followersUrl: String? = null,
 
 	@field:SerializedName("followers")
 	val followers: Int? = null,
@@ -41,6 +32,6 @@ data class UserDetailResponse(
 	val name: String? = null,
 
 	@field:SerializedName("location")
-	val location: String? = null,
+	val location: String? = null
 
 ) : Parcelable

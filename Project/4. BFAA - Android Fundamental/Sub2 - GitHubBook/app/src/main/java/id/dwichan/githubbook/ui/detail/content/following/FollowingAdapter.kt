@@ -7,32 +7,31 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import id.dwichan.githubbook.R
-import id.dwichan.githubbook.data.entity.User
+import id.dwichan.githubbook.data.network.response.UserItem
 import id.dwichan.githubbook.databinding.ItemUsersBinding
+import id.dwichan.githubbook.util.FollowingDiffUtilCallback
 
 class FollowingAdapter : RecyclerView.Adapter<FollowingAdapter.UsersViewHolder>() {
 
-    private var users: ArrayList<User> = ArrayList()
+    private var users: ArrayList<UserItem> = ArrayList()
     var onItemAction: OnItemActionListener? = null
 
     inner class UsersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val binding: ItemUsersBinding = ItemUsersBinding.bind(itemView)
 
-        fun bind(item: User) {
+        fun bind(item: UserItem) {
             with(binding) {
                 val context = binding.root.context
 
                 Glide.with(context)
-                    .load(context.resources.getIdentifier(item.avatar, null, context.packageName))
+                    .load(item.avatarUrl)
                     .placeholder(R.drawable.ic_baseline_hourglass_bottom_24)
                     .error(R.drawable.ic_baseline_error_24)
                     .into(imageUser)
 
-                textUserName.text = item.name
-                var userDetails = item.username
-                if (item.company != "null") userDetails += " | ${item.company}"
-                textUserDetails.text = userDetails
+                textUserName.text = item.login
+                textUserDetails.text = item.type
 
                 root.setOnClickListener {
                     onItemAction?.onClick(item, binding)
@@ -41,7 +40,7 @@ class FollowingAdapter : RecyclerView.Adapter<FollowingAdapter.UsersViewHolder>(
         }
     }
 
-    fun setUserList(users: List<User>) {
+    fun setUserList(users: List<UserItem>) {
         val callback = FollowingDiffUtilCallback(this.users, users)
         val diffUtil = DiffUtil.calculateDiff(callback)
         this.users.clear()
@@ -53,8 +52,8 @@ class FollowingAdapter : RecyclerView.Adapter<FollowingAdapter.UsersViewHolder>(
         parent: ViewGroup,
         viewType: Int
     ): UsersViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_users, parent, false)
-        return UsersViewHolder(view)
+        val view = ItemUsersBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return UsersViewHolder(view.root)
     }
 
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
@@ -64,6 +63,6 @@ class FollowingAdapter : RecyclerView.Adapter<FollowingAdapter.UsersViewHolder>(
     override fun getItemCount(): Int = users.size
 
     interface OnItemActionListener {
-        fun onClick(item: User, itemBinding: ItemUsersBinding)
+        fun onClick(item: UserItem, itemBinding: ItemUsersBinding)
     }
 }

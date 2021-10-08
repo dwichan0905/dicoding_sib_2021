@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import id.dwichan.githubbook.R
 import id.dwichan.githubbook.data.network.response.UserItem
 import id.dwichan.githubbook.databinding.ItemUsersBinding
+import id.dwichan.githubbook.util.UserDiffUtilCallback
 
 class UsersAdapter : RecyclerView.Adapter<UsersAdapter.UsersViewHolder>() {
 
@@ -51,8 +52,12 @@ class UsersAdapter : RecyclerView.Adapter<UsersAdapter.UsersViewHolder>() {
         parent: ViewGroup,
         viewType: Int
     ): UsersViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_users, parent, false)
-        return UsersViewHolder(view)
+        val view = ItemUsersBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return UsersViewHolder(view.root)
     }
 
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {

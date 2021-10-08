@@ -5,11 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
@@ -53,6 +52,7 @@ class HomeFragment : Fragment() {
 
         viewModel.isLoading.observe(viewLifecycleOwner) { state ->
             setLoading(state, querySearch)
+            if (state == true) setListVisible(false)
         }
         viewModel.isOnBoarding.observe(viewLifecycleOwner) { state ->
             setOnBoardingVisibility(state)
@@ -106,12 +106,7 @@ class HomeFragment : Fragment() {
                     setLoading(true, query)
                     setOnBoardingVisibility(false)
 
-                    val imm = requireContext()
-                        .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(
-                        searchView.applicationWindowToken,
-                        InputMethodManager.HIDE_IMPLICIT_ONLY
-                    )
+                    searchView.clearFocus()
 
                     querySearch = query
                     viewModel.requestFindUsers(query)
@@ -130,13 +125,12 @@ class HomeFragment : Fragment() {
     private fun setOnBoardingVisibility(state: Boolean) {
         binding.layoutOnboarding.root.visibility = if (state) View.VISIBLE else View.GONE
         binding.layoutOnboarding.lottieAnimationView.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutLoading.textMessage.visibility = if (state) View.VISIBLE else View.GONE
     }
 
     private fun setNotFoundVisibility(state: Boolean, query: String = "") {
         binding.layoutNotFound.root.visibility = if (state) View.VISIBLE else View.GONE
         binding.layoutNotFound.lottieAnimationView.isVisible = state
-        binding.layoutLoading.textMessage.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutNotFound.textMessage.visibility = if (state) View.VISIBLE else View.GONE
         binding.layoutNotFound.textMessage.text = getString(R.string.text_not_found, query)
     }
 

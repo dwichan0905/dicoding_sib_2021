@@ -12,14 +12,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import id.dwichan.githubbook.R
 import id.dwichan.githubbook.data.network.response.UserDetailResponse
 import id.dwichan.githubbook.data.network.response.UserItem
 import id.dwichan.githubbook.databinding.ActivityDetailBinding
 import id.dwichan.githubbook.ui.animationdialog.AnimationDialogActivity
-import id.dwichan.githubbook.ui.detail.content.DetailViewModel
-import id.dwichan.githubbook.ui.detail.content.SectionsPagerAdapter
 import id.dwichan.githubbook.ui.options.OptionsBottomSheet
 import java.text.NumberFormat
 
@@ -53,6 +52,8 @@ class DetailActivity : AppCompatActivity() {
     private var isLoading: Boolean = false
     private var menu: Menu? = null
 
+    private val comingSoon: Boolean = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -65,7 +66,6 @@ class DetailActivity : AppCompatActivity() {
         viewModel.isLoading.observe(this) { state ->
             isLoading = state
             setLoading(state)
-            showDescription(!state)
         }
 
         viewModel.isFailed.observe(this) { failed ->
@@ -88,7 +88,7 @@ class DetailActivity : AppCompatActivity() {
         val bundle = intent.extras
         if (bundle != null) {
             user = bundle.getParcelable<UserItem>(EXTRA_USER_ITEM) as UserItem
-            viewModel.fetchUserData(user.login) // FIXME: Rotate = Update data, harusnya enggak gitu
+            viewModel.fetchUserData(user.login)
         } else {
             Toast.makeText(
                 this,
@@ -101,8 +101,12 @@ class DetailActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_detail, menu)
-        this.menu = menu
+        viewModel.isLoading.observe(this) {
+            if (!isLoading) {
+                menuInflater.inflate(R.menu.menu_detail, menu)
+                this.menu = menu
+            }
+        }
         return true
     }
 
@@ -111,37 +115,46 @@ class DetailActivity : AppCompatActivity() {
             android.R.id.home -> supportFinishAfterTransition()
             R.id.menu_favorite -> setFavorite()
             R.id.menu_more -> {
-                if (!isLoading) {
-                    val bundle = Bundle().apply {
-                        putParcelable(OptionsBottomSheet.EXTRA_USER_DETAIL, userDetailResponse)
-                    }
-                    OptionsBottomSheet().apply {
-                        arguments = bundle
-                        show(supportFragmentManager, OptionsBottomSheet.TAG)
-                    }
+                val bundle = Bundle().apply {
+                    putParcelable(OptionsBottomSheet.EXTRA_USER_DETAIL, userDetailResponse)
                 }
+                OptionsBottomSheet().apply {
+                    arguments = bundle
+                    show(supportFragmentManager, OptionsBottomSheet.TAG)
+                }
+
             }
         }
         return true
     }
 
     private fun setFavorite() {
-        swapFavoriteIcon()
-        isFavorite = !isFavorite
-
-        val intent = Intent(this, AnimationDialogActivity::class.java)
-        if (isFavorite) {
-            intent.apply {
-                putExtra(AnimationDialogActivity.EXTRA_TYPE, AnimationDialogActivity.TYPE_FAVORITE_ADD)
-                putExtra(AnimationDialogActivity.EXTRA_MESSAGE, "Added to Favorite!")
-            }
+        if (comingSoon) {
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Coming soon")
+                .setMessage("This feature will coming very soon, stay back!")
+                .setCancelable(false)
+                .setPositiveButton("Okay", null)
+                .create()
+                .show()
         } else {
-            intent.apply {
-                putExtra(AnimationDialogActivity.EXTRA_TYPE, AnimationDialogActivity.TYPE_FAVORITE_REMOVE)
-                putExtra(AnimationDialogActivity.EXTRA_MESSAGE, "Removed from Favorite!")
+            swapFavoriteIcon()
+            isFavorite = !isFavorite
+
+            val intent = Intent(this, AnimationDialogActivity::class.java)
+            if (isFavorite) {
+                intent.apply {
+                    putExtra(AnimationDialogActivity.EXTRA_TYPE, AnimationDialogActivity.TYPE_FAVORITE_ADD)
+                    putExtra(AnimationDialogActivity.EXTRA_MESSAGE, "Added to Favorite!")
+                }
+            } else {
+                intent.apply {
+                    putExtra(AnimationDialogActivity.EXTRA_TYPE, AnimationDialogActivity.TYPE_FAVORITE_REMOVE)
+                    putExtra(AnimationDialogActivity.EXTRA_MESSAGE, "Removed from Favorite!")
+                }
             }
+            startActivity(intent)
         }
-        startActivity(intent)
     }
 
     private fun swapFavoriteIcon() {
@@ -176,10 +189,10 @@ class DetailActivity : AppCompatActivity() {
                 .placeholder(R.drawable.ic_baseline_person_24)
                 .into(imageUserIcon)
 
-            val name: String = item.name ?: "Anonymous"
-            val login: String = item.login ?: "anonymous_user"
-            val company: String = item.company ?: "No company assigned"
-            val location: String = item.location ?: "Private Location"
+            val name: String = item.name ?: getString(R.string.no_name)
+            val login: String = item.login ?: getString(R.string.no_username)
+            val company: String = item.company ?: getString(R.string.no_company)
+            val location: String = item.location ?: getString(R.string.no_location)
 
             textUserName.text = name
             textUserUsername.text = login
@@ -202,7 +215,6 @@ class DetailActivity : AppCompatActivity() {
 
             setToolbarTitle(name, login)
             initSectionPager(item.login ?: "")
-            showDescription(true)
         }
     }
 
@@ -231,11 +243,6 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
         )
-    }
-
-    private fun showDescription(state: Boolean) {
-        binding.appBar.visibility = if (state) View.VISIBLE else View.GONE
-        binding.contentDetail.root.visibility = if (state) View.VISIBLE else View.GONE
     }
 
     private fun setLoading(state: Boolean) {

@@ -7,34 +7,34 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import id.dwichan.githubbook.data.entity.Repository
+import id.dwichan.githubbook.data.network.response.RepositoryItem
 import id.dwichan.githubbook.databinding.ItemRepositoryBinding
-import id.dwichan.githubbook.ui.detail.content.follower.FollowerDiffUtilCallback
+import id.dwichan.githubbook.util.RepositoryDiffUtilCallback
 
-class RepositoryAdapter(private val username: String):
+class RepositoryAdapter :
     RecyclerView.Adapter<RepositoryAdapter.ReposViewHolder>() {
 
-    private var repoList: ArrayList<Repository> = ArrayList()
+    private var repoList: ArrayList<RepositoryItem> = ArrayList()
 
     inner class ReposViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         private val binding = ItemRepositoryBinding.bind(itemView)
 
-        fun bind(repository: Repository) {
+        fun bind(repository: RepositoryItem) {
             binding.apply {
                 textRepoName.text = repository.name
                 textRepoPath.text = repository.fullName
 
                 root.setOnClickListener {
                     val intent = Intent(Intent.ACTION_VIEW)
-                    intent.data = Uri.parse("https://github.com/$username/${repository.name}")
+                    intent.data = Uri.parse(repository.htmlUrl)
                     root.context.startActivity(intent)
                 }
             }
         }
     }
 
-    fun updateRepositoryList(newSource: List<Repository>) {
+    fun setRepositoryList(newSource: List<RepositoryItem>) {
         val diffUtilCallback = RepositoryDiffUtilCallback(repoList, newSource)
         val diffResult = DiffUtil.calculateDiff(diffUtilCallback)
         repoList.clear()

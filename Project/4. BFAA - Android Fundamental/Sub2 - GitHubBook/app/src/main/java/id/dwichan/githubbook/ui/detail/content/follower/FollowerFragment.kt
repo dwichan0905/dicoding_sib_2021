@@ -6,25 +6,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import id.dwichan.githubbook.data.entity.User
+import com.google.android.material.divider.MaterialDividerItemDecoration
+import id.dwichan.githubbook.R
+import id.dwichan.githubbook.data.network.response.UserItem
 import id.dwichan.githubbook.databinding.FragmentRepoFollowListBinding
 import id.dwichan.githubbook.databinding.ItemUsersBinding
 import id.dwichan.githubbook.ui.detail.DetailActivity
-import id.dwichan.githubbook.ui.detail.content.UsersAdapter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import id.dwichan.githubbook.data.network.api.ApiService
+import id.dwichan.githubbook.util.Convert
+import kotlin.math.floor
 
-class FollowerFragment : Fragment(), UsersAdapter.OnItemActionListener {
+class FollowerFragment : Fragment(), FollowerAdapter.OnItemActionListener {
+
+    private val viewModel: FollowerViewModel by viewModels()
 
     private var _binding: FragmentRepoFollowListBinding? = null
     private val binding get() = _binding!!
 
     private var username: String = ""
-    private var isLoading = false
 
     companion object {
         const val EXTRA_USERNAME = "extra_username"
@@ -48,31 +50,49 @@ class FollowerFragment : Fragment(), UsersAdapter.OnItemActionListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val adapter = FollowerAdapter()
 
         arguments?.let {
             username = it.getString(EXTRA_USERNAME).toString()
         }
 
+        viewModel.data.observe(viewLifecycleOwner) { data ->
+            if (data.isNotEmpty()) {
+                adapter.setUserList(data)
+            } else {
+                setNotFoundVisibility(true, username)
+                adapter.setUserList(ArrayList())
+            }
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { state ->
+            binding.swipeRefresh.visibility = if (state == true) View.GONE else View.VISIBLE
+            setLoading(state, username)
+        }
+
+        viewModel.isFailed.observe(viewLifecycleOwner) { state ->
+            setNotFoundVisibility(state, username)
+        }
+
         binding.apply {
             rvList.layoutManager = LinearLayoutManager(context)
-            swapLoading()
-            val reposAdapter = FollowerAdapter()
-            rvList.adapter = reposAdapter
-            CoroutineScope(Dispatchers.IO).launch {
-                getFollowerList(reposAdapter)
+            val divider = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
+            divider.dividerInsetStart = floor(Convert.dpToPx(requireContext(), 80)).toInt()
+            rvList.addItemDecoration(divider)
+            rvList.adapter = adapter
+            adapter.onItemAction = this@FollowerFragment
+            viewModel.fetchFollower(username)
+
+            swipeRefresh.setOnRefreshListener {
+                swipeRefresh.isRefreshing = false
+                viewModel.needUpdateData()
+                viewModel.fetchFollower(username)
             }
         }
     }
 
-    // FIXME: Bug list nya selalu 0
-    private suspend fun getFollowerList(adapter: FollowerAdapter) {
-        val client = ApiService.getApiService().getFollowers(username)
-        activity?.runOnUiThread {
 
-        }
-    }
-
-    override fun onClick(item: User, itemBinding: ItemUsersBinding) {
+    override fun onClick(item: UserItem, itemBinding: ItemUsersBinding) {
         val intent = Intent(context, DetailActivity::class.java)
         intent.putExtra(DetailActivity.EXTRA_USER_ITEM, item)
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
@@ -81,13 +101,18 @@ class FollowerFragment : Fragment(), UsersAdapter.OnItemActionListener {
         startActivity(intent, options.toBundle())
     }
 
-    private fun swapLoading() {
-        if (isLoading) {
-            binding.progressBar.visibility = View.GONE
-        } else {
-            binding.progressBar.visibility = View.VISIBLE
-        }
-        isLoading = !isLoading
+    private fun setNotFoundVisibility(state: Boolean, name: String = "") {
+        binding.layoutNotFound.root.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutNotFound.lottieAnimationView.isVisible = state
+        binding.layoutNotFound.textMessage.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutNotFound.textMessage.text = getString(R.string.no_follower, name)
+    }
+
+    private fun setLoading(state: Boolean, query: String = "") {
+        binding.layoutLoading.root.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.lottieAnimationView.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.textMessage.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.textMessage.text = getString(R.string.find_follower, query)
     }
 
     override fun onDestroyView() {

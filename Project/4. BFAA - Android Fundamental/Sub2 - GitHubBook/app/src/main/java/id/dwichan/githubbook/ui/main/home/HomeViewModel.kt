@@ -12,6 +12,7 @@ import id.dwichan.githubbook.data.network.response.UserSearchResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.NumberFormat
 
 class HomeViewModel(app: Application) : AndroidViewModel(app) {
 
@@ -33,12 +34,16 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
     private var _resultMessage = MutableLiveData<String>()
     val resultMessage: LiveData<String> = _resultMessage
 
+    init {
+        _isLoading.value = false
+    }
+
     fun requestFindUsers(query: String) {
         _isLoading.value = true
         _isOnBoarding.value = false
         setResultMessage(getApplication(), 0, "")
 
-        val client = ApiService.getApiService().searchUser(query)
+        val client = ApiService.getApiService(getApplication()).searchUser(query)
         client.enqueue(object : Callback<UserSearchResponse> {
             override fun onResponse(
                 call: Call<UserSearchResponse>,
@@ -67,12 +72,12 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
                 setResultMessage(getApplication(), 0, query)
                 _isListVisible.value = false
             }
-
         })
     }
 
     private fun setResultMessage(context: Context, count: Int, query: String) {
-        _resultMessage.value = context.getString(R.string.text_result, count, query)
+        val formattedCount = NumberFormat.getInstance().format(count)
+        _resultMessage.value = context.getString(R.string.text_result, formattedCount, query)
         if (count > 30) {
             _resultMessage.value += " " + context.getString(R.string.result_limited)
         }

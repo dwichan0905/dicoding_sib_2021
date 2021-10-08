@@ -10,7 +10,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import id.dwichan.githubbook.R
 import id.dwichan.githubbook.databinding.FragmentFavoriteBinding
-import id.dwichan.githubbook.ui.main.home.HomeFragment
 
 class FavoriteFragment : Fragment() {
 
@@ -20,6 +19,8 @@ class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
+
+    private val comingSoon = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +39,7 @@ class FavoriteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setLoading(false)
-        setListVisible(false)
+        setListVisible()
         setEmptyVisibility(true)
 
         requireActivity().invalidateOptionsMenu()
@@ -72,8 +73,8 @@ class FavoriteFragment : Fragment() {
         binding.progressBar.isVisible = state
     }
 
-    private fun setListVisible(state: Boolean) {
-        binding.listUsers.isVisible = state
+    private fun setListVisible() {
+        binding.listUsers.isVisible = comingSoon
     }
 
     override fun onDestroyView() {

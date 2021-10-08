@@ -1,11 +1,11 @@
-package id.dwichan.githubbook.ui.detail.content.follower
+package id.dwichan.githubbook.util
 
 import androidx.recyclerview.widget.DiffUtil
-import id.dwichan.githubbook.data.entity.User
+import id.dwichan.githubbook.data.network.response.UserItem
 
-class           FollowerDiffUtilCallback(
-        private val oldList: List<User>,
-        private val newList: List<User>
+class FollowingDiffUtilCallback(
+        private val oldList: List<UserItem>,
+        private val newList: List<UserItem>
     ) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int = oldList.size
@@ -18,7 +18,4 @@ class           FollowerDiffUtilCallback(
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
         oldItemPosition == newItemPosition
 
-    override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
-        return super.getChangePayload(oldItemPosition, newItemPosition)
-    }
 }

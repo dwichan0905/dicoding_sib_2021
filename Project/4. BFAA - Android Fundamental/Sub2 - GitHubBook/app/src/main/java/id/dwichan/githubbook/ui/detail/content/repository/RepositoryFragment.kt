@@ -1,38 +1,32 @@
 package id.dwichan.githubbook.ui.detail.content.repository
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import id.dwichan.githubbook.data.entity.User
+import id.dwichan.githubbook.R
 import id.dwichan.githubbook.databinding.FragmentRepoFollowListBinding
-import id.dwichan.githubbook.databinding.ItemUsersBinding
-import id.dwichan.githubbook.ui.detail.DetailActivity
-import id.dwichan.githubbook.ui.detail.content.UsersAdapter
-import id.dwichan.githubbook.ui.detail.content.follower.FollowerFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
-class RepositoryFragment : Fragment(), UsersAdapter.OnItemActionListener {
+class RepositoryFragment : Fragment() {
+
+    private val viewModel: RepositoryViewModel by viewModels()
 
     private var _binding: FragmentRepoFollowListBinding? = null
     private val binding get() = _binding!!
 
     private var username: String = ""
-    private var isLoading = false
 
     companion object {
         const val EXTRA_USERNAME = "extra_username"
 
         @JvmStatic
         fun newInstance(username: String) =
-            FollowerFragment().apply {
+            RepositoryFragment().apply {
                 arguments = Bundle().apply {
                     putString(EXTRA_USERNAME, username)
                 }
@@ -49,43 +43,55 @@ class RepositoryFragment : Fragment(), UsersAdapter.OnItemActionListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val adapter = RepositoryAdapter()
 
         arguments?.let {
             username = it.getString(EXTRA_USERNAME).toString()
         }
 
+        viewModel.data.observe(viewLifecycleOwner) { data ->
+            if (data.isNotEmpty()) {
+                adapter.setRepositoryList(data)
+            } else {
+                setNotFoundVisibility(true, username)
+                adapter.setRepositoryList(ArrayList())
+            }
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { state ->
+            binding.swipeRefresh.visibility = if (state == true) View.GONE else View.VISIBLE
+            setLoading(state, username)
+        }
+
+        viewModel.isFailed.observe(viewLifecycleOwner) { state ->
+            setNotFoundVisibility(state, username)
+        }
+
         binding.apply {
             rvList.layoutManager = LinearLayoutManager(context)
-            swapLoading()
-            val reposAdapter = RepositoryAdapter(username)
-            rvList.adapter = reposAdapter
-            CoroutineScope(Dispatchers.IO).launch {
-                getRepositoryList(reposAdapter)
+            rvList.adapter = adapter
+            viewModel.fetchRepositories(username)
+
+            swipeRefresh.setOnRefreshListener {
+                swipeRefresh.isRefreshing = false
+                viewModel.needUpdateData()
+                viewModel.fetchRepositories(username)
             }
         }
     }
 
-    // FIXME: Bug list nya selalu 0
-    private suspend fun getRepositoryList(adapter: RepositoryAdapter) {
-
+    private fun setNotFoundVisibility(state: Boolean, name: String = "") {
+        binding.layoutNotFound.root.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutNotFound.lottieAnimationView.isVisible = state
+        binding.layoutNotFound.textMessage.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutNotFound.textMessage.text = getString(R.string.no_repository, name)
     }
 
-    override fun onClick(item: User, itemBinding: ItemUsersBinding) {
-        val intent = Intent(context, DetailActivity::class.java)
-        intent.putExtra(DetailActivity.EXTRA_USER_ITEM, item)
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-            requireActivity(), itemBinding.imageUser, "UserIcon"
-        )
-        startActivity(intent, options.toBundle())
-    }
-
-    private fun swapLoading() {
-        if (isLoading) {
-            binding.progressBar.visibility = View.GONE
-        } else {
-            binding.progressBar.visibility = View.VISIBLE
-        }
-        isLoading = !isLoading
+    private fun setLoading(state: Boolean, name: String = "") {
+        binding.layoutLoading.root.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.lottieAnimationView.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.textMessage.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.textMessage.text = getString(R.string.find_repository, name)
     }
 
     override fun onDestroyView() {

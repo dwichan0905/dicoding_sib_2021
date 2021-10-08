@@ -1,11 +1,11 @@
-package id.dwichan.githubbook.ui.detail.content.repository
+package id.dwichan.githubbook.util
 
 import androidx.recyclerview.widget.DiffUtil
-import id.dwichan.githubbook.data.entity.Repository
+import id.dwichan.githubbook.data.network.response.RepositoryItem
 
 class RepositoryDiffUtilCallback(
-        private val oldList: List<Repository>,
-        private val newList: List<Repository>
+        private val oldList: List<RepositoryItem>,
+        private val newList: List<RepositoryItem>
     ) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int = oldList.size
@@ -18,7 +18,4 @@ class RepositoryDiffUtilCallback(
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
         oldItemPosition == newItemPosition
 
-    override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
-        return super.getChangePayload(oldItemPosition, newItemPosition)
-    }
 }

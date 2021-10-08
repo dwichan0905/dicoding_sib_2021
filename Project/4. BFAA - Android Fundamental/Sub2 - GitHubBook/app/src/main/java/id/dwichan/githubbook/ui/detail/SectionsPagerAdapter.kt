@@ -1,4 +1,4 @@
-package id.dwichan.githubbook.ui.detail.content
+package id.dwichan.githubbook.ui.detail
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment

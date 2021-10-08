@@ -60,6 +60,7 @@ class FavoriteFragment : Fragment() {
                     setEmptyVisibility(false)
                     return true
                 }
+
                 override fun onQueryTextChange(newText: String): Boolean = false
             })
         }

@@ -4,7 +4,10 @@ import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import id.dwichan.githubbook.BuildConfig
-import id.dwichan.githubbook.data.network.response.*
+import id.dwichan.githubbook.data.network.response.RepositoryItem
+import id.dwichan.githubbook.data.network.response.UserDetailResponse
+import id.dwichan.githubbook.data.network.response.UserItem
+import id.dwichan.githubbook.data.network.response.UserSearchResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call

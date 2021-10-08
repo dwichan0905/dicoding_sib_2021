@@ -4,9 +4,9 @@ import androidx.recyclerview.widget.DiffUtil
 import id.dwichan.githubbook.data.network.response.UserItem
 
 class FollowingDiffUtilCallback(
-        private val oldList: List<UserItem>,
-        private val newList: List<UserItem>
-    ) : DiffUtil.Callback() {
+    private val oldList: List<UserItem>,
+    private val newList: List<UserItem>
+) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int = oldList.size
 

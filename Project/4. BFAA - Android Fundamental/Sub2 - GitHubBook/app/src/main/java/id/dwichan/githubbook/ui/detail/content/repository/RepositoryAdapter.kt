@@ -16,7 +16,7 @@ class RepositoryAdapter :
 
     private var repoList: ArrayList<RepositoryItem> = ArrayList()
 
-    inner class ReposViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class ReposViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val binding = ItemRepositoryBinding.bind(itemView)
 

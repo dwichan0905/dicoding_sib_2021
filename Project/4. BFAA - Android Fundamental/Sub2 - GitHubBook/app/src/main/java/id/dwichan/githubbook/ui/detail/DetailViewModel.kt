@@ -1,5 +1,6 @@
 package id.dwichan.githubbook.ui.detail
 
+import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -33,6 +34,7 @@ class DetailViewModel(app: Application) : AndroidViewModel(app) {
             _isLoading.value = true
             val client = ApiService.getApiService(getApplication()).getUserDetails(username)
             client.enqueue(object : Callback<UserDetailResponse> {
+                @SuppressLint("NullSafeMutableLiveData")
                 override fun onResponse(
                     call: Call<UserDetailResponse>,
                     response: Response<UserDetailResponse>

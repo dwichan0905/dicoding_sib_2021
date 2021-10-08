@@ -7,7 +7,7 @@ import id.dwichan.githubbook.ui.detail.content.follower.FollowerFragment
 import id.dwichan.githubbook.ui.detail.content.following.FollowingFragment
 import id.dwichan.githubbook.ui.detail.content.repository.RepositoryFragment
 
-class SectionsPagerAdapter(activity: AppCompatActivity, username: String):
+class SectionsPagerAdapter(activity: AppCompatActivity, username: String) :
     FragmentStateAdapter(activity) {
 
     private val fragments: List<Fragment> = listOf(

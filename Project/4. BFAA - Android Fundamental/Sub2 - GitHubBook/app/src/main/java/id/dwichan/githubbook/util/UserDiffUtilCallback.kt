@@ -6,7 +6,7 @@ import id.dwichan.githubbook.data.network.response.UserItem
 class UserDiffUtilCallback(
     private val oldList: List<UserItem>,
     private val newList: List<UserItem>
-    ) : DiffUtil.Callback() {
+) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int = oldList.size
 

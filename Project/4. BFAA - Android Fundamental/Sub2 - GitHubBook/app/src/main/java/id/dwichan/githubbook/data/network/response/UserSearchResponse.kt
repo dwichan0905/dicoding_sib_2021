@@ -8,11 +8,11 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class UserSearchResponse(
 
-	@SerializedName("total_count")
-	val totalCount: Int,
+    @SerializedName("total_count")
+    val totalCount: Int,
 
-	@SerializedName("items")
-	val items: List<UserItem>
+    @SerializedName("items")
+    val items: List<UserItem>
 
 ) : Parcelable
 

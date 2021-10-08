@@ -82,16 +82,17 @@ class RepositoryFragment : Fragment() {
 
     private fun setNotFoundVisibility(state: Boolean, name: String = "") {
         binding.layoutNotFound.root.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutNotFound.lottieAnimationView.isVisible = state
-        binding.layoutNotFound.textMessage.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutNotFound.textMessage.text = getString(R.string.no_repository, name)
+        binding.layoutNotFound.lottieEmpty.isVisible = state
+        binding.layoutNotFound.textErrorMessage.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutNotFound.textErrorMessage.text = getString(R.string.no_repository, name)
     }
 
     private fun setLoading(state: Boolean, name: String = "") {
         binding.layoutLoading.root.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutLoading.lottieAnimationView.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutLoading.textMessage.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutLoading.textMessage.text = getString(R.string.find_repository, name)
+        binding.layoutLoading.lottieLoading.visibility =
+            if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.textLoadingMessage.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.textLoadingMessage.text = getString(R.string.find_repository, name)
     }
 
     override fun onDestroyView() {

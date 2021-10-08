@@ -5,13 +5,14 @@
     android:id="@+id/card_option"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
+    android:background="?android:selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:background="?android:selectableItemBackground">
+    android:paddingStart="16dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="8dp"
+    tools:ignore="Overdraw">
 
     <ImageView
         android:id="@+id/image_icon"
@@ -28,8 +29,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:text="@string/example_title"
         android:textSize="16sp"

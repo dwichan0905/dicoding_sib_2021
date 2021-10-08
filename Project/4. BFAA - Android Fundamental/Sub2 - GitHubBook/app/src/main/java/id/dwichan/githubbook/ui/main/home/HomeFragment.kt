@@ -72,9 +72,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun showUsersList(listItem: List<UserItem>) {
-        with(binding) {
+        binding.apply {
             val adapter = UsersAdapter()
-            val divider = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
+            val divider =
+                MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
             divider.dividerInsetStart = floor(Convert.dpToPx(requireContext(), 80)).toInt()
             listUsers.addItemDecoration(divider)
             listUsers.layoutManager = LinearLayoutManager(context)
@@ -112,6 +113,7 @@ class HomeFragment : Fragment() {
                     viewModel.requestFindUsers(query)
                     return true
                 }
+
                 override fun onQueryTextChange(newText: String): Boolean = false
             })
         }
@@ -124,21 +126,23 @@ class HomeFragment : Fragment() {
 
     private fun setOnBoardingVisibility(state: Boolean) {
         binding.layoutOnboarding.root.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutOnboarding.lottieAnimationView.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutOnboarding.lottieOnboarding.visibility =
+            if (state) View.VISIBLE else View.GONE
     }
 
     private fun setNotFoundVisibility(state: Boolean, query: String = "") {
         binding.layoutNotFound.root.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutNotFound.lottieAnimationView.isVisible = state
-        binding.layoutNotFound.textMessage.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutNotFound.textMessage.text = getString(R.string.text_not_found, query)
+        binding.layoutNotFound.lottieEmpty.isVisible = state
+        binding.layoutNotFound.textErrorMessage.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutNotFound.textErrorMessage.text = getString(R.string.text_not_found, query)
     }
 
     private fun setLoading(state: Boolean, query: String = "") {
         binding.layoutLoading.root.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutLoading.lottieAnimationView.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutLoading.textMessage.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutLoading.textMessage.text = getString(R.string.find_progress, query)
+        binding.layoutLoading.lottieLoading.visibility =
+            if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.textLoadingMessage.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.textLoadingMessage.text = getString(R.string.find_progress, query)
     }
 
     private fun setListVisible(state: Boolean) {

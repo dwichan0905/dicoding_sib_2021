@@ -1,5 +1,6 @@
 package id.dwichan.githubbook.ui.detail.content.following
 
+import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -10,7 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FollowingViewModel(app: Application): AndroidViewModel(app) {
+class FollowingViewModel(app: Application) : AndroidViewModel(app) {
 
     private var _data = MutableLiveData<List<UserItem>>()
     val data: LiveData<List<UserItem>> = _data
@@ -32,6 +33,7 @@ class FollowingViewModel(app: Application): AndroidViewModel(app) {
             _isLoading.value = true
             val client = ApiService.getApiService(getApplication()).getFollowing(username)
             client.enqueue(object : Callback<List<UserItem>> {
+                @SuppressLint("NullSafeMutableLiveData")
                 override fun onResponse(
                     call: Call<List<UserItem>>,
                     response: Response<List<UserItem>>
@@ -40,7 +42,7 @@ class FollowingViewModel(app: Application): AndroidViewModel(app) {
                     if (response.isSuccessful) {
                         val responseBody = response.body()
                         if (responseBody != null) {
-                            _data.postValue(responseBody) // ignore it if error, Android Studio gonna sick with this
+                            _data.postValue(responseBody)
                             _isFailed.value = false
                             _isDataUpdated.value = true
                         } else {

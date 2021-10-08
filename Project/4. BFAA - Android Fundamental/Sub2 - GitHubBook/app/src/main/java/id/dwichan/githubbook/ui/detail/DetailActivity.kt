@@ -144,12 +144,18 @@ class DetailActivity : AppCompatActivity() {
             val intent = Intent(this, AnimationDialogActivity::class.java)
             if (isFavorite) {
                 intent.apply {
-                    putExtra(AnimationDialogActivity.EXTRA_TYPE, AnimationDialogActivity.TYPE_FAVORITE_ADD)
+                    putExtra(
+                        AnimationDialogActivity.EXTRA_TYPE,
+                        AnimationDialogActivity.TYPE_FAVORITE_ADD
+                    )
                     putExtra(AnimationDialogActivity.EXTRA_MESSAGE, "Added to Favorite!")
                 }
             } else {
                 intent.apply {
-                    putExtra(AnimationDialogActivity.EXTRA_TYPE, AnimationDialogActivity.TYPE_FAVORITE_REMOVE)
+                    putExtra(
+                        AnimationDialogActivity.EXTRA_TYPE,
+                        AnimationDialogActivity.TYPE_FAVORITE_REMOVE
+                    )
                     putExtra(AnimationDialogActivity.EXTRA_MESSAGE, "Removed from Favorite!")
                 }
             }
@@ -202,7 +208,7 @@ class DetailActivity : AppCompatActivity() {
             textFollowers.text = NumberFormat.getInstance().format(item.followers)
             textFollowing.text = NumberFormat.getInstance().format(item.following)
 
-            isFavorite = false // TODO: Still false because no db
+            isFavorite = false // coming soon
             if (!isFavorite) {
                 menu?.getItem(0)?.icon =
                     AppCompatResources
@@ -247,9 +253,10 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setLoading(state: Boolean) {
         binding.layoutLoading.root.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutLoading.lottieAnimationView.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutLoading.textMessage.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutLoading.textMessage.text = getString(R.string.fetch_user_details, user.login)
+        binding.layoutLoading.lottieLoading.visibility =
+            if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.textLoadingMessage.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.textLoadingMessage.text = getString(R.string.fetch_user_details, user.login)
     }
 
     override fun onDestroy() {

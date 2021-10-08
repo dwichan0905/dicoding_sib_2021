@@ -76,7 +76,8 @@ class FollowerFragment : Fragment(), FollowerAdapter.OnItemActionListener {
 
         binding.apply {
             rvList.layoutManager = LinearLayoutManager(context)
-            val divider = MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
+            val divider =
+                MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
             divider.dividerInsetStart = floor(Convert.dpToPx(requireContext(), 80)).toInt()
             rvList.addItemDecoration(divider)
             rvList.adapter = adapter
@@ -103,16 +104,17 @@ class FollowerFragment : Fragment(), FollowerAdapter.OnItemActionListener {
 
     private fun setNotFoundVisibility(state: Boolean, name: String = "") {
         binding.layoutNotFound.root.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutNotFound.lottieAnimationView.isVisible = state
-        binding.layoutNotFound.textMessage.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutNotFound.textMessage.text = getString(R.string.no_follower, name)
+        binding.layoutNotFound.lottieEmpty.isVisible = state
+        binding.layoutNotFound.textErrorMessage.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutNotFound.textErrorMessage.text = getString(R.string.no_follower, name)
     }
 
     private fun setLoading(state: Boolean, query: String = "") {
         binding.layoutLoading.root.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutLoading.lottieAnimationView.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutLoading.textMessage.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutLoading.textMessage.text = getString(R.string.find_follower, query)
+        binding.layoutLoading.lottieLoading.visibility =
+            if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.textLoadingMessage.visibility = if (state) View.VISIBLE else View.GONE
+        binding.layoutLoading.textLoadingMessage.text = getString(R.string.find_follower, query)
     }
 
     override fun onDestroyView() {

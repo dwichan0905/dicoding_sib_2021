@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name" translatable="false">GitHubBook</string>
+    <string name="example_name">Anonymous</string>
+    <string name="example_location">Private location</string>
+    <string name="zero" translatable="false">0</string>
+    <string name="repositories">Repositories</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="example_company">No company</string>
+    <string name="example_username">unknown</string>
+    <string name="example_title" translatable="false">Visit me on GitHub</string>
+    <string name="copyright" translatable="false">© 2021. Dwi Candra Permana</string>
+    <string name="more_options">More options…</string>
+    <string name="share_text">Share %s to your friends…</string>
+    <string name="share_title">Share this user</string>
+    <string name="visit_link">Visit %s on GitHub</string>
+    <string name="home">Home</string>
+    <string name="favorite">Favorite</string>
+    <string name="about">About</string>
+    <string name="fragment_home_title">GitHub Users List</string>
+    <string name="fragment_favorite_title">Your Favorite Users</string>
+    <string name="fragment_about_title">About</string>
+    <string name="example_repo_name" translatable="false">dicoding_bfaa</string>
+    <string name="example_repo_path" translatable="false">dwichan0905/dicoding_bfaa</string>
+    <string name="tab_text_1">Repositories</string>
+    <string name="tab_text_2">Followers</string>
+    <string name="tab_text_3">Following</string>
+    <string name="welcome_message">Welcome to GitHubBook!\nUse Search feature on the top right corner to start looking for GitHub Users</string>
+    <string name="success_message">Success!</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Find GitHub users…</string>
+    <string name="empty_favorite">Oops, nothing here :(\nYou can find your favorite user on Home tab!</string>
+    <string name="text_result">Found %s item(s) from keyword %s.</string>
+    <string name="text_not_found">Oops! I can\'t find anything with keyword %s :(\nMaybe you can try another search keyword so I can find it!</string>
+    <string name="find_progress">Finding %s…</string>
+    <string name="result_limited">(limited to 30 items only shown)</string>
+    <string name="fetch_user_details">Fetching %s data…</string>
+    <string name="find_following">Finding list of %s\'s following…</string>
+    <string name="find_follower">Finding list of %s\'s follower…</string>
+    <string name="no_following">Oops, %s doesn\'t follow anyone!</string>
+    <string name="no_follower">Oops, %s doesn\'t have a follower!</string>
+    <string name="no_repository">Dang, %s doesn\'t created any repositories :(</string>
+    <string name="find_repository">Loading %s\'s repository list…</string>
+    <string name="no_name">Anonymous</string>
+    <string name="no_username">anonymous_user</string>
+    <string name="no_company">No company assigned</string>
+    <string name="no_location">Private Location</string>
+    <string name="developed_by">Developed by Dwi Candra Permana</string>
+    <string name="my_email">dwichan@outlook.com</string>
+    <string name="menu_theme">Theme</string>
+</resources>

@@ -1,4 +1,4 @@
-package id.dwichan.githubbook.ui.main
+package id.dwichan.githubbook.ui.main.home
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import id.dwichan.githubbook.R
-import id.dwichan.githubbook.data.network.response.UserItem
+import id.dwichan.githubbook.data.repository.network.response.UserItem
 import id.dwichan.githubbook.databinding.ItemUsersBinding
 import id.dwichan.githubbook.util.UserDiffUtilCallback
 

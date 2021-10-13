@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import id.dwichan.githubbook.R
 import id.dwichan.githubbook.data.entity.Option
-import id.dwichan.githubbook.data.network.response.UserDetailResponse
+import id.dwichan.githubbook.data.repository.network.response.UserDetailResponse
 import id.dwichan.githubbook.databinding.BottomSheetOptionsBinding
 
 class OptionsBottomSheet : BottomSheetDialogFragment() {

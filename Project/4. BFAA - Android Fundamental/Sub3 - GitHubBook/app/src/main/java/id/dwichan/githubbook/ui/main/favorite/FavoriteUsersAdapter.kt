@@ -1,4 +1,4 @@
-package id.dwichan.githubbook.ui.detail.content
+package id.dwichan.githubbook.ui.main.favorite
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,20 +7,20 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import id.dwichan.githubbook.R
-import id.dwichan.githubbook.data.repository.network.response.UserItem
+import id.dwichan.githubbook.data.repository.local.entity.FavoriteUser
 import id.dwichan.githubbook.databinding.ItemUsersBinding
-import id.dwichan.githubbook.util.UserDiffUtilCallback
+import id.dwichan.githubbook.util.FavoriteUserDiffUtilCallback
 
-class UsersAdapter : RecyclerView.Adapter<UsersAdapter.UsersViewHolder>() {
+class FavoriteUsersAdapter : RecyclerView.Adapter<FavoriteUsersAdapter.UsersViewHolder>() {
 
-    private var users: ArrayList<UserItem> = ArrayList()
+    private var users: ArrayList<FavoriteUser> = ArrayList()
     var onItemAction: OnItemActionListener? = null
 
     inner class UsersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val binding: ItemUsersBinding = ItemUsersBinding.bind(itemView)
 
-        fun bind(item: UserItem) {
+        fun bind(item: FavoriteUser) {
             with(binding) {
                 val context = binding.root.context
 
@@ -40,8 +40,8 @@ class UsersAdapter : RecyclerView.Adapter<UsersAdapter.UsersViewHolder>() {
         }
     }
 
-    fun setUserList(users: List<UserItem>) {
-        val callback = UserDiffUtilCallback(this.users, users)
+    fun setUserList(users: List<FavoriteUser>) {
+        val callback = FavoriteUserDiffUtilCallback(this.users, users)
         val diffUtil = DiffUtil.calculateDiff(callback)
         this.users.clear()
         this.users.addAll(users)
@@ -67,6 +67,6 @@ class UsersAdapter : RecyclerView.Adapter<UsersAdapter.UsersViewHolder>() {
     override fun getItemCount(): Int = users.size
 
     interface OnItemActionListener {
-        fun onClick(item: UserItem, itemBinding: ItemUsersBinding)
+        fun onClick(item: FavoriteUser, itemBinding: ItemUsersBinding)
     }
 }

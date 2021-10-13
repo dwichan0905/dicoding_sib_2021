@@ -13,14 +13,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import id.dwichan.githubbook.R
-import id.dwichan.githubbook.data.network.response.UserDetailResponse
-import id.dwichan.githubbook.data.network.response.UserItem
+import id.dwichan.githubbook.data.repository.local.entity.FavoriteUser
+import id.dwichan.githubbook.data.repository.network.response.UserDetailResponse
+import id.dwichan.githubbook.data.repository.network.response.UserItem
 import id.dwichan.githubbook.databinding.ActivityDetailBinding
 import id.dwichan.githubbook.ui.animationdialog.AnimationDialogActivity
 import id.dwichan.githubbook.ui.options.OptionsBottomSheet
+import id.dwichan.githubbook.util.DateHelper
 import java.text.NumberFormat
 
 class DetailActivity : AppCompatActivity() {
@@ -41,8 +42,6 @@ class DetailActivity : AppCompatActivity() {
     private var isLoading: Boolean = false
     private var menu: Menu? = null
 
-    private val comingSoon: Boolean = true
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -51,6 +50,23 @@ class DetailActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val bundle = intent.extras
+        if (bundle != null) {
+            user = bundle.getParcelable<UserItem>(EXTRA_USER_ITEM) as UserItem
+            viewModel.fetchUserData(user.login)
+            viewModel.getUserInDatabase(user.login).observe(this) {
+                isFavorite = it.isNotEmpty()
+                updateFavoriteIcon()
+            }
+        } else {
+            Toast.makeText(
+                this,
+                "Failed to get User Data",
+                Toast.LENGTH_SHORT
+            ).show()
+            supportFinishAfterTransition()
+        }
 
         viewModel.isLoading.observe(this) { state ->
             isLoading = state
@@ -73,20 +89,6 @@ class DetailActivity : AppCompatActivity() {
             userDetailResponse = it
             setProfileDescription(it)
         }
-
-        val bundle = intent.extras
-        if (bundle != null) {
-            user = bundle.getParcelable<UserItem>(EXTRA_USER_ITEM) as UserItem
-            viewModel.fetchUserData(user.login)
-        } else {
-            Toast.makeText(
-                this,
-                "Failed to get User Data",
-                Toast.LENGTH_SHORT
-            ).show()
-            supportFinishAfterTransition()
-        }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -102,8 +104,8 @@ class DetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> supportFinishAfterTransition()
-            R.id.menu_favorite -> setFavorite()
-            R.id.menu_more -> {
+            R.id.menu_item_favorite -> swapFavorite()
+            R.id.menu_item_more -> {
                 val bundle = Bundle().apply {
                     putParcelable(OptionsBottomSheet.EXTRA_USER_DETAIL, userDetailResponse)
                 }
@@ -117,43 +119,39 @@ class DetailActivity : AppCompatActivity() {
         return true
     }
 
-    private fun setFavorite() {
-        if (comingSoon) {
-            MaterialAlertDialogBuilder(this)
-                .setTitle("Coming soon")
-                .setMessage("This feature will coming very soon, stay back!")
-                .setCancelable(false)
-                .setPositiveButton("Okay", null)
-                .create()
-                .show()
-        } else {
-            swapFavoriteIcon()
-            isFavorite = !isFavorite
-
-            val intent = Intent(this, AnimationDialogActivity::class.java)
-            if (isFavorite) {
-                intent.apply {
-                    putExtra(
-                        AnimationDialogActivity.EXTRA_TYPE,
-                        AnimationDialogActivity.TYPE_FAVORITE_ADD
-                    )
-                    putExtra(AnimationDialogActivity.EXTRA_MESSAGE, "Added to Favorite!")
-                }
-            } else {
-                intent.apply {
-                    putExtra(
-                        AnimationDialogActivity.EXTRA_TYPE,
-                        AnimationDialogActivity.TYPE_FAVORITE_REMOVE
-                    )
-                    putExtra(AnimationDialogActivity.EXTRA_MESSAGE, "Removed from Favorite!")
-                }
+    private fun swapFavorite() {
+        val favoriteUser = FavoriteUser(
+            login = user.login,
+            type = user.type,
+            avatarUrl = user.avatarUrl,
+            dateAdded = DateHelper.getCurrentDate()
+        )
+        val intent = Intent(this, AnimationDialogActivity::class.java)
+        if (!isFavorite) {
+            intent.apply {
+                viewModel.addFavorite(favoriteUser)
+                putExtra(
+                    AnimationDialogActivity.EXTRA_TYPE,
+                    AnimationDialogActivity.TYPE_FAVORITE_ADD
+                )
+                putExtra(AnimationDialogActivity.EXTRA_MESSAGE, "Added to Favorite!")
             }
-            startActivity(intent)
+        } else {
+            viewModel.deleteFromFavorite(favoriteUser)
+            intent.apply {
+                putExtra(
+                    AnimationDialogActivity.EXTRA_TYPE,
+                    AnimationDialogActivity.TYPE_FAVORITE_REMOVE
+                )
+                putExtra(AnimationDialogActivity.EXTRA_MESSAGE, "Removed from Favorite!")
+            }
         }
+        startActivity(intent)
+        isFavorite = !isFavorite
     }
 
-    private fun swapFavoriteIcon() {
-        if (isFavorite) {
+    private fun updateFavoriteIcon() {
+        if (!isFavorite) {
             menu?.getItem(0)?.icon =
                 AppCompatResources.getDrawable(this, R.drawable.ic_baseline_favorite_off_24)
         } else {
@@ -173,9 +171,9 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setProfileDescription(item: UserDetailResponse) {
-        with(binding) {
+        binding.apply {
             imageUserIcon.loadImage(item.avatarUrl ?: R.drawable.ic_baseline_error_24)
-            imageUserBackgroundDetail.loadImage(item.avatarUrl ?: "")
+            imageUserBackgroundDetail.loadImage(item.avatarUrl ?: "", false)
 
             textUserName.text = item.name ?: getString(R.string.no_name)
             textUserUsername.text = item.login ?: getString(R.string.no_username)
@@ -185,22 +183,12 @@ class DetailActivity : AppCompatActivity() {
             textFollowers.text = NumberFormat.getInstance().format(item.followers)
             textFollowing.text = NumberFormat.getInstance().format(item.following)
 
-            isFavorite = false // coming soon
-            if (!isFavorite) {
-                menu?.getItem(0)?.icon =
-                    AppCompatResources
-                        .getDrawable(this@DetailActivity, R.drawable.ic_baseline_favorite_off_24)
-            } else {
-                menu?.getItem(0)?.icon =
-                    AppCompatResources
-                        .getDrawable(this@DetailActivity, R.drawable.ic_baseline_favorite_on_24)
-            }
-
             setToolbarTitle(
                 textUserName.text.toString(),
                 textUserUsername.text.toString()
             )
             initSectionPager(item.login ?: "")
+            updateFavoriteIcon()
         }
     }
 
@@ -236,7 +224,8 @@ class DetailActivity : AppCompatActivity() {
         binding.layoutLoading.lottieLoading.visibility =
             if (state) View.VISIBLE else View.GONE
         binding.layoutLoading.textLoadingMessage.visibility = if (state) View.VISIBLE else View.GONE
-        binding.layoutLoading.textLoadingMessage.text = getString(R.string.fetch_user_details, user.login)
+        binding.layoutLoading.textLoadingMessage.text =
+            getString(R.string.fetch_user_details, user.login)
     }
 
     override fun onDestroy() {
@@ -257,14 +246,16 @@ class DetailActivity : AppCompatActivity() {
     }
 }
 
-private fun ImageView.loadImage(url: Any) {
-    Glide.with(this.context)
-        .load(url)
-        .into(this)
-
-    Glide.with(this.context)
-        .load(url)
-        .error(R.drawable.ic_baseline_person_24)
-        .placeholder(R.drawable.ic_baseline_person_24)
-        .into(this)
+private fun ImageView.loadImage(url: Any, isPlaceholderVisible: Boolean = true) {
+    if (isPlaceholderVisible) {
+        Glide.with(this.context)
+            .load(url)
+            .error(R.drawable.ic_baseline_person_24)
+            .placeholder(R.drawable.ic_baseline_person_24)
+            .into(this)
+    } else {
+        Glide.with(this.context)
+            .load(url)
+            .into(this)
+    }
 }

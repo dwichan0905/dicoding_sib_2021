@@ -5,8 +5,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import id.dwichan.githubbook.data.network.api.ApiService
-import id.dwichan.githubbook.data.network.response.RepositoryItem
+import id.dwichan.githubbook.data.repository.network.api.ApiService
+import id.dwichan.githubbook.data.repository.network.response.RepositoryItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -1,11 +1,11 @@
 package id.dwichan.githubbook.util
 
 import androidx.recyclerview.widget.DiffUtil
-import id.dwichan.githubbook.data.repository.network.response.RepositoryItem
+import id.dwichan.githubbook.data.repository.local.entity.FavoriteUser
 
-class RepositoryDiffUtilCallback(
-    private val oldList: List<RepositoryItem>,
-    private val newList: List<RepositoryItem>
+class FavoriteUserDiffUtilCallback(
+    private val oldList: List<FavoriteUser>,
+    private val newList: List<FavoriteUser>
 ) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int = oldList.size

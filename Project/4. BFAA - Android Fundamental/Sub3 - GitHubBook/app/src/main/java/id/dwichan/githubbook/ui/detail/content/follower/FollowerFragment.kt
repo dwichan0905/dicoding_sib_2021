@@ -12,7 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import id.dwichan.githubbook.R
-import id.dwichan.githubbook.data.network.response.UserItem
+import id.dwichan.githubbook.data.repository.network.response.UserItem
 import id.dwichan.githubbook.databinding.FragmentRepoFollowListBinding
 import id.dwichan.githubbook.databinding.ItemUsersBinding
 import id.dwichan.githubbook.ui.detail.DetailActivity

@@ -1,27 +1,41 @@
 package id.dwichan.githubbook.ui.main.about
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import id.dwichan.githubbook.R
 import id.dwichan.githubbook.data.entity.Option
+import id.dwichan.githubbook.data.preference.SettingPreferences
+import id.dwichan.githubbook.data.preference.SettingPreferencesViewModel
+import id.dwichan.githubbook.data.preference.SettingPreferencesViewModelFactory
 import id.dwichan.githubbook.databinding.FragmentAboutBinding
 import id.dwichan.githubbook.ui.options.OptionsAdapter
 
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
 class AboutFragment : Fragment() {
+
+    private lateinit var preferenceViewModel: SettingPreferencesViewModel
 
     private var _binding: FragmentAboutBinding? = null
     private val binding get() = _binding!!
 
+    private var currentThemeId: Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(false)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -34,7 +48,16 @@ class AboutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(false)
+
+        val pref = SettingPreferences.getInstance(requireContext().dataStore)
+        preferenceViewModel = ViewModelProvider(
+            this,
+            SettingPreferencesViewModelFactory(pref)
+        )[SettingPreferencesViewModel::class.java]
+
+        preferenceViewModel.getTheme().observe(viewLifecycleOwner) { themeId ->
+            currentThemeId = themeId
+        }
 
         val options: List<Option> = listOf(
             Option(
@@ -74,6 +97,28 @@ class AboutFragment : Fragment() {
         binding.listOptions.addItemDecoration(divider)
         binding.listOptions.adapter = OptionsAdapter(options)
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_about, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_item_theme) {
+            val dialog = MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Choose a theme")
+                .setSingleChoiceItems(R.array.theme_choices, currentThemeId) { dialog, which ->
+                    dialog.dismiss()
+                    when (which) {
+                        0 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                        1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    }
+                    preferenceViewModel.setTheme(which)
+                }
+                .create()
+            dialog.show()
+        }
+        return true
     }
 
     override fun onDestroyView() {

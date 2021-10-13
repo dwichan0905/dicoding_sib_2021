@@ -1,4 +1,4 @@
-package id.dwichan.githubbook.data.network.response
+package id.dwichan.githubbook.data.repository.network.response
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,13 +1,13 @@
-package id.dwichan.githubbook.data.network.api
+package id.dwichan.githubbook.data.repository.network.api
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import id.dwichan.githubbook.BuildConfig
-import id.dwichan.githubbook.data.network.response.RepositoryItem
-import id.dwichan.githubbook.data.network.response.UserDetailResponse
-import id.dwichan.githubbook.data.network.response.UserItem
-import id.dwichan.githubbook.data.network.response.UserSearchResponse
+import id.dwichan.githubbook.data.repository.network.response.RepositoryItem
+import id.dwichan.githubbook.data.repository.network.response.UserDetailResponse
+import id.dwichan.githubbook.data.repository.network.response.UserItem
+import id.dwichan.githubbook.data.repository.network.response.UserSearchResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call

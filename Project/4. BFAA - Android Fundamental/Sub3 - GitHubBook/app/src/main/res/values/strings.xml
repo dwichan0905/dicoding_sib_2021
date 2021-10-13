@@ -29,7 +29,7 @@
     <string name="success_message">Success!</string>
     <string name="search">Search</string>
     <string name="search_hint">Find GitHub users…</string>
-    <string name="empty_favorite">Oops, nothing here :(\nYou can find your favorite user on Home tab!</string>
+    <string name="empty_favorite">Oops, I can\'t find anything here :(\nYou can find your favorite user on Home tab!</string>
     <string name="text_result">Found %s item(s) from keyword %s.</string>
     <string name="text_not_found">Oops! I can\'t find anything with keyword %s :(\nMaybe you can try another search keyword so I can find it!</string>
     <string name="find_progress">Finding %s…</string>
@@ -48,4 +48,10 @@
     <string name="developed_by">Developed by Dwi Candra Permana</string>
     <string name="my_email">dwichan@outlook.com</string>
     <string name="menu_theme">Theme</string>
+    <string name="find_favorite_user">Find your favorite user…</string>
+    <string name="choose_theme">Choose a theme</string>
+    <string-array name="theme_choices">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
 </resources>

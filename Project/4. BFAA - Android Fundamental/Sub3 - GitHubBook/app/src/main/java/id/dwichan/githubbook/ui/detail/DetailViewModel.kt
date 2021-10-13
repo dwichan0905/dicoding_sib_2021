@@ -5,13 +5,17 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import id.dwichan.githubbook.data.network.api.ApiService
-import id.dwichan.githubbook.data.network.response.UserDetailResponse
+import id.dwichan.githubbook.data.repository.GitHubBookRepository
+import id.dwichan.githubbook.data.repository.local.entity.FavoriteUser
+import id.dwichan.githubbook.data.repository.network.api.ApiService
+import id.dwichan.githubbook.data.repository.network.response.UserDetailResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class DetailViewModel(app: Application) : AndroidViewModel(app) {
+
+    private val repository = GitHubBookRepository(app)
 
     private var _data = MutableLiveData<UserDetailResponse>()
     val data: LiveData<UserDetailResponse> = _data
@@ -27,6 +31,16 @@ class DetailViewModel(app: Application) : AndroidViewModel(app) {
     init {
         _isDataUpdated.value = false
         _isLoading.value = false
+    }
+
+    fun getUserInDatabase(username: String) = repository.getUser(username)
+
+    fun addFavorite(user: FavoriteUser) {
+        repository.insertNewUser(user)
+    }
+
+    fun deleteFromFavorite(user: FavoriteUser) {
+        repository.deleteUser(user)
     }
 
     fun fetchUserData(username: String) {

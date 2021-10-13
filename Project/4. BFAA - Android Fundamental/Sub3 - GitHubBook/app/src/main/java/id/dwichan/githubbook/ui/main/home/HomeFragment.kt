@@ -5,30 +5,42 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import id.dwichan.githubbook.R
-import id.dwichan.githubbook.data.network.response.UserItem
+import id.dwichan.githubbook.data.preference.SettingPreferences
+import id.dwichan.githubbook.data.preference.SettingPreferencesViewModel
+import id.dwichan.githubbook.data.preference.SettingPreferencesViewModelFactory
+import id.dwichan.githubbook.data.repository.network.response.UserItem
 import id.dwichan.githubbook.databinding.FragmentHomeBinding
 import id.dwichan.githubbook.databinding.ItemUsersBinding
 import id.dwichan.githubbook.ui.detail.DetailActivity
-import id.dwichan.githubbook.ui.main.UsersAdapter
 import id.dwichan.githubbook.util.Convert
 import kotlin.math.floor
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
+    private lateinit var preferenceViewModel: SettingPreferencesViewModel
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     private var querySearch: String = ""
+    private var currentThemeId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +58,15 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val pref = SettingPreferences.getInstance(requireContext().dataStore)
+        preferenceViewModel = ViewModelProvider(
+            this,
+            SettingPreferencesViewModelFactory(pref)
+        )[SettingPreferencesViewModel::class.java]
+
+        preferenceViewModel.getTheme().observe(viewLifecycleOwner) { themeId ->
+            currentThemeId = themeId
+        }
         viewModel.isLoading.observe(viewLifecycleOwner) { state ->
             setLoading(state, querySearch)
             if (state == true) setListVisible(false)
@@ -91,7 +112,7 @@ class HomeFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_main_fragments, menu)
+        inflater.inflate(R.menu.menu_main_home_favorites, menu)
 
         val searchManager = activity?.getSystemService(SEARCH_SERVICE) as SearchManager
         val searchView = menu.findItem(R.id.search).actionView as SearchView
@@ -113,6 +134,24 @@ class HomeFragment : Fragment() {
                 override fun onQueryTextChange(newText: String): Boolean = false
             })
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_item_theme) {
+            val dialog = MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.choose_theme))
+                .setSingleChoiceItems(R.array.theme_choices, currentThemeId) { dialog, which ->
+                    dialog.dismiss()
+                    when (which) {
+                        0 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                        1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    }
+                    preferenceViewModel.setTheme(which)
+                }
+                .create()
+            dialog.show()
+        }
+        return true
     }
 
     override fun onDestroyView() {

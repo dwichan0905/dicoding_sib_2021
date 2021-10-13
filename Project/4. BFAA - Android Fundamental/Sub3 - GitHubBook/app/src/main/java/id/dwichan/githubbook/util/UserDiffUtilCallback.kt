@@ -1,7 +1,7 @@
 package id.dwichan.githubbook.util
 
 import androidx.recyclerview.widget.DiffUtil
-import id.dwichan.githubbook.data.network.response.UserItem
+import id.dwichan.githubbook.data.repository.network.response.UserItem
 
 class UserDiffUtilCallback(
     private val oldList: List<UserItem>,

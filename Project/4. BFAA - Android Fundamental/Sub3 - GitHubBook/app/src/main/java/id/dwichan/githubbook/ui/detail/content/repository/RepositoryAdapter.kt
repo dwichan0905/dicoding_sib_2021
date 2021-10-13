@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import id.dwichan.githubbook.data.network.response.RepositoryItem
+import id.dwichan.githubbook.data.repository.network.response.RepositoryItem
 import id.dwichan.githubbook.databinding.ItemRepositoryBinding
 import id.dwichan.githubbook.util.RepositoryDiffUtilCallback
 

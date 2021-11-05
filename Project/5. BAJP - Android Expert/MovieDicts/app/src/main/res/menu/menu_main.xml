@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_movies"
+        android:title="@string/navigation_movie"
+        android:icon="@drawable/ic_baseline_movie_24"/>
+    <item
+        android:id="@+id/navigation_television"
+        android:title="@string/navigation_television_show"
+        android:icon="@drawable/ic_baseline_tv_24" />
+    <item
+        android:id="@+id/navigation_bookmark"
+        android:title="@string/navigation_bookmarks"
+        android:icon="@drawable/ic_baseline_bookmarks_24" />
+    <item
+        android:id="@+id/navigation_about"
+        android:title="@string/navigation_about"
+        android:icon="@drawable/ic_baseline_info_24" />
+</menu>

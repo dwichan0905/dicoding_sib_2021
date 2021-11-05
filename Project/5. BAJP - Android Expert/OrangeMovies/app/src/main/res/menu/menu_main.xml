@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_movies"
+        android:title="@string/movie_tab"
+        android:icon="@drawable/ic_baseline_local_movies_24" />
+
+    <item
+        android:id="@+id/nav_tv_shows"
+        android:title="@string/tv_tab"
+        android:icon="@drawable/ic_baseline_tv_24" />
+</menu>

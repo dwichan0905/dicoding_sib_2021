@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">MovieDicts</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="example_crew_name">Lorem Ipsum</string>
+    <string name="example_job">Director</string>
+    <string name="example_duration">1h4m</string>
+    <string name="example_movie_name">Lorem Ipsum: Dolor Sit Amet</string>
+    <string name="example_score">👍 8.6</string>
+    <string name="example_genre">Action, Adventure</string>
+    <string name="example_year">2021</string>
+    <string name="example_rating">TV-PG</string>
+    <string name="navigation_movie">Movie</string>
+    <string name="navigation_television_show">Television Show</string>
+    <string name="navigation_bookmarks">Bookmarks</string>
+    <string name="navigation_about">About</string>
+    <string name="copyright">© 2021. Dwi Candra Permana</string>
+    <string name="movie_result">Result</string>
+    <string name="movie_result_desc">We found %d item(s) with keyword \"abcd\".</string>
+    <string name="trending_today">Trending Today</string>
+    <string name="trending_movies_today_desc">Discover trending movies today!</string>
+    <string name="trending_weekly">Trending Weekly</string>
+    <string name="trending_movies_weekly_desc">Discover what trending movies this week!</string>
+    <string name="trending_tv_today_desc">Discover trending TV shows today!</string>
+    <string name="trending_tv_weekly_desc">Discover trending TV shows this week!</string>
+</resources>

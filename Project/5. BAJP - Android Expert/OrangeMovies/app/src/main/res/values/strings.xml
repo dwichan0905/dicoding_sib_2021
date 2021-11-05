@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">OrangeMovies</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="example_movie_name">Lorem Ipsum: Dolor Sit Amet, Consectetur Adispicing Elit 123</string>
+    <string name="content_movie_poster">Movie Poster</string>
+    <string name="example_duration">2h 2m</string>
+    <string name="example_category_duration">Drama, Sejarah - 2h 2m</string>
+    <string name="highlight_movies">Highlight Movies</string>
+    <string name="highlight_movies_desc">Watch all the big hits today</string>
+    <string name="discover">Discover</string>
+    <string name="discover_movies_desc">Get the best movies what you want</string>
+    <string name="movie_tab">Movies</string>
+    <string name="tv_tab">TV Shows</string>
+    <string name="example_certification">TV-MA</string>
+    <string name="example_tv_cat_year">Aksi, Komedi - 2017</string>
+    <string name="tv_show_poster">TV Show Poster</string>
+    <string name="discover_tv_show_desc">Watch all the best Television Shows ever!</string>
+    <string name="example_movie_date">26/03/2003</string>
+    <string name="synopsis">Synopsis</string>
+    <string name="example_synopsis">Lorem ipsum, dolor sit amet. Consectetur adispicing elit. Lorem ipsum, dolor sit amet. Consectetur adispicing elit. Lorem ipsum, dolor sit amet. Consectetur adispicing elit. Lorem ipsum, dolor sit amet. Consectetur adispicing elit. Lorem ipsum, dolor sit amet. Consectetur adispicing elit. Lorem ipsum, dolor sit amet. Consectetur adispicing elit.</string>
+    <string name="example_user_score">100%</string>
+    <string name="user_score">User Score</string>
+    <string name="the_crew">The Crew</string>
+    <string name="example_crew_name">Dwi Candra Permana</string>
+    <string name="example_job">Director, Editor, Screenplay</string>
+    <string name="share">Bagikan</string>
+    <string name="share_text">Ayo, tonton %s di aplikasi TheMovies sekarang! Ajak teman-temanmu untuk menontonnya bersama-sama!</string>
+    <string name="example_year">2017</string>
+</resources>

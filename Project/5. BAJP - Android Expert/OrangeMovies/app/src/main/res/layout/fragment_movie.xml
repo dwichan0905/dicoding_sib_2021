@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragment_movie"
+    tools:context=".ui.main.movies.MovieFragment"
+    android:paddingStart="@dimen/margin_edge"
+    android:paddingEnd="@dimen/margin_edge"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/highlight_movies"
+            android:textColor="?android:textColorPrimary"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:fontFamily="sans-serif-black" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/highlight_movies_desc" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rec_highlight_movies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/discover"
+            android:textColor="?android:textColorPrimary"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:fontFamily="sans-serif-black" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/discover_movies_desc" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rec_movies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_edge"
+            android:layout_marginBottom="16dp"
+            tools:listitem="@layout/item_movies" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

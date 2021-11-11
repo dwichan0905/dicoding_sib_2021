@@ -9,3 +9,9 @@ https://sib.dicoding.org/
 
 Dashboard (pembimbing bisa pantau progress disini, masih maintenance):
 https://dashboard.dicoding.org/login
+
+Project Planning:
+https://docs.google.com/document/d/12O0WCkBIWr9IKVFCWy-d1cVVRnytGA_fTimCQYBj47c/edit
+
+Project Briefing:
+https://docs.google.com/document/d/17nYGdUcVUq0epJ2qWivJtjO_bfVviGRNeS1CKpXYPzU/edit

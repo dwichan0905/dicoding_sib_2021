@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:autoTransition="animateToEnd"
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="2500">
+        <KeyFrameSet>
+            <KeyAttribute
+                android:scaleX="10"
+                motion:framePosition="0"
+                motion:motionTarget="@+id/image_icon" />
+            <KeyAttribute
+                android:scaleY="10"
+                motion:framePosition="0"
+                motion:motionTarget="@+id/image_icon" />
+            <KeyAttribute
+                android:scaleX="1"
+                motion:framePosition="65"
+                motion:motionTarget="@+id/image_icon" />
+            <KeyAttribute
+                android:scaleY="1"
+                motion:framePosition="65"
+                motion:motionTarget="@+id/image_icon" />
+            <KeyAttribute
+                android:alpha="0.1"
+                motion:framePosition="0"
+                motion:motionTarget="@+id/image_icon" />
+            <KeyAttribute
+                android:alpha="1.0"
+                motion:framePosition="50"
+                motion:motionTarget="@+id/image_icon" />
+            <KeyPosition
+                motion:framePosition="50"
+                motion:keyPositionType="parentRelative"
+                motion:motionTarget="@+id/image_icon"
+                motion:percentX="0.5"
+                motion:percentY="0.5" />
+            <KeyPosition
+                motion:framePosition="55"
+                motion:keyPositionType="parentRelative"
+                motion:motionTarget="@+id/image_icon"
+                motion:percentX="0.4"
+                motion:percentY="0.55" />
+            <KeyPosition
+                motion:framePosition="60"
+                motion:keyPositionType="parentRelative"
+                motion:motionTarget="@+id/image_icon"
+                motion:percentX="0.55"
+                motion:percentY="0.55" />
+            <KeyPosition
+                motion:framePosition="65"
+                motion:keyPositionType="parentRelative"
+                motion:motionTarget="@+id/image_icon"
+                motion:percentX="0.5"
+                motion:percentY="0.5" />
+            <KeyAttribute
+                android:alpha="0.5"
+                motion:framePosition="0"
+                motion:motionTarget="@+id/image_icon" />
+            <KeyAttribute
+                android:alpha="0.5"
+                motion:framePosition="0"
+                motion:motionTarget="@+id/image_icon" />
+            <KeyAttribute
+                android:alpha="0.5"
+                motion:framePosition="0"
+                motion:motionTarget="@+id/image_icon" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="0"
+                motion:motionTarget="@+id/text_app_name" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="60"
+                motion:motionTarget="@+id/text_app_name" />
+            <KeyAttribute
+                android:alpha="1.0"
+                motion:framePosition="70"
+                motion:motionTarget="@+id/text_app_name" />
+        </KeyFrameSet>
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start" />
+
+    <ConstraintSet android:id="@+id/end" />
+</MotionScene>

@@ -49,16 +49,16 @@ interface ApiService {
 
     companion object {
         fun getApiService(): ApiService {
-            val logging = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder()
             client.apply {
                 if (BuildConfig.DEBUG) {
+                    val logging = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
                     addInterceptor(logging)
                 }
             }
             val retrofit = Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("https://api.themoviedb.org/3/")
+                .baseUrl(BuildConfig.TMDB_HOST)
                 .client(client.build())
                 .build()
             return retrofit.create(ApiService::class.java)

@@ -11,6 +11,7 @@ import id.dwichan.moviedicts.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    // fix memory leak
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
 
@@ -31,8 +32,15 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavView.setupWithNavController(navController)
     }
 
+    // fix memory leak in Android 10+ after last activity finished
+    override fun onBackPressed() {
+        supportFinishAfterTransition()
+    }
+
+    // fix memory leak
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
+
 }

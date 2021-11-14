@@ -33,6 +33,7 @@ class DetailMoviesActivity : AppCompatActivity() {
     private lateinit var movieDetailsResponse: MovieDetailsResponse
     private lateinit var movieTelevisionEntity: MovieTelevisionEntity
 
+    // fix memory leak
     private var _binding: ActivityDetailMoviesBinding? = null
     private val binding get() = _binding!!
 
@@ -42,7 +43,7 @@ class DetailMoviesActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Movie Details"
+        supportActionBar?.title = getString(R.string.movie_details)
         supportActionBar?.subtitle = null
         supportActionBar?.elevation = 0f
 
@@ -57,9 +58,9 @@ class DetailMoviesActivity : AppCompatActivity() {
 
         binding.content.buttonFavorite.setOnClickListener {
             MaterialAlertDialogBuilder(this)
-                .setTitle("Coming soon")
+                .setTitle(getString(R.string.coming_soon))
                 .setMessage(R.string.coming_soon_message)
-                .setPositiveButton("Okay", null)
+                .setPositiveButton(getString(R.string.okay), null)
                 .create().show()
         }
 
@@ -237,6 +238,7 @@ class DetailMoviesActivity : AppCompatActivity() {
         supportFinishAfterTransition()
     }
 
+    // fix memory leak
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

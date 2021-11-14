@@ -30,7 +30,7 @@ class TrendingMoviesAdapter :
                     .into(imageMoviePoster)
 
                 val movieName =
-                    item.title ?: item.originalTitle ?: item.name ?: item.originalLanguage
+                    item.title ?: item.originalTitle ?: item.name ?: item.originalName
                     ?: "Unknown"
                 textMovieName.text = movieName
                 if (item.adult == true) {

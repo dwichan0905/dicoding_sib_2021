@@ -36,6 +36,7 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
     private lateinit var productionCompanyAdapter: ProductionCompanyAdapter
     private lateinit var movieTelevisionEntity: MovieTelevisionEntity
 
+    // fix memory leak
     private var _binding: ActivityDetailTelevisionShowBinding? = null
     private val binding get() = _binding!!
 
@@ -46,7 +47,7 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Television Show Details"
+        supportActionBar?.title = getString(R.string.tv_show_details)
         supportActionBar?.subtitle = null
         supportActionBar?.elevation = 0f
 
@@ -69,9 +70,9 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
 
         binding.content.buttonFavorite.setOnClickListener {
             MaterialAlertDialogBuilder(this)
-                .setTitle("Coming soon")
+                .setTitle(getString(R.string.coming_soon))
                 .setMessage(R.string.coming_soon_message)
-                .setPositiveButton("Okay", null)
+                .setPositiveButton(getString(R.string.okay), null)
                 .create().show()
         }
 
@@ -230,7 +231,6 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
                 binding.content.recCreator.visibility = View.GONE
             }
 
-
             // production companies
             productionCompanyAdapter.setCompanies(
                 (this.productionCompanies ?: ArrayList()) as List<ProductionCompaniesItem>
@@ -272,6 +272,7 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
         return true
     }
 
+    // fix memory leak
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

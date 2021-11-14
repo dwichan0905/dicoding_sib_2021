@@ -31,7 +31,7 @@ class TrendingTelevisionShowAdapter :
                     .into(imageMoviePoster)
 
                 val movieName =
-                    item.title ?: item.originalTitle ?: item.name ?: item.originalLanguage
+                    item.title ?: item.originalTitle ?: item.name ?: item.originalName
                     ?: "Unknown"
                 textMovieName.text = movieName
                 val score = "\uD83D\uDC4D ${item.voteAverage}"

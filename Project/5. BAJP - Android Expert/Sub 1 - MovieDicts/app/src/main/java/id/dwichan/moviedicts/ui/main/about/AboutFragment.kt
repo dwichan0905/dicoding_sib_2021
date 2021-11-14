@@ -15,6 +15,7 @@ import id.dwichan.moviedicts.databinding.FragmentAboutBinding
 
 class AboutFragment : Fragment() {
 
+    // fix memory leak
     private var _binding: FragmentAboutBinding? = null
     private val binding get() = _binding!!
 
@@ -32,7 +33,7 @@ class AboutFragment : Fragment() {
         val options: List<Option> = listOf(
             Option(
                 icon = R.drawable.ic_baseline_facebook_24,
-                title = "Visit me on Facebook",
+                title = getString(R.string.visit_me_facebook),
                 onClick = {
                     val intent = Intent(Intent.ACTION_VIEW)
                     intent.data = Uri.parse("https://web.facebook.com/CdrScNET89")
@@ -41,7 +42,7 @@ class AboutFragment : Fragment() {
             ),
             Option(
                 icon = R.drawable.github_mark,
-                title = "Visit me on GitHub",
+                title = getString(R.string.visit_me_github),
                 onClick = {
                     val intent = Intent(Intent.ACTION_VIEW)
                     intent.data = Uri.parse("https://github.com/dwichan0905")
@@ -50,7 +51,7 @@ class AboutFragment : Fragment() {
             ),
             Option(
                 icon = R.drawable.ic_baseline_email_24,
-                title = "Send me an email",
+                title = getString(R.string.send_me_email),
                 onClick = {
                     val intent = Intent(Intent.ACTION_SENDTO)
                     intent.data = Uri.parse("mailto:dwichan@outlook.com")
@@ -66,6 +67,7 @@ class AboutFragment : Fragment() {
         binding.listOptions.adapter = OptionsAdapter(options)
     }
 
+    // fix memory leak
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -10,13 +10,15 @@ import id.dwichan.moviedicts.databinding.ActivityLoadingBinding
 
 class LoadingActivity : AppCompatActivity() {
 
+    private lateinit var broadcastReceiver: BroadcastReceiver
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityLoadingBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setFinishOnTouchOutside(false)
 
-        val broadcastReceiver = object : BroadcastReceiver() {
+        broadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 val action = intent?.action
                 if (action == INTENT_FINISH_LOADING) {
@@ -25,6 +27,12 @@ class LoadingActivity : AppCompatActivity() {
             }
         }
         registerReceiver(broadcastReceiver, IntentFilter(INTENT_FINISH_LOADING))
+    }
+
+    // fix memory leak
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(broadcastReceiver)
     }
 
     companion object {

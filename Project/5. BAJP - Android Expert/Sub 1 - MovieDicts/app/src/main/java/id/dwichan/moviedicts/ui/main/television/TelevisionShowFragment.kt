@@ -9,6 +9,7 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import id.dwichan.moviedicts.R
 import id.dwichan.moviedicts.data.entity.MovieTelevisionEntity
 import id.dwichan.moviedicts.data.repository.remote.response.trending.TrendingResultsItem
 import id.dwichan.moviedicts.databinding.FragmentTelevisionShowBinding
@@ -19,6 +20,7 @@ class TelevisionShowFragment : Fragment() {
 
     private val viewModel: TrendingTelevisionShowViewModel by viewModels()
 
+    // fix memory leak
     private var _binding: FragmentTelevisionShowBinding? = null
     private val binding get() = _binding!!
 
@@ -30,7 +32,9 @@ class TelevisionShowFragment : Fragment() {
         ) {
             val dataSend = MovieTelevisionEntity(
                 id = item.id ?: 0,
-                title = item.title ?: item.originalTitle ?: item.name ?: item.originalName ?: "Unknown",
+                title = item.title ?: item.originalTitle ?:
+                        item.name ?: item.originalName ?:
+                        getString(R.string.unknown),
                 backdropPath = item.backdropPath ?: "/",
                 posterPath = item.posterPath ?: "/",
                 mediaType = "movie"
@@ -68,13 +72,46 @@ class TelevisionShowFragment : Fragment() {
                 context, LinearLayoutManager.HORIZONTAL, false
             )
             recTvTrendingWeekly.adapter = trendingWeekly
-        }
 
-        viewModel.isLoadingToday.observe(viewLifecycleOwner) { state ->
-            if (state) {
-                binding.animLoadingTrendingToday.visibility = View.VISIBLE
-            } else {
-                binding.animLoadingTrendingToday.visibility = View.GONE
+            viewModel.isLoadingToday.observe(viewLifecycleOwner) { state ->
+                if (state) {
+                    animLoadingTrendingToday.visibility = View.VISIBLE
+                } else {
+                    animLoadingTrendingToday.visibility = View.GONE
+                }
+            }
+
+            viewModel.isLoadingWeekly.observe(viewLifecycleOwner) { state ->
+                if (state) {
+                    animLoadingTrendingWeekly.visibility = View.VISIBLE
+                } else {
+                    animLoadingTrendingWeekly.visibility = View.GONE
+                }
+            }
+
+            viewModel.errorReason.observe(viewLifecycleOwner) {
+                it.getContentIfNotHandled().let { reason ->
+                    if (reason?.isNotEmpty() == true) {
+                        val reasonText = "An error occurred with reason: $reason"
+                        animError.visibility = View.VISIBLE
+                        textError.visibility = View.VISIBLE
+                        textError.text = reasonText
+
+                        showContent(false)
+                    } else {
+                        animError.visibility = View.GONE
+                        textError.visibility = View.GONE
+                        textError.text = ""
+
+                        showContent(true)
+                    }
+                }
+            }
+
+            fragmentTelevisionShow.setOnRefreshListener {
+                viewModel.fetchTrendingToday()
+                viewModel.fetchTrendingWeekly()
+                fragmentTelevisionShow.isRefreshing = false
             }
         }
 
@@ -83,66 +120,36 @@ class TelevisionShowFragment : Fragment() {
             trendingToday.itemAction = onItemAction
         }
 
-        viewModel.isLoadingWeekly.observe(viewLifecycleOwner) { state ->
-            if (state) {
-                binding.animLoadingTrendingWeekly.visibility = View.VISIBLE
-            } else {
-                binding.animLoadingTrendingWeekly.visibility = View.GONE
-            }
-        }
-
         viewModel.trendingWeekly.observe(viewLifecycleOwner) { data ->
             trendingWeekly.setItems(data)
             trendingWeekly.itemAction = onItemAction
         }
 
-        viewModel.errorReason.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled().let { reason ->
-                if (reason?.isNotEmpty() == true) {
-                    val reasonText = "An error occurred with reason: $reason"
-                    binding.animError.visibility = View.VISIBLE
-                    binding.textError.visibility = View.VISIBLE
-                    binding.textError.text = reasonText
-
-                    showContent(false)
-                } else {
-                    binding.animError.visibility = View.GONE
-                    binding.textError.visibility = View.GONE
-                    binding.textError.text = ""
-
-                    showContent(true)
-                }
-            }
-        }
-
         viewModel.fetchTrendingToday()
         viewModel.fetchTrendingWeekly()
-
-        binding.fragmentTelevisionShow.setOnRefreshListener {
-            viewModel.fetchTrendingToday()
-            viewModel.fetchTrendingWeekly()
-            binding.fragmentTelevisionShow.isRefreshing = false
-        }
     }
 
     private fun showContent(state: Boolean) {
-        if (state) {
-            binding.textTrendingToday.visibility = View.VISIBLE
-            binding.textTrendingTodayDesc.visibility = View.VISIBLE
-            binding.recTvTrendingToday.visibility = View.VISIBLE
-            binding.textTrendingWeekly.visibility = View.VISIBLE
-            binding.textTrendingWeeklyDesc.visibility = View.VISIBLE
-            binding.recTvTrendingWeekly.visibility = View.VISIBLE
-        } else {
-            binding.textTrendingToday.visibility = View.GONE
-            binding.textTrendingTodayDesc.visibility = View.GONE
-            binding.recTvTrendingToday.visibility = View.GONE
-            binding.textTrendingWeekly.visibility = View.GONE
-            binding.textTrendingWeeklyDesc.visibility = View.GONE
-            binding.recTvTrendingWeekly.visibility = View.GONE
+        binding.apply {
+            if (state) {
+                textTrendingToday.visibility = View.VISIBLE
+                textTrendingTodayDesc.visibility = View.VISIBLE
+                recTvTrendingToday.visibility = View.VISIBLE
+                textTrendingWeekly.visibility = View.VISIBLE
+                textTrendingWeeklyDesc.visibility = View.VISIBLE
+                recTvTrendingWeekly.visibility = View.VISIBLE
+            } else {
+                textTrendingToday.visibility = View.GONE
+                textTrendingTodayDesc.visibility = View.GONE
+                recTvTrendingToday.visibility = View.GONE
+                textTrendingWeekly.visibility = View.GONE
+                textTrendingWeeklyDesc.visibility = View.GONE
+                recTvTrendingWeekly.visibility = View.GONE
+            }
         }
     }
 
+    // fix memory leak
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

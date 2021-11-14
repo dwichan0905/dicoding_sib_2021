@@ -12,6 +12,7 @@ import id.dwichan.moviedicts.ui.main.MainActivity
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
+    // fix memory leak
     private var _binding: ActivitySplashBinding? = null
     private val binding get() = _binding!!
 
@@ -27,6 +28,7 @@ class SplashActivity : AppCompatActivity() {
         }, SPLASH_WAIT_TIME)
     }
 
+    // fix memory leak
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

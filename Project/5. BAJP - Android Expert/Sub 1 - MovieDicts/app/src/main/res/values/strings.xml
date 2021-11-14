@@ -42,4 +42,12 @@
     <string name="share_title">Share this movie to your friends!</string>
     <string name="share_title_tv">Share this TV show to your friends!</string>
     <string name="refresh">Refresh</string>
+    <string name="visit_me_facebook">Visit me on Facebook</string>
+    <string name="visit_me_github">Visit me on GitHub</string>
+    <string name="send_me_email">Send me an email</string>
+    <string name="movie_details">Movie Details</string>
+    <string name="coming_soon">Coming soon</string>
+    <string name="okay">Okay</string>
+    <string name="tv_show_details">Television Show Details</string>
+    <string name="unknown">Unknown</string>
 </resources>

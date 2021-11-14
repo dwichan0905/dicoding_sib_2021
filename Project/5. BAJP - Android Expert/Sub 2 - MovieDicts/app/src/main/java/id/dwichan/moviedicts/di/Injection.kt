@@ -12,7 +12,7 @@ object Injection {
         return MoviesRepository.getInstance(remoteDataSource)
     }
 
-    fun provideTelevosionShowRepository(): TelevisionShowRepository {
+    fun provideTelevisionShowRepository(): TelevisionShowRepository {
         val remoteDataSource = RemoteDataSource.getInstance(ApiService.getApiService())
         return TelevisionShowRepository.getInstance(remoteDataSource)
     }

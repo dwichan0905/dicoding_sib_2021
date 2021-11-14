@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-parcelize'
+    id 'kotlin-kapt'
 }
 
 def apikeyPropertiesFile = rootProject.file("api.properties")
@@ -84,4 +85,8 @@ dependencies {
 
     // Leak Canary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+
+    // Dagger2
+    implementation "com.google.dagger:dagger:2.40.1"
+    kapt "com.google.dagger:dagger-compiler:2.40.1"
 }

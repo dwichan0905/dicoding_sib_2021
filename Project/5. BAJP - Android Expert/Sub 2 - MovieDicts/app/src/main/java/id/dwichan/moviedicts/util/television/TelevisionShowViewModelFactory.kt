@@ -33,7 +33,7 @@ class TelevisionShowViewModelFactory private constructor(private val mTelevision
         fun getInstance(): TelevisionShowViewModelFactory =
             instance ?: synchronized(this) {
                 instance
-                    ?: TelevisionShowViewModelFactory(Injection.provideTelevosionShowRepository()).apply {
+                    ?: TelevisionShowViewModelFactory(Injection.provideTelevisionShowRepository()).apply {
                         instance = this
                     }
             }

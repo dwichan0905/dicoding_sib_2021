@@ -7,28 +7,35 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import id.dwichan.moviedicts.MyApplication
 import id.dwichan.moviedicts.R
-import id.dwichan.moviedicts.data.entity.MovieTelevisionEntity
-import id.dwichan.moviedicts.data.repository.remote.response.movie.MovieDetailsResponse
-import id.dwichan.moviedicts.data.repository.remote.response.movie.MovieGenresItem
-import id.dwichan.moviedicts.data.repository.remote.response.movie.ProductionCompaniesItem
+import id.dwichan.moviedicts.core.data.entity.MovieTelevisionEntity
+import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieDetailsResponse
+import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieGenresItem
+import id.dwichan.moviedicts.core.data.repository.remote.response.movie.ProductionCompaniesItem
+import id.dwichan.moviedicts.core.util.Converter
+import id.dwichan.moviedicts.core.util.movies.MoviesViewModelFactory
 import id.dwichan.moviedicts.databinding.ActivityDetailMoviesBinding
 import id.dwichan.moviedicts.ui.loading.LoadingActivity
-import id.dwichan.moviedicts.util.Converter
-import id.dwichan.moviedicts.util.movies.MoviesViewModelFactory
+import javax.inject.Inject
 import kotlin.math.floor
 
 class DetailMoviesActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: DetailMoviesViewModel
+    @Inject
+    lateinit var factory: MoviesViewModelFactory
+
+    private val viewModel: DetailMoviesViewModel by viewModels {
+        factory
+    }
 
     private lateinit var productionCompanyAdapter: ProductionCompanyAdapter
     private lateinit var movieDetailsResponse: MovieDetailsResponse
@@ -39,6 +46,7 @@ class DetailMoviesActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as MyApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         _binding = ActivityDetailMoviesBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -47,11 +55,6 @@ class DetailMoviesActivity : AppCompatActivity() {
         supportActionBar?.title = getString(R.string.movie_details)
         supportActionBar?.subtitle = null
         supportActionBar?.elevation = 0f
-
-        val factory = MoviesViewModelFactory.getInstance()
-        viewModel = ViewModelProvider(this, factory)[
-                DetailMoviesViewModel::class.java
-        ]
 
         productionCompanyAdapter = ProductionCompanyAdapter()
 

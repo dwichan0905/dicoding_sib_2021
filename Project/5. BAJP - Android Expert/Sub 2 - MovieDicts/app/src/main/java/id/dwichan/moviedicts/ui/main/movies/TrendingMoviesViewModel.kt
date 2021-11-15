@@ -2,27 +2,29 @@ package id.dwichan.moviedicts.ui.main.movies
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import id.dwichan.moviedicts.data.repository.MoviesRepository
-import id.dwichan.moviedicts.data.repository.remote.response.trending.TrendingResultsItem
-import id.dwichan.moviedicts.util.SingleEvent
+import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
+import id.dwichan.moviedicts.core.domain.usecase.MoviesUseCase
+import id.dwichan.moviedicts.core.util.SingleEvent
 
-class TrendingMoviesViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
+class TrendingMoviesViewModel(private val moviesUseCase: MoviesUseCase) : ViewModel() {
 
-    val trendingToday: LiveData<List<TrendingResultsItem>> = moviesRepository.trendingToday
+    val trendingToday: LiveData<List<TrendingResultsItem>> =
+        moviesUseCase.getTrendingMoviesTodayData()
 
-    val trendingWeekly: LiveData<List<TrendingResultsItem>> = moviesRepository.trendingWeekly
+    val trendingWeekly: LiveData<List<TrendingResultsItem>> =
+        moviesUseCase.getTrendingMoviesWeeklyData()
 
-    val isLoadingToday: LiveData<Boolean> = moviesRepository.isLoadingToday
+    val isLoadingToday: LiveData<Boolean> = moviesUseCase.getLoadingTodayState()
 
-    val isLoadingWeekly: LiveData<Boolean> = moviesRepository.isLoadingWeekly
+    val isLoadingWeekly: LiveData<Boolean> = moviesUseCase.getLoadingWeeklyState()
 
-    val errorReason: LiveData<SingleEvent<String>> = moviesRepository.errorReason
+    val errorReason: LiveData<SingleEvent<String>> = moviesUseCase.getErrorReason()
 
     fun fetchTrendingToday() {
-        moviesRepository.getTrendingMoviesToday()
+        moviesUseCase.getTrendingMoviesToday()
     }
 
     fun fetchTrendingWeekly() {
-        moviesRepository.getTrendingMoviesWeekly()
+        moviesUseCase.getTrendingMoviesWeekly()
     }
 }

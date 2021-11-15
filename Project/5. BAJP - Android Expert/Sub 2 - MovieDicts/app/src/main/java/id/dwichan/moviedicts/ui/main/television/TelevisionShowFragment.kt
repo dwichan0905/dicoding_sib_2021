@@ -1,5 +1,6 @@
 package id.dwichan.moviedicts.ui.main.television
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,19 +8,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import id.dwichan.moviedicts.MyApplication
 import id.dwichan.moviedicts.R
-import id.dwichan.moviedicts.data.entity.MovieTelevisionEntity
-import id.dwichan.moviedicts.data.repository.remote.response.trending.TrendingResultsItem
+import id.dwichan.moviedicts.core.data.entity.MovieTelevisionEntity
+import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
+import id.dwichan.moviedicts.core.util.television.TelevisionShowViewModelFactory
 import id.dwichan.moviedicts.databinding.FragmentTelevisionShowBinding
 import id.dwichan.moviedicts.databinding.ItemTvShowsTrendingBinding
 import id.dwichan.moviedicts.ui.detail.television.DetailTelevisionShowActivity
-import id.dwichan.moviedicts.util.television.TelevisionShowViewModelFactory
+import javax.inject.Inject
 
 class TelevisionShowFragment : Fragment() {
 
-    private lateinit var viewModel: TrendingTelevisionShowViewModel
+    @Inject
+    lateinit var factory: TelevisionShowViewModelFactory
+
+    private val viewModel: TrendingTelevisionShowViewModel by viewModels {
+        factory
+    }
 
     // fix memory leak
     private var _binding: FragmentTelevisionShowBinding? = null
@@ -49,6 +57,11 @@ class TelevisionShowFragment : Fragment() {
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as MyApplication).appComponent.inject(this)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,11 +75,6 @@ class TelevisionShowFragment : Fragment() {
 
         val trendingToday = TrendingTelevisionShowAdapter()
         val trendingWeekly = TrendingTelevisionShowAdapter()
-
-        val factory = TelevisionShowViewModelFactory.getInstance()
-        viewModel = ViewModelProvider(this, factory)[
-                TrendingTelevisionShowViewModel::class.java
-        ]
 
         binding.apply {
             recTvTrendingToday.layoutManager = LinearLayoutManager(

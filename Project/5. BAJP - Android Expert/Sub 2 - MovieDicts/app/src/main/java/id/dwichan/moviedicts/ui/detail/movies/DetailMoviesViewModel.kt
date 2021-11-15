@@ -3,17 +3,17 @@ package id.dwichan.moviedicts.ui.detail.movies
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import id.dwichan.moviedicts.data.repository.MoviesRepository
-import id.dwichan.moviedicts.data.repository.remote.response.movie.MovieDetailsResponse
-import id.dwichan.moviedicts.util.SingleEvent
+import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieDetailsResponse
+import id.dwichan.moviedicts.core.domain.usecase.MoviesUseCase
+import id.dwichan.moviedicts.core.util.SingleEvent
 
-class DetailMoviesViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
+class DetailMoviesViewModel(private val moviesUseCase: MoviesUseCase) : ViewModel() {
 
-    val data: LiveData<MovieDetailsResponse> = moviesRepository.movieDetails
+    val data: LiveData<MovieDetailsResponse> = moviesUseCase.getMovieDetailsData()
 
-    val isLoading: LiveData<Boolean> = moviesRepository.isLoadingDetails
+    val isLoading: LiveData<Boolean> = moviesUseCase.getLoadingDetailsState()
 
-    val errorReason: LiveData<SingleEvent<String>> = moviesRepository.errorReason
+    val errorReason: LiveData<SingleEvent<String>> = moviesUseCase.getErrorReason()
 
     private var _movieId = MutableLiveData<Int>()
 
@@ -22,6 +22,6 @@ class DetailMoviesViewModel(private val moviesRepository: MoviesRepository) : Vi
     }
 
     fun fetchMovieDetails() {
-        moviesRepository.getMovieDetails(_movieId.value ?: 0)
+        moviesUseCase.getMovieDetails(_movieId.value ?: 0)
     }
 }

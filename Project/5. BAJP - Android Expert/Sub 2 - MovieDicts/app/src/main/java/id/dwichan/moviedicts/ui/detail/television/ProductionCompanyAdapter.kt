@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import id.dwichan.moviedicts.R
-import id.dwichan.moviedicts.data.repository.remote.response.television.ProductionCompaniesItem
+import id.dwichan.moviedicts.core.data.repository.remote.response.television.ProductionCompaniesItem
+import id.dwichan.moviedicts.core.util.television.ProductionCompanyDiffUtilCallback
 import id.dwichan.moviedicts.databinding.ItemProductionCompanyBinding
-import id.dwichan.moviedicts.util.television.ProductionCompanyDiffUtilCallback
 
 class ProductionCompanyAdapter :
     RecyclerView.Adapter<ProductionCompanyAdapter.ProductionCompanyViewHolder>() {

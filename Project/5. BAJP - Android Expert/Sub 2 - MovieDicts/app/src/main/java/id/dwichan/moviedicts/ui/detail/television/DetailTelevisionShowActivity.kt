@@ -8,29 +8,36 @@ import android.view.View
 import android.view.Window
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import id.dwichan.moviedicts.MyApplication
 import id.dwichan.moviedicts.R
-import id.dwichan.moviedicts.data.entity.MovieTelevisionEntity
-import id.dwichan.moviedicts.data.repository.remote.response.television.CreatedByItem
-import id.dwichan.moviedicts.data.repository.remote.response.television.ProductionCompaniesItem
-import id.dwichan.moviedicts.data.repository.remote.response.television.TelevisionDetailsResponse
-import id.dwichan.moviedicts.data.repository.remote.response.television.TelevisionShowGenresItem
+import id.dwichan.moviedicts.core.data.entity.MovieTelevisionEntity
+import id.dwichan.moviedicts.core.data.repository.remote.response.television.CreatedByItem
+import id.dwichan.moviedicts.core.data.repository.remote.response.television.ProductionCompaniesItem
+import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionDetailsResponse
+import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionShowGenresItem
+import id.dwichan.moviedicts.core.util.Converter
+import id.dwichan.moviedicts.core.util.television.TelevisionShowViewModelFactory
 import id.dwichan.moviedicts.databinding.ActivityDetailTelevisionShowBinding
 import id.dwichan.moviedicts.ui.loading.LoadingActivity
-import id.dwichan.moviedicts.util.Converter
-import id.dwichan.moviedicts.util.television.TelevisionShowViewModelFactory
+import javax.inject.Inject
 import kotlin.math.floor
 
 class DetailTelevisionShowActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: DetailTelevisionShowViewModel
+    @Inject
+    lateinit var factory: TelevisionShowViewModelFactory
+
+    private val viewModel: DetailTelevisionShowViewModel by viewModels {
+        factory
+    }
 
     private lateinit var detailsResponse: TelevisionDetailsResponse
     private lateinit var creatorAdapter: CreatorAdapter
@@ -42,6 +49,7 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as MyApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         window.requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY)
         _binding = ActivityDetailTelevisionShowBinding.inflate(layoutInflater)
@@ -51,11 +59,6 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
         supportActionBar?.title = getString(R.string.tv_show_details)
         supportActionBar?.subtitle = null
         supportActionBar?.elevation = 0f
-
-        val factory = TelevisionShowViewModelFactory.getInstance()
-        viewModel = ViewModelProvider(this, factory)[
-                DetailTelevisionShowViewModel::class.java
-        ]
 
         creatorAdapter = CreatorAdapter()
         productionCompanyAdapter = ProductionCompanyAdapter()

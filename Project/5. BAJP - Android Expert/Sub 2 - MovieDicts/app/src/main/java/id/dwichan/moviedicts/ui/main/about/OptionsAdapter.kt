@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import id.dwichan.moviedicts.data.entity.Option
+import id.dwichan.moviedicts.core.data.entity.Option
 import id.dwichan.moviedicts.databinding.ItemOptionBinding
 
 class OptionsAdapter(private val options: List<Option>) :

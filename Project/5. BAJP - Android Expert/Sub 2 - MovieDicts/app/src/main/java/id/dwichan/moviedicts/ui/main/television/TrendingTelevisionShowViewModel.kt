@@ -2,30 +2,34 @@ package id.dwichan.moviedicts.ui.main.television
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import id.dwichan.moviedicts.data.repository.TelevisionShowRepository
-import id.dwichan.moviedicts.data.repository.remote.response.trending.TrendingResultsItem
-import id.dwichan.moviedicts.util.SingleEvent
+import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
+import id.dwichan.moviedicts.core.domain.usecase.TelevisionShowUseCase
+import id.dwichan.moviedicts.core.util.SingleEvent
 
-class TrendingTelevisionShowViewModel(private val televisionShowRepository: TelevisionShowRepository) :
+class TrendingTelevisionShowViewModel(private val televisionShowUseCase: TelevisionShowUseCase) :
     ViewModel() {
 
-    val trendingToday: LiveData<List<TrendingResultsItem>> = televisionShowRepository.trendingToday
+    val trendingToday: LiveData<List<TrendingResultsItem>> =
+        televisionShowUseCase.getTrendingTelevisionShowTodayData()
 
     val trendingWeekly: LiveData<List<TrendingResultsItem>> =
-        televisionShowRepository.trendingWeekly
+        televisionShowUseCase.getTrendingTelevisionShowWeeklyData()
 
-    val isLoadingToday: LiveData<Boolean> = televisionShowRepository.isLoadingToday
+    val isLoadingToday: LiveData<Boolean> =
+        televisionShowUseCase.getLoadingTodayState()
 
-    val isLoadingWeekly: LiveData<Boolean> = televisionShowRepository.isLoadingWeekly
+    val isLoadingWeekly: LiveData<Boolean> =
+        televisionShowUseCase.getLoadingWeeklyState()
 
-    val errorReason: LiveData<SingleEvent<String>> = televisionShowRepository.errorReason
+    val errorReason: LiveData<SingleEvent<String>> =
+        televisionShowUseCase.getErrorReason()
 
 
     fun fetchTrendingToday() {
-        televisionShowRepository.getTrendingTelevisionShowToday()
+        televisionShowUseCase.getTrendingTelevisionShowToday()
     }
 
     fun fetchTrendingWeekly() {
-        televisionShowRepository.getTrendingTelevisionShowWeekly()
+        televisionShowUseCase.getTrendingTelevisionShowWeekly()
     }
 }

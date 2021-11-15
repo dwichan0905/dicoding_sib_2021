@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import id.dwichan.moviedicts.R
-import id.dwichan.moviedicts.data.repository.remote.response.trending.TrendingResultsItem
+import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
+import id.dwichan.moviedicts.core.util.TrendingResultsItemDiffUtilCallback
 import id.dwichan.moviedicts.databinding.ItemMoviesTrendingBinding
-import id.dwichan.moviedicts.util.TrendingResultsItemDiffUtilCallback
 
 class TrendingMoviesAdapter :
     RecyclerView.Adapter<TrendingMoviesAdapter.TrendingMoviesViewHolder>() {

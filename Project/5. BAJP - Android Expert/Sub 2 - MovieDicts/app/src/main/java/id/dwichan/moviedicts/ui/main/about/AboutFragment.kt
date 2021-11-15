@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import id.dwichan.moviedicts.R
-import id.dwichan.moviedicts.data.entity.Option
+import id.dwichan.moviedicts.core.data.entity.Option
 import id.dwichan.moviedicts.databinding.FragmentAboutBinding
 
 class AboutFragment : Fragment() {

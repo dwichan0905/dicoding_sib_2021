@@ -2,9 +2,9 @@ package id.dwichan.moviedicts.ui.detail.television
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import id.dwichan.moviedicts.data.repository.remote.api.ApiService
-import id.dwichan.moviedicts.data.repository.remote.response.television.TelevisionDetailsResponse
-import id.dwichan.moviedicts.util.SingleEvent
+import id.dwichan.moviedicts.core.data.repository.remote.api.ApiService
+import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionDetailsResponse
+import id.dwichan.moviedicts.core.util.SingleEvent
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test

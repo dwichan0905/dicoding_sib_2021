@@ -14,7 +14,7 @@ import id.dwichan.moviedicts.MyApplication
 import id.dwichan.moviedicts.R
 import id.dwichan.moviedicts.core.data.entity.MovieTelevisionEntity
 import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
-import id.dwichan.moviedicts.core.util.television.TelevisionShowViewModelFactory
+import id.dwichan.moviedicts.core.util.ViewModelFactory
 import id.dwichan.moviedicts.databinding.FragmentTelevisionShowBinding
 import id.dwichan.moviedicts.databinding.ItemTvShowsTrendingBinding
 import id.dwichan.moviedicts.ui.detail.television.DetailTelevisionShowActivity
@@ -23,7 +23,7 @@ import javax.inject.Inject
 class TelevisionShowFragment : Fragment() {
 
     @Inject
-    lateinit var factory: TelevisionShowViewModelFactory
+    lateinit var factory: ViewModelFactory
 
     private val viewModel: TrendingTelevisionShowViewModel by viewModels {
         factory

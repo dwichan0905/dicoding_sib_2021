@@ -24,7 +24,7 @@ import id.dwichan.moviedicts.core.data.repository.remote.response.television.Pro
 import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionDetailsResponse
 import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionShowGenresItem
 import id.dwichan.moviedicts.core.util.Converter
-import id.dwichan.moviedicts.core.util.television.TelevisionShowViewModelFactory
+import id.dwichan.moviedicts.core.util.ViewModelFactory
 import id.dwichan.moviedicts.databinding.ActivityDetailTelevisionShowBinding
 import id.dwichan.moviedicts.ui.loading.LoadingActivity
 import javax.inject.Inject
@@ -33,7 +33,7 @@ import kotlin.math.floor
 class DetailTelevisionShowActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var factory: TelevisionShowViewModelFactory
+    lateinit var factory: ViewModelFactory
 
     private val viewModel: DetailTelevisionShowViewModel by viewModels {
         factory

@@ -22,7 +22,7 @@ import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieDet
 import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieGenresItem
 import id.dwichan.moviedicts.core.data.repository.remote.response.movie.ProductionCompaniesItem
 import id.dwichan.moviedicts.core.util.Converter
-import id.dwichan.moviedicts.core.util.movies.MoviesViewModelFactory
+import id.dwichan.moviedicts.core.util.ViewModelFactory
 import id.dwichan.moviedicts.databinding.ActivityDetailMoviesBinding
 import id.dwichan.moviedicts.ui.loading.LoadingActivity
 import javax.inject.Inject
@@ -31,7 +31,7 @@ import kotlin.math.floor
 class DetailMoviesActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var factory: MoviesViewModelFactory
+    lateinit var factory: ViewModelFactory
 
     private val viewModel: DetailMoviesViewModel by viewModels {
         factory

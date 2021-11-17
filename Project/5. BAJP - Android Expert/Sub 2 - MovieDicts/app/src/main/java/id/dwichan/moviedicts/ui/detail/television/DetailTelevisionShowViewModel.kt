@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionDetailsResponse
 import id.dwichan.moviedicts.core.domain.usecase.TelevisionShowUseCase
 import id.dwichan.moviedicts.core.util.SingleEvent
+import javax.inject.Inject
 
-class DetailTelevisionShowViewModel(private val televisionShowUseCase: TelevisionShowUseCase) :
-    ViewModel() {
+class DetailTelevisionShowViewModel @Inject constructor(
+    private val televisionShowUseCase: TelevisionShowUseCase
+) : ViewModel() {
 
     val data: LiveData<TelevisionDetailsResponse> =
         televisionShowUseCase.getTelevisionShowDetailsData()

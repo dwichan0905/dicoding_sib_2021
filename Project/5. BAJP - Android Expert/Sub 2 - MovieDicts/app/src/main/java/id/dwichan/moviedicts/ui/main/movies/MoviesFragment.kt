@@ -14,7 +14,7 @@ import id.dwichan.moviedicts.MyApplication
 import id.dwichan.moviedicts.R
 import id.dwichan.moviedicts.core.data.entity.MovieTelevisionEntity
 import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
-import id.dwichan.moviedicts.core.util.movies.MoviesViewModelFactory
+import id.dwichan.moviedicts.core.util.ViewModelFactory
 import id.dwichan.moviedicts.databinding.FragmentMoviesBinding
 import id.dwichan.moviedicts.databinding.ItemMoviesTrendingBinding
 import id.dwichan.moviedicts.ui.detail.movies.DetailMoviesActivity
@@ -27,7 +27,7 @@ class MoviesFragment : Fragment() {
     private val binding get() = _binding!!
 
     @Inject
-    lateinit var factory: MoviesViewModelFactory
+    lateinit var factory: ViewModelFactory
 
     private val viewModel: TrendingMoviesViewModel by viewModels {
         factory

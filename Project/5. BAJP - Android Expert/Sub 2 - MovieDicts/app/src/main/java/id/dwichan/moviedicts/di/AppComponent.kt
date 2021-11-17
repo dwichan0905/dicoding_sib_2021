@@ -10,7 +10,7 @@ import id.dwichan.moviedicts.ui.main.television.TelevisionShowFragment
 @AppScope
 @Component(
     dependencies = [CoreComponent::class],
-    modules = [AppModule::class]
+    modules = [AppModule::class, ViewModelModule::class]
 )
 interface AppComponent {
 

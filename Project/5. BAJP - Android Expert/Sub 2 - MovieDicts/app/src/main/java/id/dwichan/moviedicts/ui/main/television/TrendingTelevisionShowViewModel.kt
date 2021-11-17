@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModel
 import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
 import id.dwichan.moviedicts.core.domain.usecase.TelevisionShowUseCase
 import id.dwichan.moviedicts.core.util.SingleEvent
+import javax.inject.Inject
 
-class TrendingTelevisionShowViewModel(private val televisionShowUseCase: TelevisionShowUseCase) :
-    ViewModel() {
+class TrendingTelevisionShowViewModel @Inject constructor(
+    private val televisionShowUseCase: TelevisionShowUseCase
+) : ViewModel() {
 
     val trendingToday: LiveData<List<TrendingResultsItem>> =
         televisionShowUseCase.getTrendingTelevisionShowTodayData()

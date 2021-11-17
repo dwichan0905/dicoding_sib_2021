@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModel
 import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieDetailsResponse
 import id.dwichan.moviedicts.core.domain.usecase.MoviesUseCase
 import id.dwichan.moviedicts.core.util.SingleEvent
+import javax.inject.Inject
 
-class DetailMoviesViewModel(private val moviesUseCase: MoviesUseCase) : ViewModel() {
+class DetailMoviesViewModel @Inject constructor(private val moviesUseCase: MoviesUseCase) : ViewModel() {
 
     val data: LiveData<MovieDetailsResponse> = moviesUseCase.getMovieDetailsData()
 

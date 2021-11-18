@@ -9,6 +9,7 @@ import id.dwichan.moviedicts.core.data.repository.TelevisionShowRepository
 import id.dwichan.moviedicts.core.domain.repository.MoviesDataSource
 import id.dwichan.moviedicts.core.domain.repository.TelevisionShowDataSource
 
+@Suppress("unused")
 @Module(includes = [NetworkModule::class])
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {

@@ -252,7 +252,6 @@ class MainActivityTest {
         const val BOOKMARKS_TITLE = "Bookmarks"
         const val ABOUT_TITLE = "About"
 
-        const val WAIT_TIME = 500L // 0.5 seconds
         const val TOTAL_DATA_SHOWN = 20 // 20 items per page
     }
 

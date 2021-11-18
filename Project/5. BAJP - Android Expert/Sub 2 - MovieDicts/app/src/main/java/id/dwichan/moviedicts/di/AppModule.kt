@@ -10,6 +10,7 @@ import id.dwichan.moviedicts.core.domain.usecase.MoviesUseCase
 import id.dwichan.moviedicts.core.domain.usecase.TelevisionShowInteractor
 import id.dwichan.moviedicts.core.domain.usecase.TelevisionShowUseCase
 
+@Suppress("unused")
 @Module
 @InstallIn(ViewModelComponent::class)
 abstract class AppModule {

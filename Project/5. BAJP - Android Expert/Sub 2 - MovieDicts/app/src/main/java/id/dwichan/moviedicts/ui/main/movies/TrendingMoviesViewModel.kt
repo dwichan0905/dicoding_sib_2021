@@ -9,7 +9,8 @@ import id.dwichan.moviedicts.core.util.SingleEvent
 import javax.inject.Inject
 
 @HiltViewModel
-class TrendingMoviesViewModel @Inject constructor(private val moviesUseCase: MoviesUseCase) : ViewModel() {
+class TrendingMoviesViewModel @Inject constructor(private val moviesUseCase: MoviesUseCase) :
+    ViewModel() {
 
     val trendingToday: LiveData<List<TrendingResultsItem>> =
         moviesUseCase.getTrendingMoviesTodayData()

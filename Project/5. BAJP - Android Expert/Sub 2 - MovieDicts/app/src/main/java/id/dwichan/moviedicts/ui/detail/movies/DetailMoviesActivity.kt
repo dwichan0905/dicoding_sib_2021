@@ -24,7 +24,6 @@ import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieDet
 import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieGenresItem
 import id.dwichan.moviedicts.core.data.repository.remote.response.movie.ProductionCompaniesItem
 import id.dwichan.moviedicts.core.util.Converter
-import id.dwichan.moviedicts.core.util.IdlingResources
 import id.dwichan.moviedicts.databinding.ActivityDetailMoviesBinding
 import id.dwichan.moviedicts.ui.loading.LoadingActivity
 import kotlin.math.floor

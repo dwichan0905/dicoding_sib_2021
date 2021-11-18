@@ -9,7 +9,6 @@ import id.dwichan.moviedicts.core.data.repository.remote.response.trending.Trend
 import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
 import id.dwichan.moviedicts.core.di.NetworkModule
 import id.dwichan.moviedicts.core.domain.usecase.MoviesInteractor
-import id.dwichan.moviedicts.core.domain.usecase.MoviesUseCase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -25,7 +24,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
-import javax.inject.Inject
 
 @RunWith(MockitoJUnitRunner.Silent::class)
 class TrendingMoviesViewModelTest {

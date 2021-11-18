@@ -10,7 +10,8 @@ import id.dwichan.moviedicts.core.util.SingleEvent
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailMoviesViewModel @Inject constructor(private val moviesUseCase: MoviesUseCase) : ViewModel() {
+class DetailMoviesViewModel @Inject constructor(private val moviesUseCase: MoviesUseCase) :
+    ViewModel() {
 
     val data: LiveData<MovieDetailsResponse> = moviesUseCase.getMovieDetailsData()
 

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MovieDicts</string>
     <string name="example_crew_name">Lorem Ipsum</string>
-    <string name="example_movie_name">Lorem Ipsum: Dolor Sit Amet</string>
+    <string name="example_movie_name">----</string>
     <string name="example_score">👍 8.6</string>
     <string name="navigation_movie">Movie</string>
     <string name="navigation_television_show">Television Show</string>
@@ -26,16 +26,16 @@
     <string name="first_air">First air</string>
     <string name="release_date">Release date</string>
     <string name="swipe_up">Swipe up</string>
-    <string name="example_released_duration">Release date October 21, 2021 · 1h 21m</string>
-    <string name="example_first_air_duration">First Air October 21, 2021 · 1h 21m</string>
-    <string name="example_genres">Fiction, Action, Adventure, Family, Sci-Fi</string>
-    <string name="example_vote">10.0</string>
+    <string name="example_released_duration">Release date ----, ---- · --h --m</string>
+    <string name="example_first_air_duration">First Air ----, ---- · --h --m</string>
+    <string name="example_genres">----</string>
+    <string name="example_vote">0.0</string>
     <string name="user_score">User Score</string>
-    <string name="example_tagline">Dragons is our friends. Flying like a Diamond, Walking Like a Dinosaurs</string>
+    <string name="example_tagline">\?</string>
     <string name="button_add_to_bookmark">Add to Bookmark</string>
     <string name="example_episode_season">9 episodes, 0 seasons</string>
     <string name="overview">Overview</string>
-    <string name="example_overview">Lorem ipsum dolor sit amet, expectetur adisipicing elit. De neur elva olaf uhigr adi eiten</string>
+    <string name="example_overview">----------</string>
     <string name="production_companies">Production Companies</string>
     <string name="end_line_details">- Details end here -</string>
     <string name="share">Share</string>

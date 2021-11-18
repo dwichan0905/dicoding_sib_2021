@@ -7,6 +7,7 @@ import id.dwichan.moviedicts.core.data.repository.remote.response.television.Tel
 import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResponse
 import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
 import id.dwichan.moviedicts.core.domain.repository.TelevisionShowDataSource
+import id.dwichan.moviedicts.core.util.IdlingResources
 import id.dwichan.moviedicts.core.util.SingleEvent
 import retrofit2.Call
 import retrofit2.Callback
@@ -46,6 +47,8 @@ class TelevisionShowRepository @Inject constructor(private val remoteDataSource:
 
     @Suppress("UNCHECKED_CAST")
     override fun getTrendingTelevisionShowToday() {
+        IdlingResources.increment()
+
         _isLoadingToday.value = true
         _errorReason.value = SingleEvent("")
         val response = remoteDataSource.getTrendingTvShowToday()
@@ -68,6 +71,8 @@ class TelevisionShowRepository @Inject constructor(private val remoteDataSource:
                     )
                     _trendingToday.postValue(ArrayList())
                 }
+
+                IdlingResources.decrement()
             }
 
             override fun onFailure(call: Call<TrendingResponse>, t: Throwable) {
@@ -75,6 +80,8 @@ class TelevisionShowRepository @Inject constructor(private val remoteDataSource:
                 _errorReason.value = SingleEvent(t.message as String)
                 _trendingToday.postValue(ArrayList())
                 t.printStackTrace()
+
+                IdlingResources.decrement()
             }
         })
     }
@@ -84,6 +91,8 @@ class TelevisionShowRepository @Inject constructor(private val remoteDataSource:
 
     @Suppress("UNCHECKED_CAST")
     override fun getTrendingTelevisionShowWeekly() {
+        IdlingResources.increment()
+
         _isLoadingWeekly.value = true
         _errorReason.value = SingleEvent("")
         val response = remoteDataSource.getTrendingTvShowWeekly()
@@ -106,6 +115,8 @@ class TelevisionShowRepository @Inject constructor(private val remoteDataSource:
                     )
                     _trendingWeekly.postValue(ArrayList())
                 }
+
+                IdlingResources.decrement()
             }
 
             override fun onFailure(call: Call<TrendingResponse>, t: Throwable) {
@@ -113,6 +124,8 @@ class TelevisionShowRepository @Inject constructor(private val remoteDataSource:
                 _errorReason.value = SingleEvent(t.message as String)
                 _trendingWeekly.postValue(ArrayList())
                 t.printStackTrace()
+
+                IdlingResources.decrement()
             }
         })
     }
@@ -121,6 +134,7 @@ class TelevisionShowRepository @Inject constructor(private val remoteDataSource:
         _trendingWeekly
 
     override fun getTelevisionShowDetails(id: Int) {
+        IdlingResources.increment()
         _isLoadingDetails.value = true
         _errorReason.value = SingleEvent("")
 
@@ -147,6 +161,7 @@ class TelevisionShowRepository @Inject constructor(private val remoteDataSource:
                     )
                     _televisionDetails.postValue(TelevisionDetailsResponse())
                 }
+                IdlingResources.decrement()
             }
 
             override fun onFailure(call: Call<TelevisionDetailsResponse>, t: Throwable) {
@@ -154,6 +169,7 @@ class TelevisionShowRepository @Inject constructor(private val remoteDataSource:
                 _errorReason.value = SingleEvent(t.message as String)
                 _televisionDetails.postValue(TelevisionDetailsResponse())
                 t.printStackTrace()
+                IdlingResources.decrement()
             }
         })
     }

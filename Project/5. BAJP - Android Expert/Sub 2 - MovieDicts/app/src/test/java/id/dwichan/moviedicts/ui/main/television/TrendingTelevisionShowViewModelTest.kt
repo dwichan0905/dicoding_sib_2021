@@ -2,9 +2,15 @@ package id.dwichan.moviedicts.ui.main.television
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import id.dwichan.moviedicts.core.data.repository.TelevisionShowRepository
+import id.dwichan.moviedicts.core.data.repository.remote.RemoteDataSource
 import id.dwichan.moviedicts.core.data.repository.remote.api.ApiService
 import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResponse
 import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
+import id.dwichan.moviedicts.core.di.NetworkModule
+import id.dwichan.moviedicts.core.domain.usecase.MoviesInteractor
+import id.dwichan.moviedicts.core.domain.usecase.TelevisionShowInteractor
+import id.dwichan.moviedicts.core.domain.usecase.TelevisionShowUseCase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -19,11 +25,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
+import javax.inject.Inject
 
 @RunWith(MockitoJUnitRunner.Silent::class)
 class TrendingTelevisionShowViewModelTest {
 
     private lateinit var viewModel: TrendingTelevisionShowViewModel
+
+    private lateinit var apiService: ApiService
+    private lateinit var remoteDataSource: RemoteDataSource
+    private lateinit var televisionShowRepository: TelevisionShowRepository
+    private lateinit var televisionShowInteractor: TelevisionShowInteractor
 
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
@@ -33,12 +45,16 @@ class TrendingTelevisionShowViewModelTest {
 
     @Before
     fun setup() {
-        viewModel = TrendingTelevisionShowViewModel()
+        apiService = NetworkModule.provideApiService(NetworkModule.provideOkHttpClient())
+        remoteDataSource = RemoteDataSource(apiService)
+        televisionShowRepository = TelevisionShowRepository(remoteDataSource)
+        televisionShowInteractor = TelevisionShowInteractor(televisionShowRepository)
+        viewModel = TrendingTelevisionShowViewModel(televisionShowInteractor)
     }
 
     @Test
     fun `API Trending TV Shows Daily should be successfully accessed`() {
-        val endpoints = ApiService.getApiService()
+        val endpoints = apiService
         val call = endpoints.getTrendingTelevisionShowToday()
 
         try {
@@ -55,7 +71,7 @@ class TrendingTelevisionShowViewModelTest {
 
     @Test
     fun `API Trending TV Shows Weekly should be successfully accessed`() {
-        val endpoints = ApiService.getApiService()
+        val endpoints = apiService
         val call = endpoints.getTrendingTelevisionShowWeekly()
 
         try {

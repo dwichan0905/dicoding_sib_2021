@@ -1,6 +1,5 @@
 package id.dwichan.moviedicts.ui.main.television
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,24 +9,18 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import id.dwichan.moviedicts.MyApplication
+import dagger.hilt.android.AndroidEntryPoint
 import id.dwichan.moviedicts.R
 import id.dwichan.moviedicts.core.data.entity.MovieTelevisionEntity
 import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
-import id.dwichan.moviedicts.core.util.ViewModelFactory
 import id.dwichan.moviedicts.databinding.FragmentTelevisionShowBinding
 import id.dwichan.moviedicts.databinding.ItemTvShowsTrendingBinding
 import id.dwichan.moviedicts.ui.detail.television.DetailTelevisionShowActivity
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class TelevisionShowFragment : Fragment() {
 
-    @Inject
-    lateinit var factory: ViewModelFactory
-
-    private val viewModel: TrendingTelevisionShowViewModel by viewModels {
-        factory
-    }
+    private val viewModel: TrendingTelevisionShowViewModel by viewModels()
 
     // fix memory leak
     private var _binding: FragmentTelevisionShowBinding? = null
@@ -55,11 +48,6 @@ class TelevisionShowFragment : Fragment() {
             )
             startActivity(intent, options.toBundle())
         }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (requireActivity().application as MyApplication).appComponent.inject(this)
     }
 
     override fun onCreateView(

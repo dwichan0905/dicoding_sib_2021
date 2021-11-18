@@ -2,10 +2,15 @@ package id.dwichan.moviedicts.ui.detail.movies
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import id.dwichan.moviedicts.core.data.repository.MoviesRepository
+import id.dwichan.moviedicts.core.data.repository.remote.RemoteDataSource
 import id.dwichan.moviedicts.core.data.repository.remote.api.ApiService
 import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieDetailsResponse
+import id.dwichan.moviedicts.core.di.NetworkModule
+import id.dwichan.moviedicts.core.domain.usecase.MoviesInteractor
 import id.dwichan.moviedicts.core.util.SingleEvent
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
@@ -22,6 +27,11 @@ import java.io.IOException
 @RunWith(MockitoJUnitRunner.Silent::class)
 class DetailMoviesViewModelTest {
 
+    private lateinit var apiService: ApiService
+    private lateinit var remoteDataSource: RemoteDataSource
+    private lateinit var moviesRepository: MoviesRepository
+    private lateinit var moviesInteractor: MoviesInteractor
+
     private val dummyMovieId = 1930
     private val dummyMovieOriginalTitle = "The Amazing Spider-Man"
     private val dummyReleaseDate = "2012-06-23"
@@ -37,9 +47,17 @@ class DetailMoviesViewModelTest {
     @Mock
     private lateinit var observerError: Observer<SingleEvent<String>>
 
+    @Before
+    fun setup() {
+        apiService = NetworkModule.provideApiService(NetworkModule.provideOkHttpClient())
+        remoteDataSource = RemoteDataSource(apiService)
+        moviesRepository = MoviesRepository(remoteDataSource)
+        moviesInteractor = MoviesInteractor(moviesRepository)
+    }
+
     @Test
     fun `API Detail Movies should be successfully accessed and correct values`() {
-        val endpoints = ApiService.getApiService()
+        val endpoints = apiService
         val call = endpoints.getMovieDetails(dummyMovieId)
 
         try {
@@ -70,12 +88,13 @@ class DetailMoviesViewModelTest {
             null
         }.`when`(mockCall).enqueue(any())
 
-        val viewModel = DetailMoviesViewModel()
+        val viewModel = DetailMoviesViewModel(moviesInteractor)
         viewModel.setMovieId(dummyMovieId)
         viewModel.fetchMovieDetails()
         Thread.sleep(TIME_TO_WAIT)
         viewModel.data.observeForever(observer)
         Mockito.verify(observer).onChanged(any(MovieDetailsResponse::class.java))
+        viewModel.data.removeObserver(observer)
     }
 
     @Test
@@ -95,12 +114,13 @@ class DetailMoviesViewModelTest {
             null
         }.`when`(mockCall).enqueue(any())
 
-        val viewModel = DetailMoviesViewModel()
+        val viewModel = DetailMoviesViewModel(moviesInteractor)
         viewModel.setMovieId(dummyEmptyMovieId)
         viewModel.fetchMovieDetails()
         Thread.sleep(TIME_TO_WAIT)
         viewModel.errorReason.observeForever(observerError)
         Mockito.verify(observerError).onChanged(any())
+        viewModel.errorReason.removeObserver(observerError)
     }
 
     companion object {

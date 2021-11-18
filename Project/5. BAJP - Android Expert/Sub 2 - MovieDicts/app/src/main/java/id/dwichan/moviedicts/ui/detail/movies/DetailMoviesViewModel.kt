@@ -3,11 +3,13 @@ package id.dwichan.moviedicts.ui.detail.movies
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieDetailsResponse
 import id.dwichan.moviedicts.core.domain.usecase.MoviesUseCase
 import id.dwichan.moviedicts.core.util.SingleEvent
 import javax.inject.Inject
 
+@HiltViewModel
 class DetailMoviesViewModel @Inject constructor(private val moviesUseCase: MoviesUseCase) : ViewModel() {
 
     val data: LiveData<MovieDetailsResponse> = moviesUseCase.getMovieDetailsData()

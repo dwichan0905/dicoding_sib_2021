@@ -2,6 +2,8 @@ package id.dwichan.moviedicts.ui.detail.television
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -16,7 +18,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import id.dwichan.moviedicts.MyApplication
+import dagger.hilt.android.AndroidEntryPoint
 import id.dwichan.moviedicts.R
 import id.dwichan.moviedicts.core.data.entity.MovieTelevisionEntity
 import id.dwichan.moviedicts.core.data.repository.remote.response.television.CreatedByItem
@@ -24,20 +26,15 @@ import id.dwichan.moviedicts.core.data.repository.remote.response.television.Pro
 import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionDetailsResponse
 import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionShowGenresItem
 import id.dwichan.moviedicts.core.util.Converter
-import id.dwichan.moviedicts.core.util.ViewModelFactory
+import id.dwichan.moviedicts.core.util.IdlingResources
 import id.dwichan.moviedicts.databinding.ActivityDetailTelevisionShowBinding
 import id.dwichan.moviedicts.ui.loading.LoadingActivity
-import javax.inject.Inject
 import kotlin.math.floor
 
+@AndroidEntryPoint
 class DetailTelevisionShowActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var factory: ViewModelFactory
-
-    private val viewModel: DetailTelevisionShowViewModel by viewModels {
-        factory
-    }
+    private val viewModel: DetailTelevisionShowViewModel by viewModels()
 
     private lateinit var detailsResponse: TelevisionDetailsResponse
     private lateinit var creatorAdapter: CreatorAdapter
@@ -49,7 +46,6 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MyApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         window.requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY)
         _binding = ActivityDetailTelevisionShowBinding.inflate(layoutInflater)
@@ -95,12 +91,14 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
                 // show loading indicator
                 val intentLoading = Intent(this, LoadingActivity::class.java)
                 startActivity(intentLoading)
-                binding.content.root.visibility = View.GONE
             } else {
-                binding.content.root.visibility = View.VISIBLE
                 // close loading indicator
-                val intentCloseLoading = Intent(LoadingActivity.INTENT_FINISH_LOADING)
-                sendBroadcast(intentCloseLoading)
+                IdlingResources.increment()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    val intentCloseLoading = Intent(LoadingActivity.INTENT_FINISH_LOADING)
+                    sendBroadcast(intentCloseLoading)
+                    IdlingResources.decrement()
+                }, DELAY)
             }
         }
 
@@ -146,6 +144,18 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         binding.content.lottieSwipeIndicator.visibility = View.VISIBLE
                         binding.content.textLottieSwipeIndicator.visibility = View.VISIBLE
+                    }
+                    BottomSheetBehavior.STATE_DRAGGING -> {
+
+                    }
+                    BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+
+                    }
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+
+                    }
+                    BottomSheetBehavior.STATE_SETTLING -> {
+
                     }
                 }
             }
@@ -292,6 +302,7 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
     }
 
     companion object {
+        private const val DELAY = 500L // 0.5s
         const val EXTRA_TELEVISION_ENTITY = "extra_television_detail_response"
     }
 }

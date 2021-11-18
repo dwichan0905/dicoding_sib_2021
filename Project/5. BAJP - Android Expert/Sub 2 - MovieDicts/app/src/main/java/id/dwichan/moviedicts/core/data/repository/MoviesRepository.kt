@@ -8,6 +8,7 @@ import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieDet
 import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResponse
 import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
 import id.dwichan.moviedicts.core.domain.repository.MoviesDataSource
+import id.dwichan.moviedicts.core.util.IdlingResources
 import id.dwichan.moviedicts.core.util.SingleEvent
 import retrofit2.Call
 import retrofit2.Callback
@@ -47,6 +48,8 @@ class MoviesRepository @Inject constructor(private val remoteDataSource: RemoteD
 
     @Suppress("UNCHECKED_CAST")
     override fun getTrendingMoviesToday() {
+        IdlingResources.increment()
+
         _isLoadingToday.value = true
         _errorReason.value = SingleEvent("")
         val response = remoteDataSource.getTrendingMoviesToday()
@@ -69,6 +72,8 @@ class MoviesRepository @Inject constructor(private val remoteDataSource: RemoteD
                     )
                     _trendingToday.postValue(ArrayList())
                 }
+
+                IdlingResources.decrement()
             }
 
             override fun onFailure(call: Call<TrendingResponse>, t: Throwable) {
@@ -77,6 +82,8 @@ class MoviesRepository @Inject constructor(private val remoteDataSource: RemoteD
                 t.printStackTrace()
                 _errorReason.value = SingleEvent(t.message as String)
                 _trendingToday.postValue(ArrayList())
+
+                IdlingResources.decrement()
             }
         })
     }
@@ -85,6 +92,8 @@ class MoviesRepository @Inject constructor(private val remoteDataSource: RemoteD
 
     @Suppress("UNCHECKED_CAST")
     override fun getTrendingMoviesWeekly() {
+        IdlingResources.increment()
+
         _isLoadingWeekly.value = true
         _errorReason.value = SingleEvent("")
         val response = remoteDataSource.getTrendingMoviesWeekly()
@@ -107,6 +116,8 @@ class MoviesRepository @Inject constructor(private val remoteDataSource: RemoteD
                     )
                     _trendingWeekly.postValue(ArrayList())
                 }
+
+                IdlingResources.decrement()
             }
 
             override fun onFailure(call: Call<TrendingResponse>, t: Throwable) {
@@ -114,6 +125,8 @@ class MoviesRepository @Inject constructor(private val remoteDataSource: RemoteD
                 _errorReason.value = SingleEvent(t.message as String)
                 _trendingWeekly.postValue(ArrayList())
                 t.printStackTrace()
+
+                IdlingResources.decrement()
             }
         })
     }
@@ -122,6 +135,7 @@ class MoviesRepository @Inject constructor(private val remoteDataSource: RemoteD
         _trendingWeekly
 
     override fun getMovieDetails(id: Int) {
+        IdlingResources.increment()
         _isLoadingDetails.value = true
         _errorReason.value = SingleEvent("")
 
@@ -148,6 +162,7 @@ class MoviesRepository @Inject constructor(private val remoteDataSource: RemoteD
                     )
                     _movieDetails.postValue(MovieDetailsResponse())
                 }
+                IdlingResources.decrement()
             }
 
             override fun onFailure(call: Call<MovieDetailsResponse>, t: Throwable) {
@@ -155,6 +170,7 @@ class MoviesRepository @Inject constructor(private val remoteDataSource: RemoteD
                 _errorReason.value = SingleEvent(t.message as String)
                 _movieDetails.postValue(MovieDetailsResponse())
                 t.printStackTrace()
+                IdlingResources.decrement()
             }
 
         })

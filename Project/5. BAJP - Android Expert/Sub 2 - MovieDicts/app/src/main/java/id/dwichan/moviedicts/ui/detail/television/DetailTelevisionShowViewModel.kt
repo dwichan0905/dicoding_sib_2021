@@ -3,11 +3,13 @@ package id.dwichan.moviedicts.ui.detail.television
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionDetailsResponse
 import id.dwichan.moviedicts.core.domain.usecase.TelevisionShowUseCase
 import id.dwichan.moviedicts.core.util.SingleEvent
 import javax.inject.Inject
 
+@HiltViewModel
 class DetailTelevisionShowViewModel @Inject constructor(
     private val televisionShowUseCase: TelevisionShowUseCase
 ) : ViewModel() {

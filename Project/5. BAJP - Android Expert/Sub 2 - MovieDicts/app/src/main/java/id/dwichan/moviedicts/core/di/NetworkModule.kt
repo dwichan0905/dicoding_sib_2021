@@ -2,6 +2,8 @@ package id.dwichan.moviedicts.core.di
 
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import id.dwichan.moviedicts.BuildConfig
 import id.dwichan.moviedicts.core.data.repository.remote.api.ApiService
 import okhttp3.OkHttpClient
@@ -11,6 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 @Module
+@InstallIn(SingletonComponent::class)
 object NetworkModule {
 
     @Provides

@@ -14,7 +14,6 @@
 
     <include
         android:id="@+id/content"
-        layout="@layout/bottom_sheet_movies_details"
-        android:visibility="gone" />
+        layout="@layout/bottom_sheet_movies_details" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

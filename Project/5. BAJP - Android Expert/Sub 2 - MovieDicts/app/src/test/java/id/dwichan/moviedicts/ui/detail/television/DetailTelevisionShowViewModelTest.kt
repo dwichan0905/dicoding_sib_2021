@@ -2,10 +2,15 @@ package id.dwichan.moviedicts.ui.detail.television
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import id.dwichan.moviedicts.core.data.repository.TelevisionShowRepository
+import id.dwichan.moviedicts.core.data.repository.remote.RemoteDataSource
 import id.dwichan.moviedicts.core.data.repository.remote.api.ApiService
 import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionDetailsResponse
+import id.dwichan.moviedicts.core.di.NetworkModule
+import id.dwichan.moviedicts.core.domain.usecase.TelevisionShowInteractor
 import id.dwichan.moviedicts.core.util.SingleEvent
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
@@ -31,15 +36,28 @@ class DetailTelevisionShowViewModelTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
+    private lateinit var apiService: ApiService
+    private lateinit var remoteDataSource: RemoteDataSource
+    private lateinit var televisionShowRepository: TelevisionShowRepository
+    private lateinit var televisionShowInteractor: TelevisionShowInteractor
+
     @Mock
     private lateinit var observer: Observer<TelevisionDetailsResponse>
 
     @Mock
     private lateinit var observerError: Observer<SingleEvent<String>>
 
+    @Before
+    fun setup() {
+        apiService = NetworkModule.provideApiService(NetworkModule.provideOkHttpClient())
+        remoteDataSource = RemoteDataSource(apiService)
+        televisionShowRepository = TelevisionShowRepository(remoteDataSource)
+        televisionShowInteractor = TelevisionShowInteractor(televisionShowRepository)
+    }
+
     @Test
     fun `API Detail Movies should be successfully accessed and correct values`() {
-        val endpoints = ApiService.getApiService()
+        val endpoints = apiService
         val call = endpoints.getTelevisionShowDetails(dummyTvId)
 
         try {
@@ -71,12 +89,13 @@ class DetailTelevisionShowViewModelTest {
             null
         }.`when`(mockCall).enqueue(any())
 
-        val viewModel = DetailTelevisionShowViewModel()
+        val viewModel = DetailTelevisionShowViewModel(televisionShowInteractor)
         viewModel.setTelevisionId(dummyTvId)
         viewModel.fetchTelevisionShowDetails()
         Thread.sleep(TIME_TO_WAIT)
         viewModel.data.observeForever(observer)
         Mockito.verify(observer).onChanged(any(TelevisionDetailsResponse::class.java))
+        viewModel.data.removeObserver(observer)
     }
 
     @Test
@@ -97,12 +116,13 @@ class DetailTelevisionShowViewModelTest {
             null
         }.`when`(mockCall).enqueue(any())
 
-        val viewModel = DetailTelevisionShowViewModel()
+        val viewModel = DetailTelevisionShowViewModel(televisionShowInteractor)
         viewModel.setTelevisionId(dummyEmptyTvId)
         viewModel.fetchTelevisionShowDetails()
         Thread.sleep(TIME_TO_WAIT)
         viewModel.errorReason.observeForever(observerError)
         Mockito.verify(observerError).onChanged(any())
+        viewModel.errorReason.removeObserver(observerError)
     }
 
     companion object {

@@ -2,9 +2,14 @@ package id.dwichan.moviedicts.ui.main.movies
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import id.dwichan.moviedicts.core.data.repository.MoviesRepository
+import id.dwichan.moviedicts.core.data.repository.remote.RemoteDataSource
 import id.dwichan.moviedicts.core.data.repository.remote.api.ApiService
 import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResponse
 import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
+import id.dwichan.moviedicts.core.di.NetworkModule
+import id.dwichan.moviedicts.core.domain.usecase.MoviesInteractor
+import id.dwichan.moviedicts.core.domain.usecase.MoviesUseCase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -20,11 +25,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
+import javax.inject.Inject
 
 @RunWith(MockitoJUnitRunner.Silent::class)
 class TrendingMoviesViewModelTest {
 
     private lateinit var viewModel: TrendingMoviesViewModel
+
+    private lateinit var apiService: ApiService
+    private lateinit var remoteDataSource: RemoteDataSource
+    private lateinit var moviesRepository: MoviesRepository
+    private lateinit var moviesInteractor: MoviesInteractor
 
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
@@ -34,12 +45,16 @@ class TrendingMoviesViewModelTest {
 
     @Before
     fun setup() {
-        viewModel = TrendingMoviesViewModel()
+        apiService = NetworkModule.provideApiService(NetworkModule.provideOkHttpClient())
+        remoteDataSource = RemoteDataSource(apiService)
+        moviesRepository = MoviesRepository(remoteDataSource)
+        moviesInteractor = MoviesInteractor(moviesRepository)
+        viewModel = TrendingMoviesViewModel(moviesInteractor)
     }
 
     @Test
     fun `API Trending Movies Daily should be successfully accessed`() {
-        val endpoints = ApiService.getApiService()
+        val endpoints = apiService
         val call = endpoints.getTrendingMoviesToday()
 
         try {
@@ -56,7 +71,7 @@ class TrendingMoviesViewModelTest {
 
     @Test
     fun `API Trending Movies Weekly should be successfully accessed`() {
-        val endpoints = ApiService.getApiService()
+        val endpoints = apiService
         val call = endpoints.getTrendingMoviesWeekly()
 
         try {

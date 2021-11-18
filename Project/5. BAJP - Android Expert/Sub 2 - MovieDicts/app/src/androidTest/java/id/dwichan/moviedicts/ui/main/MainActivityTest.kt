@@ -2,20 +2,37 @@ package id.dwichan.moviedicts.ui.main
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import id.dwichan.moviedicts.R
+import id.dwichan.moviedicts.core.util.IdlingResources
 import org.hamcrest.Matchers.not
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class MainActivityTest {
 
     @get:Rule
-    val activityRule = ActivityScenarioRule(MainActivity::class.java)
+    var activityRule = ActivityScenarioRule(MainActivity::class.java)
+
+    @Before
+    fun setup() {
+        IdlingRegistry.getInstance().register(IdlingResources.idlingResource)
+    }
+
+    @After
+    fun tearDown() {
+        IdlingRegistry.getInstance().unregister(IdlingResources.idlingResource)
+    }
 
     @Test
     fun shouldMoviesFragmentValid() {
@@ -96,7 +113,7 @@ class MainActivityTest {
     @Test
     fun shouldTrendingDailyMovieItemsAreValid() {
         onView(withId(R.id.navigation_movies)).perform(click())
-        Thread.sleep(WAIT_TIME)
+        //Thread.sleep(WAIT_TIME)
         onView(withId(R.id.rec_movies_trending_today)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 TOTAL_DATA_SHOWN
@@ -105,13 +122,15 @@ class MainActivityTest {
         onView(withId(R.id.rec_movies_trending_today)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
-            ),
+            )
+        )
+        onView(withId(R.id.rec_movies_trending_today)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
                 click()
             )
         )
-        Thread.sleep(WAIT_TIME)
+        //Thread.sleep(WAIT_TIME)
 
         onView(withId(R.id.image_movie_poster)).check(matches(isDisplayed()))
 
@@ -128,7 +147,7 @@ class MainActivityTest {
     @Test
     fun shouldTrendingWeeklyMovieItemsAreValid() {
         onView(withId(R.id.navigation_movies)).perform(click())
-        Thread.sleep(WAIT_TIME)
+        //Thread.sleep(WAIT_TIME)
         onView(withId(R.id.rec_movies_trending_weekly)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 TOTAL_DATA_SHOWN
@@ -137,13 +156,15 @@ class MainActivityTest {
         onView(withId(R.id.rec_movies_trending_weekly)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
-            ),
+            )
+        )
+        onView(withId(R.id.rec_movies_trending_weekly)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
                 click()
             )
         )
-        Thread.sleep(WAIT_TIME)
+        //Thread.sleep(WAIT_TIME)
 
         onView(withId(R.id.image_movie_poster)).check(matches(isDisplayed()))
 
@@ -160,7 +181,7 @@ class MainActivityTest {
     @Test
     fun shouldTrendingDailyTvShowItemsAreValid() {
         onView(withId(R.id.navigation_television)).perform(click())
-        Thread.sleep(WAIT_TIME)
+        //Thread.sleep(WAIT_TIME)
         onView(withId(R.id.rec_tv_trending_today)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 TOTAL_DATA_SHOWN
@@ -169,13 +190,15 @@ class MainActivityTest {
         onView(withId(R.id.rec_tv_trending_today)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
-            ),
+            )
+        )
+        onView(withId(R.id.rec_tv_trending_today)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
                 click()
             )
         )
-        Thread.sleep(WAIT_TIME)
+        //Thread.sleep(WAIT_TIME)
 
         onView(withId(R.id.image_tv_poster)).check(matches(isDisplayed()))
 
@@ -192,7 +215,7 @@ class MainActivityTest {
     @Test
     fun shouldTrendingWeeklyTvShowItemsAreValid() {
         onView(withId(R.id.navigation_television)).perform(click())
-        Thread.sleep(WAIT_TIME)
+        //Thread.sleep(WAIT_TIME)
         onView(withId(R.id.rec_tv_trending_today)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 TOTAL_DATA_SHOWN
@@ -201,13 +224,15 @@ class MainActivityTest {
         onView(withId(R.id.rec_tv_trending_today)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 0
-            ),
+            )
+        )
+        onView(withId(R.id.rec_tv_trending_today)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
                 click()
             )
         )
-        Thread.sleep(WAIT_TIME)
+        //Thread.sleep(WAIT_TIME)
 
         onView(withId(R.id.image_tv_poster)).check(matches(isDisplayed()))
 
@@ -227,7 +252,7 @@ class MainActivityTest {
         const val BOOKMARKS_TITLE = "Bookmarks"
         const val ABOUT_TITLE = "About"
 
-        const val WAIT_TIME = 5000L // 5 seconds
+        const val WAIT_TIME = 500L // 0.5 seconds
         const val TOTAL_DATA_SHOWN = 20 // 20 items per page
     }
 

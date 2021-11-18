@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import id.dwichan.moviedicts.core.util.IdlingResources
 import id.dwichan.moviedicts.databinding.ActivityLoadingBinding
 
 class LoadingActivity : AppCompatActivity() {

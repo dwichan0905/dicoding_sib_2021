@@ -113,7 +113,7 @@ class MainActivityTest {
     @Test
     fun shouldTrendingDailyMovieItemsAreValid() {
         onView(withId(R.id.navigation_movies)).perform(click())
-        //Thread.sleep(WAIT_TIME)
+
         onView(withId(R.id.rec_movies_trending_today)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 TOTAL_DATA_SHOWN
@@ -130,7 +130,6 @@ class MainActivityTest {
                 click()
             )
         )
-        //Thread.sleep(WAIT_TIME)
 
         onView(withId(R.id.image_movie_poster)).check(matches(isDisplayed()))
 
@@ -147,7 +146,7 @@ class MainActivityTest {
     @Test
     fun shouldTrendingWeeklyMovieItemsAreValid() {
         onView(withId(R.id.navigation_movies)).perform(click())
-        //Thread.sleep(WAIT_TIME)
+
         onView(withId(R.id.rec_movies_trending_weekly)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 TOTAL_DATA_SHOWN
@@ -164,7 +163,6 @@ class MainActivityTest {
                 click()
             )
         )
-        //Thread.sleep(WAIT_TIME)
 
         onView(withId(R.id.image_movie_poster)).check(matches(isDisplayed()))
 
@@ -181,7 +179,7 @@ class MainActivityTest {
     @Test
     fun shouldTrendingDailyTvShowItemsAreValid() {
         onView(withId(R.id.navigation_television)).perform(click())
-        //Thread.sleep(WAIT_TIME)
+
         onView(withId(R.id.rec_tv_trending_today)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 TOTAL_DATA_SHOWN
@@ -198,7 +196,6 @@ class MainActivityTest {
                 click()
             )
         )
-        //Thread.sleep(WAIT_TIME)
 
         onView(withId(R.id.image_tv_poster)).check(matches(isDisplayed()))
 
@@ -215,7 +212,7 @@ class MainActivityTest {
     @Test
     fun shouldTrendingWeeklyTvShowItemsAreValid() {
         onView(withId(R.id.navigation_television)).perform(click())
-        //Thread.sleep(WAIT_TIME)
+
         onView(withId(R.id.rec_tv_trending_today)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
                 TOTAL_DATA_SHOWN
@@ -232,7 +229,6 @@ class MainActivityTest {
                 click()
             )
         )
-        //Thread.sleep(WAIT_TIME)
 
         onView(withId(R.id.image_tv_poster)).check(matches(isDisplayed()))
 

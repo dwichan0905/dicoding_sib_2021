@@ -1,9 +1,9 @@
 package id.dwichan.moviedicts.ui.detail.television
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import id.dwichan.moviedicts.core.data.repository.TelevisionShowRepository
-import id.dwichan.moviedicts.core.data.repository.remote.RemoteDataSource
 import id.dwichan.moviedicts.core.data.repository.remote.api.ApiService
 import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionDetailsResponse
 import id.dwichan.moviedicts.core.di.NetworkModule
@@ -37,7 +37,6 @@ class DetailTelevisionShowViewModelTest {
     var rule: TestRule = InstantTaskExecutorRule()
 
     private lateinit var apiService: ApiService
-    private lateinit var remoteDataSource: RemoteDataSource
     private lateinit var televisionShowRepository: TelevisionShowRepository
     private lateinit var televisionShowInteractor: TelevisionShowInteractor
 
@@ -50,13 +49,12 @@ class DetailTelevisionShowViewModelTest {
     @Before
     fun setup() {
         apiService = NetworkModule.provideApiService(NetworkModule.provideOkHttpClient())
-        remoteDataSource = RemoteDataSource(apiService)
-        televisionShowRepository = TelevisionShowRepository(remoteDataSource)
+        televisionShowRepository = Mockito.mock(TelevisionShowRepository::class.java)
         televisionShowInteractor = TelevisionShowInteractor(televisionShowRepository)
     }
 
     @Test
-    fun `API Detail Movies should be successfully accessed and correct values`() {
+    fun `API Detail TV Show should be successfully accessed and correct values`() {
         val endpoints = apiService
         val call = endpoints.getTelevisionShowDetails(dummyTvId)
 
@@ -76,9 +74,21 @@ class DetailTelevisionShowViewModelTest {
     @Test
     @Suppress("UNCHECKED_CAST")
     fun `ViewModel should be returned correct values`() {
+        val liveData = MutableLiveData<TelevisionDetailsResponse>()
+        try {
+            val call = apiService.getTelevisionShowDetails(dummyTvId)
+            val response = call.execute()
+            val responseBody = response.body()
+
+            liveData.value = responseBody
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
         val mockApi = Mockito.mock(ApiService::class.java)
         val mockCall = Mockito.mock(Call::class.java) as Call<TelevisionDetailsResponse>
 
+        Mockito.`when`(televisionShowRepository.getTelevisionShowDetailsData()).thenReturn(liveData)
         Mockito.`when`(mockApi.getTelevisionShowDetails(dummyTvId)).thenReturn(mockCall)
         Mockito.doAnswer {
             val callback =
@@ -101,11 +111,26 @@ class DetailTelevisionShowViewModelTest {
     @Test
     @Suppress("UNCHECKED_CAST")
     fun `ViewModel should be returned error when Television ID is 0`() {
+        val liveData = MutableLiveData<TelevisionDetailsResponse>()
+        val liveDataError = MutableLiveData<SingleEvent<String>>()
+        try {
+            val call = apiService.getTelevisionShowDetails(dummyTvId)
+            val response = call.execute()
+            val responseBody = response.body()
+
+            liveData.value = responseBody
+            liveDataError.value = SingleEvent(response.errorBody()?.string().toString())
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
         val mockApi = Mockito.mock(ApiService::class.java)
         val mockCall = Mockito.mock(Call::class.java) as Call<TelevisionDetailsResponse>
         val mockThrowable = Mockito.mock(Throwable::class.java)
 
-        Mockito.`when`(mockApi.getTelevisionShowDetails(dummyEmptyTvId)).thenReturn(mockCall)
+        Mockito.`when`(televisionShowRepository.getTelevisionShowDetailsData()).thenReturn(liveData)
+        Mockito.`when`(televisionShowRepository.getErrorReason()).thenReturn(liveDataError)
+        Mockito.`when`(mockApi.getTelevisionShowDetails(dummyTvId)).thenReturn(mockCall)
         Mockito.doAnswer {
             val callback =
                 it.getArgument(0, Callback::class.java) as Callback<TelevisionDetailsResponse>

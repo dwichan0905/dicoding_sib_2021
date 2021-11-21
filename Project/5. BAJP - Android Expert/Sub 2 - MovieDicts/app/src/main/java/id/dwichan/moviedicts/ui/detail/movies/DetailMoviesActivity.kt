@@ -24,6 +24,7 @@ import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieDet
 import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieGenresItem
 import id.dwichan.moviedicts.core.data.repository.remote.response.movie.ProductionCompaniesItem
 import id.dwichan.moviedicts.core.util.Converter
+import id.dwichan.moviedicts.core.util.IdlingResources
 import id.dwichan.moviedicts.databinding.ActivityDetailMoviesBinding
 import id.dwichan.moviedicts.ui.loading.LoadingActivity
 import kotlin.math.floor
@@ -80,9 +81,11 @@ class DetailMoviesActivity : AppCompatActivity() {
                 startActivity(intentLoading)
             } else {
                 // close loading indicator
+                IdlingResources.increment()
                 Handler(Looper.getMainLooper()).postDelayed({
                     val intentCloseLoading = Intent(LoadingActivity.INTENT_FINISH_LOADING)
                     sendBroadcast(intentCloseLoading)
+                    IdlingResources.decrement()
                 }, DELAY)
             }
         }

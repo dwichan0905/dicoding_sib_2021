@@ -1,9 +1,9 @@
 package id.dwichan.moviedicts.ui.detail.movies
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import id.dwichan.moviedicts.core.data.repository.MoviesRepository
-import id.dwichan.moviedicts.core.data.repository.remote.RemoteDataSource
 import id.dwichan.moviedicts.core.data.repository.remote.api.ApiService
 import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieDetailsResponse
 import id.dwichan.moviedicts.core.di.NetworkModule
@@ -28,7 +28,6 @@ import java.io.IOException
 class DetailMoviesViewModelTest {
 
     private lateinit var apiService: ApiService
-    private lateinit var remoteDataSource: RemoteDataSource
     private lateinit var moviesRepository: MoviesRepository
     private lateinit var moviesInteractor: MoviesInteractor
 
@@ -50,8 +49,7 @@ class DetailMoviesViewModelTest {
     @Before
     fun setup() {
         apiService = NetworkModule.provideApiService(NetworkModule.provideOkHttpClient())
-        remoteDataSource = RemoteDataSource(apiService)
-        moviesRepository = MoviesRepository(remoteDataSource)
+        moviesRepository = Mockito.mock(MoviesRepository::class.java)
         moviesInteractor = MoviesInteractor(moviesRepository)
     }
 
@@ -76,9 +74,21 @@ class DetailMoviesViewModelTest {
     @Test
     @Suppress("UNCHECKED_CAST")
     fun `ViewModel should be returned correct values`() {
+        val liveData = MutableLiveData<MovieDetailsResponse>()
+        try {
+            val call = apiService.getMovieDetails(dummyMovieId)
+            val response = call.execute()
+            val responseBody = response.body()
+
+            liveData.value = responseBody
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
         val mockApi = Mockito.mock(ApiService::class.java)
         val mockCall = Mockito.mock(Call::class.java) as Call<MovieDetailsResponse>
 
+        Mockito.`when`(moviesRepository.getMovieDetailsData()).thenReturn(liveData)
         Mockito.`when`(mockApi.getMovieDetails(dummyMovieId)).thenReturn(mockCall)
         Mockito.doAnswer {
             val callback = it.getArgument(0, Callback::class.java) as Callback<MovieDetailsResponse>
@@ -100,10 +110,25 @@ class DetailMoviesViewModelTest {
     @Test
     @Suppress("UNCHECKED_CAST")
     fun `ViewModel should be returned error when Movie ID is 0`() {
+        val liveData = MutableLiveData<MovieDetailsResponse>()
+        val liveDataError = MutableLiveData<SingleEvent<String>>()
+        try {
+            val call = apiService.getMovieDetails(dummyMovieId)
+            val response = call.execute()
+            val responseBody = response.body()
+
+            liveData.value = responseBody
+            liveDataError.value = SingleEvent(response.errorBody()?.string().toString())
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
         val mockApi = Mockito.mock(ApiService::class.java)
         val mockCall = Mockito.mock(Call::class.java) as Call<MovieDetailsResponse>
         val mockThrowable = Mockito.mock(Throwable::class.java)
 
+        Mockito.`when`(moviesRepository.getMovieDetailsData()).thenReturn(liveData)
+        Mockito.`when`(moviesRepository.getErrorReason()).thenReturn(liveDataError)
         Mockito.`when`(mockApi.getMovieDetails(dummyEmptyMovieId)).thenReturn(mockCall)
         Mockito.doAnswer {
             val callback = it.getArgument(0, Callback::class.java) as Callback<MovieDetailsResponse>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet_movies_details"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/details_background"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="280dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    tools:ignore="Overdraw">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_swipe_indicator"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="13604-swipe-up-arrow-animation.json"
+            app:lottie_loop="false" />
+
+        <TextView
+            android:id="@+id/text_lottie_swipe_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/swipe_up"
+            app:layout_constraintEnd_toEndOf="@+id/lottie_swipe_indicator"
+            app:layout_constraintStart_toStartOf="@+id/lottie_swipe_indicator"
+            app:layout_constraintTop_toTopOf="@+id/lottie_swipe_indicator" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_highlight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lottie_swipe_indicator">
+
+            <ImageView
+                android:id="@+id/image_movie_poster"
+                android:layout_width="130dp"
+                android:layout_height="195dp"
+                android:layout_margin="16dp"
+                android:transitionName="posterIcon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/text_movie_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@string/example_movie_name"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_movie_poster"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_released_duration"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/example_released_duration"
+                app:layout_constraintEnd_toEndOf="@+id/text_movie_title"
+                app:layout_constraintStart_toStartOf="@+id/text_movie_title"
+                app:layout_constraintTop_toBottomOf="@+id/text_movie_title" />
+
+            <TextView
+                android:id="@+id/text_genres"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/example_genres"
+                app:layout_constraintEnd_toEndOf="@+id/text_released_duration"
+                app:layout_constraintStart_toStartOf="@+id/text_released_duration"
+                app:layout_constraintTop_toBottomOf="@+id/text_released_duration" />
+
+            <ProgressBar
+                android:id="@+id/pb_user_score"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/circle_shape"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="100"
+                android:progressDrawable="@drawable/circular_progress_bar"
+                app:layout_constraintStart_toStartOf="@+id/text_released_duration"
+                app:layout_constraintTop_toBottomOf="@+id/text_genres" />
+
+            <TextView
+                android:id="@+id/text_user_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/example_vote"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/pb_user_score"
+                app:layout_constraintEnd_toEndOf="@+id/pb_user_score"
+                app:layout_constraintStart_toStartOf="@+id/pb_user_score"
+                app:layout_constraintTop_toTopOf="@+id/pb_user_score" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/user_score"
+                app:layout_constraintBottom_toBottomOf="@+id/pb_user_score"
+                app:layout_constraintStart_toEndOf="@+id/pb_user_score"
+                app:layout_constraintTop_toTopOf="@+id/pb_user_score" />
+
+            <TextView
+                android:id="@+id/text_movie_adult_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="4dp"
+                android:background="#AA000000"
+                android:padding="4dp"
+                android:text="@string/adult_status"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/image_movie_poster"
+                app:layout_constraintTop_toTopOf="@+id/image_movie_poster" />
+
+            <TextView
+                android:id="@+id/text_tagline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/example_tagline"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="@+id/text_released_duration"
+                app:layout_constraintStart_toStartOf="@+id/pb_user_score"
+                app:layout_constraintTop_toBottomOf="@+id/pb_user_score" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_favorite"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/button_add_to_bookmark"
+                app:icon="@drawable/ic_baseline_bookmark_border_24"
+                app:layout_constraintEnd_toEndOf="@+id/text_genres"
+                app:layout_constraintStart_toStartOf="@+id/text_genres"
+                app:layout_constraintTop_toBottomOf="@+id/text_tagline" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/overview"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraint_highlight" />
+
+        <TextView
+            android:id="@+id/text_overview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/example_overview"
+            app:layout_constraintEnd_toEndOf="@id/textView5"
+            app:layout_constraintStart_toStartOf="@+id/textView5"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/production_companies"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_overview" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rec_production_company"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8"
+            tools:itemCount="1"
+            tools:listitem="@layout/item_production_company" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="32dp"
+            android:text="@string/end_line_details"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rec_production_company" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

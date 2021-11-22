@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/drawable/circle_shape.xml" value="0.164453125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/drawable/ic_baseline_bookmark_24.xml" value="0.1" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.1" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/drawable/ic_error_image.xml" value="0.21927083333333333" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/drawable/ic_loading_image.xml" value="0.21927083333333333" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/activity_detail.xml" value="0.203125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/activity_detail_movies.xml" value="0.203125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/activity_detail_television_show.xml" value="0.203125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/activity_loading.xml" value="0.141796875" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/activity_search.xml" value="0.203125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/activity_splash.xml" value="0.2" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/bottom_sheet_movies_detail.xml" value="0.203125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/bottom_sheet_movies_details.xml" value="0.33" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/bottom_sheet_television_details.xml" value="0.18" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/fragment_about.xml" value="0.203125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/fragment_bookmark.xml" value="0.25" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/fragment_movies.xml" value="0.33" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/fragment_television_show.xml" value="0.407098121085595" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/item_creator.xml" value="0.33" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/item_crews.xml" value="0.4123314065510597" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/item_movies.xml" value="0.25" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/item_movies_highlight.xml" value="0.5" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/item_movies_trending.xml" value="0.33" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/item_option.xml" value="0.203125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/item_production_company.xml" value="0.15234375" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/item_tv_shows.xml" value="0.2" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/item_tv_shows_trending.xml" value="0.203125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/layout/layout_loading.xml" value="0.15234375" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/menu/menu_details.xml" value="0.1" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/menu/menu_fragments.xml" value="0.203125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/menu/menu_main.xml" value="0.203125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/menu/menu_search.xml" value="0.203125" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/MovieDicts/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.21927083333333333" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/Sub 2 - MovieDicts/app/src/main/res/layout/activity_detail_movies.xml" value="0.15057915057915058" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/Sub 2 - MovieDicts/app/src/main/res/layout/activity_detail_television_show.xml" value="0.15057915057915058" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/Sub 2 - MovieDicts/app/src/main/res/layout/bottom_sheet_movies_details.xml" value="0.22" />
+        <entry key="..\:/Studies/Kuliah/MBKM/7 - SIB Dicoding/Project/5. BAJP - Android Expert/Sub 2 - MovieDicts/app/src/main/res/layout/bottom_sheet_television_details.xml" value="0.18" />
+      </map>
+    </option>
+  </component>
+  <component name="EntryPointsManager">
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="dagger.hilt.InstallIn" />
+    </list>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

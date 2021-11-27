@@ -5,31 +5,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import id.dwichan.moviedicts.core.data.entity.Option
+import id.dwichan.moviedicts.core.data.entity.OptionDataEntity
 import id.dwichan.moviedicts.databinding.ItemOptionBinding
 
-class OptionsAdapter(private val options: List<Option>) :
+class OptionsAdapter(private val optionDataEntities: List<OptionDataEntity>) :
     RecyclerView.Adapter<OptionsAdapter.OptionsViewHolder>() {
 
     inner class OptionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val binding = ItemOptionBinding.bind(itemView)
 
-        fun bind(option: Option) {
+        fun bind(optionDataEntity: OptionDataEntity) {
             val context = binding.root.context
 
             Glide.with(context)
-                .load(option.icon)
+                .load(optionDataEntity.icon)
                 .into(binding.imageIcon)
 
-            if (option.showNextIndicator) {
+            if (optionDataEntity.showNextIndicator) {
                 binding.imageNext.visibility = View.VISIBLE
             } else {
                 binding.imageNext.visibility = View.GONE
             }
 
-            binding.textTitle.text = option.title
-            binding.root.setOnClickListener(option.onClick)
+            binding.textTitle.text = optionDataEntity.title
+            binding.root.setOnClickListener(optionDataEntity.onClick)
         }
     }
 
@@ -42,8 +42,8 @@ class OptionsAdapter(private val options: List<Option>) :
     }
 
     override fun onBindViewHolder(holder: OptionsViewHolder, position: Int) {
-        holder.bind(options[position])
+        holder.bind(optionDataEntities[position])
     }
 
-    override fun getItemCount(): Int = options.size
+    override fun getItemCount(): Int = optionDataEntities.size
 }

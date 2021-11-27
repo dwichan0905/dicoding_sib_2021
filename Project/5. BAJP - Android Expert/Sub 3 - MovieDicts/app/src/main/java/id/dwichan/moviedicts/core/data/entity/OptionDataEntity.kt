@@ -3,7 +3,7 @@ package id.dwichan.moviedicts.core.data.entity
 import android.view.View
 import androidx.annotation.DrawableRes
 
-data class Option(
+data class OptionDataEntity(
     @DrawableRes var icon: Int = 0,
     var title: String = "",
     val showNextIndicator: Boolean = true,

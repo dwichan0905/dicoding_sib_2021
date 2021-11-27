@@ -1,11 +1,11 @@
 package id.dwichan.moviedicts.core.util
 
 import androidx.recyclerview.widget.DiffUtil
-import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
+import id.dwichan.moviedicts.core.data.entity.TrendingResultsDataEntity
 
 class TrendingResultsItemDiffUtilCallback(
-    private val oldList: List<TrendingResultsItem>,
-    private val newList: List<TrendingResultsItem>
+    private val oldList: List<TrendingResultsDataEntity>,
+    private val newList: List<TrendingResultsDataEntity>
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldList.size
 

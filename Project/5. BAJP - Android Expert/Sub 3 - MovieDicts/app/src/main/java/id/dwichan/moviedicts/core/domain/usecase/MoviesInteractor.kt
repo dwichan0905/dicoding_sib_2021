@@ -1,43 +1,34 @@
 package id.dwichan.moviedicts.core.domain.usecase
 
 import androidx.lifecycle.LiveData
-import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieDetailsResponse
-import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
+import id.dwichan.moviedicts.core.data.entity.MovieDetailsDataEntity
+import id.dwichan.moviedicts.core.data.entity.MovieTelevisionDataEntity
+import id.dwichan.moviedicts.core.data.entity.TrendingResultsDataEntity
 import id.dwichan.moviedicts.core.domain.repository.MoviesDataSource
-import id.dwichan.moviedicts.core.util.SingleEvent
+import id.dwichan.moviedicts.vo.Resource
 import javax.inject.Inject
 
 class MoviesInteractor @Inject constructor(private val moviesDataSource: MoviesDataSource) :
     MoviesUseCase {
-    override fun getLoadingTodayState(): LiveData<Boolean> = moviesDataSource.getLoadingTodayState()
 
-    override fun getLoadingWeeklyState(): LiveData<Boolean> =
-        moviesDataSource.getLoadingWeeklyState()
+    override fun getFavoriteStatus(id: Int): Boolean =
+        moviesDataSource.getFavoriteStatus(id)
 
-    override fun getLoadingDetailsState(): LiveData<Boolean> =
-        moviesDataSource.getLoadingDetailsState()
+    override fun setMovieAsFavorite(data: MovieTelevisionDataEntity) {
+        moviesDataSource.setMovieAsFavorite(data)
+    }
 
-    override fun getErrorReason(): LiveData<SingleEvent<String>> = moviesDataSource.getErrorReason()
+    override fun removeFavoriteMovie(data: MovieTelevisionDataEntity) {
+        moviesDataSource.removeFavoriteMovie(data)
+    }
 
-    override fun getTrendingMoviesToday() {
+    override fun getTrendingMoviesToday(): LiveData<Resource<List<TrendingResultsDataEntity>>> =
         moviesDataSource.getTrendingMoviesToday()
-    }
 
-    override fun getTrendingMoviesTodayData(): LiveData<List<TrendingResultsItem>> =
-        moviesDataSource.getTrendingMoviesTodayData()
-
-    override fun getTrendingMoviesWeekly() {
+    override fun getTrendingMoviesWeekly(): LiveData<Resource<List<TrendingResultsDataEntity>>> =
         moviesDataSource.getTrendingMoviesWeekly()
-    }
 
-    override fun getTrendingMoviesWeeklyData(): LiveData<List<TrendingResultsItem>> =
-        moviesDataSource.getTrendingMoviesWeeklyData()
-
-    override fun getMovieDetails(id: Int) {
+    override fun getMovieDetails(id: Int): LiveData<Resource<MovieDetailsDataEntity>> =
         moviesDataSource.getMovieDetails(id)
-    }
-
-    override fun getMovieDetailsData(): LiveData<MovieDetailsResponse> =
-        moviesDataSource.getMovieDetailsData()
 
 }

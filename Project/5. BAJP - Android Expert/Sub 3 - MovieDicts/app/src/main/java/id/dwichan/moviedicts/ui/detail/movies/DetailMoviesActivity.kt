@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -19,14 +20,18 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import id.dwichan.moviedicts.R
-import id.dwichan.moviedicts.core.data.entity.MovieTelevisionEntity
-import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieDetailsResponse
+import id.dwichan.moviedicts.core.data.entity.GenresDataEntity
+import id.dwichan.moviedicts.core.data.entity.MovieDetailsDataEntity
+import id.dwichan.moviedicts.core.data.entity.MovieTelevisionDataEntity
+import id.dwichan.moviedicts.core.data.entity.ProductionCompaniesDataEntity
 import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieGenresItem
 import id.dwichan.moviedicts.core.data.repository.remote.response.movie.ProductionCompaniesItem
 import id.dwichan.moviedicts.core.util.Converter
 import id.dwichan.moviedicts.core.util.IdlingResources
 import id.dwichan.moviedicts.databinding.ActivityDetailMoviesBinding
 import id.dwichan.moviedicts.ui.loading.LoadingActivity
+import id.dwichan.moviedicts.vo.Resource
+import id.dwichan.moviedicts.vo.Status
 import kotlin.math.floor
 
 @AndroidEntryPoint
@@ -35,8 +40,10 @@ class DetailMoviesActivity : AppCompatActivity() {
     private val viewModel: DetailMoviesViewModel by viewModels()
 
     private lateinit var productionCompanyAdapter: ProductionCompanyAdapter
-    private lateinit var movieDetailsResponse: MovieDetailsResponse
-    private lateinit var movieTelevisionEntity: MovieTelevisionEntity
+    private lateinit var movieDetailsResponse: MovieDetailsDataEntity
+    private lateinit var movieTelevisionDataEntity: MovieTelevisionDataEntity
+
+    private lateinit var detailsObserver: Observer<Resource<MovieDetailsDataEntity>>
 
     // fix memory leak
     private var _binding: ActivityDetailMoviesBinding? = null
@@ -69,49 +76,40 @@ class DetailMoviesActivity : AppCompatActivity() {
                 .create().show()
         }
 
-        viewModel.data.observe(this) { response ->
-            movieDetailsResponse = response
-            if (response.genres != null) loadReceivedData()
-        }
-
-        viewModel.isLoading.observe(this) {
-            if (it == true) {
-                // show loading indicator
-                val intentLoading = Intent(this, LoadingActivity::class.java)
-                startActivity(intentLoading)
-            } else {
-                // close loading indicator
-                IdlingResources.increment()
-                Handler(Looper.getMainLooper()).postDelayed({
-                    val intentCloseLoading = Intent(LoadingActivity.INTENT_FINISH_LOADING)
-                    sendBroadcast(intentCloseLoading)
-                    IdlingResources.decrement()
-                }, DELAY)
-            }
-        }
-
-        viewModel.errorReason.observe(this) { error ->
-            error?.getContentIfNotHandled().let {
-                if (it?.isNotEmpty() == true) {
-                    Snackbar
-                        .make(
+        detailsObserver = Observer { response ->
+            if (response != null) {
+                when (response.status) {
+                    Status.SUCCESS -> {
+                        showLoading(false)
+                        if (response.data != null) {
+                            movieDetailsResponse = response.data
+                            if (response.data.genres != null) loadReceivedData()
+                        }
+                    }
+                    Status.ERROR -> {
+                        showLoading(false)
+                        Snackbar.make(
                             binding.root,
-                            "An error occurred with reason: $it",
+                            "An error occurred with reason: ${response.message}",
                             Snackbar.LENGTH_SHORT
-                        )
-                        .show()
+                        ).show()
+                        supportFinishAfterTransition()
+                    }
+                    Status.LOADING -> {
+                        showLoading(true)
+                    }
                 }
             }
         }
 
         val bundle = intent.extras
         if (bundle != null) {
-            movieTelevisionEntity = bundle.getParcelable<MovieTelevisionEntity>(
+            movieTelevisionDataEntity = bundle.getParcelable<MovieTelevisionDataEntity>(
                 EXTRA_MOVIE_ENTITY
-            ) as MovieTelevisionEntity
+            ) as MovieTelevisionDataEntity
 
-            viewModel.setMovieId(movieTelevisionEntity.id)
-            viewModel.fetchMovieDetails()
+            viewModel.setMovieId(movieTelevisionDataEntity.id)
+            viewModel.movieDetails.observe(this, detailsObserver)
         } else {
             Toast.makeText(
                 this,
@@ -132,18 +130,10 @@ class DetailMoviesActivity : AppCompatActivity() {
                         binding.content.lottieSwipeIndicator.visibility = View.VISIBLE
                         binding.content.textLottieSwipeIndicator.visibility = View.VISIBLE
                     }
-                    BottomSheetBehavior.STATE_DRAGGING -> {
-
-                    }
-                    BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-
-                    }
-                    BottomSheetBehavior.STATE_HIDDEN -> {
-
-                    }
-                    BottomSheetBehavior.STATE_SETTLING -> {
-
-                    }
+                    BottomSheetBehavior.STATE_DRAGGING -> {}
+                    BottomSheetBehavior.STATE_HALF_EXPANDED -> {}
+                    BottomSheetBehavior.STATE_HIDDEN -> {}
+                    BottomSheetBehavior.STATE_SETTLING -> {}
                 }
             }
 
@@ -151,6 +141,22 @@ class DetailMoviesActivity : AppCompatActivity() {
                 // do nothing
             }
         })
+    }
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            // show loading indicator
+            val intentLoading = Intent(this, LoadingActivity::class.java)
+            startActivity(intentLoading)
+        } else {
+            // close loading indicator
+            IdlingResources.increment()
+            Handler(Looper.getMainLooper()).postDelayed({
+                val intentCloseLoading = Intent(LoadingActivity.INTENT_FINISH_LOADING)
+                sendBroadcast(intentCloseLoading)
+                IdlingResources.decrement()
+            }, DELAY)
+        }
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -184,7 +190,7 @@ class DetailMoviesActivity : AppCompatActivity() {
 
             // adult status
             if (this.adult != null) {
-                if (this.adult) {
+                if (this.adult!!) {
                     binding.content.textMovieAdultStatus.visibility = View.VISIBLE
                 } else {
                     binding.content.textMovieAdultStatus.visibility = View.GONE
@@ -193,7 +199,7 @@ class DetailMoviesActivity : AppCompatActivity() {
 
             // genre
             val formattedGenres = Converter.Movies.listGenresToStringList(
-                this.genres as List<MovieGenresItem>
+                this.genres as List<GenresDataEntity>
             )
             binding.content.textGenres.text = formattedGenres
 
@@ -218,7 +224,7 @@ class DetailMoviesActivity : AppCompatActivity() {
 
             // production companies
             productionCompanyAdapter.setCompanies(
-                (this.productionCompanies ?: ArrayList()) as List<ProductionCompaniesItem>
+                (this.productionCompanies ?: ArrayList()) as List<ProductionCompaniesDataEntity>
             )
         }
     }
@@ -232,7 +238,7 @@ class DetailMoviesActivity : AppCompatActivity() {
         when (item.itemId) {
             android.R.id.home -> onBackPressed()
             R.id.menu_refresh -> {
-                viewModel.fetchMovieDetails()
+                viewModel.movieDetails.observe(this, detailsObserver)
             }
             R.id.menu_share -> {
                 val mimeType = "text/plain"

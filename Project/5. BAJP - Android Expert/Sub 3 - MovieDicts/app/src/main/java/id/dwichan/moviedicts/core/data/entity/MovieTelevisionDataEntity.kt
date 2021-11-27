@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class MovieTelevisionEntity(
+data class MovieTelevisionDataEntity(
     val id: Int,
     val title: String,
     val backdropPath: String,

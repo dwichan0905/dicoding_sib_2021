@@ -7,20 +7,20 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import id.dwichan.moviedicts.R
-import id.dwichan.moviedicts.core.data.repository.remote.response.movie.ProductionCompaniesItem
+import id.dwichan.moviedicts.core.data.entity.ProductionCompaniesDataEntity
 import id.dwichan.moviedicts.core.util.movies.ProductionCompanyDiffUtilCallback
 import id.dwichan.moviedicts.databinding.ItemProductionCompanyBinding
 
 class ProductionCompanyAdapter :
     RecyclerView.Adapter<ProductionCompanyAdapter.ProductionCompanyViewHolder>() {
 
-    private var companies: ArrayList<ProductionCompaniesItem> = ArrayList()
+    private var companies: ArrayList<ProductionCompaniesDataEntity> = ArrayList()
 
     class ProductionCompanyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val binding = ItemProductionCompanyBinding.bind(itemView)
 
-        fun bind(company: ProductionCompaniesItem) {
+        fun bind(company: ProductionCompaniesDataEntity) {
             Glide.with(binding.root)
                 .load("https://image.tmdb.org/t/p/original${company.logoPath}")
                 .placeholder(R.drawable.ic_loading_image)
@@ -31,7 +31,7 @@ class ProductionCompanyAdapter :
         }
     }
 
-    fun setCompanies(companiesItem: List<ProductionCompaniesItem>) {
+    fun setCompanies(companiesItem: List<ProductionCompaniesDataEntity>) {
         val callback = ProductionCompanyDiffUtilCallback(this.companies, companiesItem)
         val diffUtil = DiffUtil.calculateDiff(callback)
         this.companies.clear()

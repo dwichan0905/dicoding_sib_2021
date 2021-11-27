@@ -1,5 +1,6 @@
 package id.dwichan.moviedicts.core.util
 
+import id.dwichan.moviedicts.core.data.entity.GenresDataEntity
 import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieGenresItem
 import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionShowGenresItem
 import java.text.SimpleDateFormat
@@ -35,7 +36,7 @@ object Converter {
     }
 
     object Movies {
-        fun listGenresToStringList(genres: List<MovieGenresItem>): String {
+        fun listGenresToStringList(genres: List<GenresDataEntity>): String {
             var genre = ""
             for (items in genres.indices) {
                 genre += if (items < (genres.size - 1)) {
@@ -49,7 +50,7 @@ object Converter {
     }
 
     object TelevisionShow {
-        fun listGenresToStringList(genres: List<TelevisionShowGenresItem>): String {
+        fun listGenresToStringList(genres: List<GenresDataEntity>): String {
             var genre = ""
             for (items in genres.indices) {
                 genre += if (items < (genres.size - 1)) {

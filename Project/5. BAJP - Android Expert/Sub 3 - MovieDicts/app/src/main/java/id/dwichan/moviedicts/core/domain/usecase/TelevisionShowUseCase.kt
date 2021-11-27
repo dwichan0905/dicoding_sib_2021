@@ -1,28 +1,22 @@
 package id.dwichan.moviedicts.core.domain.usecase
 
 import androidx.lifecycle.LiveData
-import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionDetailsResponse
-import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
-import id.dwichan.moviedicts.core.util.SingleEvent
+import id.dwichan.moviedicts.core.data.entity.MovieTelevisionDataEntity
+import id.dwichan.moviedicts.core.data.entity.TelevisionDetailsDataEntity
+import id.dwichan.moviedicts.core.data.entity.TrendingResultsDataEntity
+import id.dwichan.moviedicts.vo.Resource
 
 interface TelevisionShowUseCase {
-    fun getLoadingTodayState(): LiveData<Boolean>
 
-    fun getLoadingWeeklyState(): LiveData<Boolean>
+    fun getFavoriteStatus(id: Int): Boolean
 
-    fun getLoadingDetailsState(): LiveData<Boolean>
+    fun setTvShowAsFavorite(data: MovieTelevisionDataEntity)
 
-    fun getErrorReason(): LiveData<SingleEvent<String>>
+    fun removeFavoriteTvShow(data: MovieTelevisionDataEntity)
 
-    fun getTrendingTelevisionShowToday()
+    fun getTrendingTelevisionShowToday(): LiveData<Resource<List<TrendingResultsDataEntity>>>
 
-    fun getTrendingTelevisionShowTodayData(): LiveData<List<TrendingResultsItem>>
+    fun getTrendingTelevisionShowWeekly(): LiveData<Resource<List<TrendingResultsDataEntity>>>
 
-    fun getTrendingTelevisionShowWeekly()
-
-    fun getTrendingTelevisionShowWeeklyData(): LiveData<List<TrendingResultsItem>>
-
-    fun getTelevisionShowDetails(id: Int)
-
-    fun getTelevisionShowDetailsData(): LiveData<TelevisionDetailsResponse>
+    fun getTelevisionShowDetails(id: Int): LiveData<Resource<TelevisionDetailsDataEntity>>
 }

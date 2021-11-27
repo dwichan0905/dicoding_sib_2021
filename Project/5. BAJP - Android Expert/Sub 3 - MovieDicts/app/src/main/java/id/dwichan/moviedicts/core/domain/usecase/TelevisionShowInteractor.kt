@@ -1,41 +1,35 @@
 package id.dwichan.moviedicts.core.domain.usecase
 
 import androidx.lifecycle.LiveData
-import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionDetailsResponse
-import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
+import id.dwichan.moviedicts.core.data.entity.MovieTelevisionDataEntity
+import id.dwichan.moviedicts.core.data.entity.TelevisionDetailsDataEntity
+import id.dwichan.moviedicts.core.data.entity.TrendingResultsDataEntity
 import id.dwichan.moviedicts.core.domain.repository.TelevisionShowDataSource
-import id.dwichan.moviedicts.core.util.SingleEvent
+import id.dwichan.moviedicts.vo.Resource
 import javax.inject.Inject
 
-class TelevisionShowInteractor @Inject constructor(private val televisionShowDataSource: TelevisionShowDataSource) :
-    TelevisionShowUseCase {
-    override fun getLoadingTodayState(): LiveData<Boolean> =
-        televisionShowDataSource.getLoadingTodayState()
+class TelevisionShowInteractor @Inject constructor(
+    private val televisionShowDataSource: TelevisionShowDataSource
+) : TelevisionShowUseCase {
 
-    override fun getLoadingWeeklyState(): LiveData<Boolean> =
-        televisionShowDataSource.getLoadingWeeklyState()
+    override fun getFavoriteStatus(id: Int): Boolean =
+        televisionShowDataSource.getFavoriteStatus(id)
 
-    override fun getLoadingDetailsState(): LiveData<Boolean> =
-        televisionShowDataSource.getLoadingDetailsState()
+    override fun setTvShowAsFavorite(data: MovieTelevisionDataEntity) {
+        televisionShowDataSource.setTvShowAsFavorite(data)
+    }
 
-    override fun getErrorReason(): LiveData<SingleEvent<String>> =
-        televisionShowDataSource.getErrorReason()
+    override fun removeFavoriteTvShow(data: MovieTelevisionDataEntity) {
+        televisionShowDataSource.removeFavoriteTvShow(data)
+    }
 
-    override fun getTrendingTelevisionShowToday() =
+    override fun getTrendingTelevisionShowToday(): LiveData<Resource<List<TrendingResultsDataEntity>>> =
         televisionShowDataSource.getTrendingTelevisionShowToday()
 
-    override fun getTrendingTelevisionShowTodayData(): LiveData<List<TrendingResultsItem>> =
-        televisionShowDataSource.getTrendingTelevisionShowTodayData()
-
-    override fun getTrendingTelevisionShowWeekly() =
+    override fun getTrendingTelevisionShowWeekly(): LiveData<Resource<List<TrendingResultsDataEntity>>> =
         televisionShowDataSource.getTrendingTelevisionShowWeekly()
 
-    override fun getTrendingTelevisionShowWeeklyData(): LiveData<List<TrendingResultsItem>> =
-        televisionShowDataSource.getTrendingTelevisionShowWeeklyData()
-
-    override fun getTelevisionShowDetails(id: Int) =
+    override fun getTelevisionShowDetails(id: Int): LiveData<Resource<TelevisionDetailsDataEntity>> =
         televisionShowDataSource.getTelevisionShowDetails(id)
 
-    override fun getTelevisionShowDetailsData(): LiveData<TelevisionDetailsResponse> =
-        televisionShowDataSource.getTelevisionShowDetailsData()
 }

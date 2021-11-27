@@ -8,14 +8,18 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.dwichan.moviedicts.R
-import id.dwichan.moviedicts.core.data.entity.MovieTelevisionEntity
-import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
+import id.dwichan.moviedicts.core.data.entity.MovieTelevisionDataEntity
+import id.dwichan.moviedicts.core.data.entity.TrendingResultsDataEntity
 import id.dwichan.moviedicts.databinding.FragmentMoviesBinding
 import id.dwichan.moviedicts.databinding.ItemMoviesTrendingBinding
 import id.dwichan.moviedicts.ui.detail.movies.DetailMoviesActivity
+import id.dwichan.moviedicts.vo.Resource
+import id.dwichan.moviedicts.vo.Status
+import id.dwichan.moviedicts.vo.Type
 
 @AndroidEntryPoint
 class MoviesFragment : Fragment() {
@@ -30,15 +34,15 @@ class MoviesFragment : Fragment() {
         override fun onItemClick(
             position: Int,
             itemBind: ItemMoviesTrendingBinding,
-            item: TrendingResultsItem
+            item: TrendingResultsDataEntity
         ) {
-            val dataSend = MovieTelevisionEntity(
+            val dataSend = MovieTelevisionDataEntity(
                 id = item.id ?: 0,
                 title = item.title ?: item.originalTitle ?: item.name ?: item.originalName
                 ?: getString(R.string.unknown),
                 backdropPath = item.backdropPath ?: "/",
                 posterPath = item.posterPath ?: "/",
-                mediaType = "movie"
+                mediaType = Type.MEDIA_TYPE_MOVIES
             )
 
             val intent = Intent(context, DetailMoviesActivity::class.java)
@@ -50,6 +54,12 @@ class MoviesFragment : Fragment() {
         }
     }
 
+    private lateinit var trendingTodayObserver:
+            Observer<Resource<List<TrendingResultsDataEntity>>>
+
+    private lateinit var trendingWeeklyObserver:
+            Observer<Resource<List<TrendingResultsDataEntity>>>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,6 +68,7 @@ class MoviesFragment : Fragment() {
         return binding.root
     }
 
+    // FIXME: Repair these errors and change it to Status like TrendingToday
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -74,60 +85,82 @@ class MoviesFragment : Fragment() {
             )
             recMoviesTrendingWeekly.adapter = trendingWeeklyAdapter
 
-            viewModel.isLoadingToday.observe(viewLifecycleOwner) { state ->
-                if (state) {
-                    animLoadingTrendingToday.visibility = View.VISIBLE
-                } else {
-                    animLoadingTrendingToday.visibility = View.GONE
-                }
-            }
-
-            viewModel.isLoadingWeekly.observe(viewLifecycleOwner) { state ->
-                if (state) {
-                    animLoadingTrendingWeekly.visibility = View.VISIBLE
-                } else {
-                    animLoadingTrendingWeekly.visibility = View.GONE
-                }
-            }
-
-            viewModel.errorReason.observe(viewLifecycleOwner) {
-                it.getContentIfNotHandled().let { reason ->
-                    if (reason?.isNotEmpty() == true) {
-                        val reasonText = "An error occurred with reason: $reason"
-                        animError.visibility = View.VISIBLE
-                        textError.visibility = View.VISIBLE
-                        textError.text = reasonText
-
-                        showContent(false)
-                    } else {
-                        animError.visibility = View.GONE
-                        textError.visibility = View.GONE
-                        textError.text = ""
-
-                        showContent(true)
+            trendingTodayObserver = Observer { response ->
+                if (response != null) {
+                    when (response.status) {
+                        Status.SUCCESS -> {
+                            animLoadingTrendingToday.visibility = View.GONE
+                            showError(false)
+                            showContent(true)
+                            trendingTodayAdapter.setItems(response.data ?: ArrayList())
+                            trendingTodayAdapter.itemAction = itemAction
+                        }
+                        Status.ERROR -> {
+                            animLoadingTrendingToday.visibility = View.GONE
+                            showError(true, response.message)
+                            showContent(false)
+                        }
+                        Status.LOADING -> {
+                            animLoadingTrendingToday.visibility = View.VISIBLE
+                            showError(false)
+                            showContent(false)
+                        }
                     }
                 }
             }
 
-            binding.fragmentMovie.setOnRefreshListener {
-                viewModel.fetchTrendingToday()
-                viewModel.fetchTrendingWeekly()
+            trendingWeeklyObserver = Observer { response ->
+                if (response != null) {
+                    when (response.status) {
+                        Status.SUCCESS -> {
+                            animLoadingTrendingWeekly.visibility = View.GONE
+                            showError(false)
+                            showContent(true)
+                            trendingWeeklyAdapter.setItems(response.data ?: ArrayList())
+                            trendingWeeklyAdapter.itemAction = itemAction
+                        }
+                        Status.ERROR -> {
+                            animLoadingTrendingWeekly.visibility = View.GONE
+                            showError(true, response.message)
+                            showContent(false)
+                        }
+                        Status.LOADING -> {
+                            animLoadingTrendingWeekly.visibility = View.VISIBLE
+                            showError(false)
+                            showContent(false)
+                        }
+                    }
+                }
+            }
+
+            viewModel.trendingToday.observe(viewLifecycleOwner, trendingTodayObserver)
+
+            viewModel.trendingWeekly.observe(viewLifecycleOwner, trendingWeeklyObserver)
+
+            fragmentMovie.setOnRefreshListener {
+                viewModel.trendingToday.observe(viewLifecycleOwner, trendingTodayObserver)
+                viewModel.trendingWeekly.observe(viewLifecycleOwner, trendingWeeklyObserver)
                 fragmentMovie.isRefreshing = false
             }
         }
+    }
 
-        viewModel.trendingToday.observe(viewLifecycleOwner) { data ->
-            trendingTodayAdapter.setItems(data)
-            trendingTodayAdapter.itemAction = itemAction
+    private fun showError(state: Boolean, message: String? = "") {
+        binding.apply {
+            if (state) {
+                val reasonText = """
+                    An error were occurred. We will fix it immediately!
+                    Reason: $message
+                """.trimIndent()
+                animError.visibility = View.VISIBLE
+                textError.visibility = View.VISIBLE
+                textError.text = reasonText
+            } else {
+                animError.visibility = View.GONE
+                textError.visibility = View.GONE
+                textError.text = ""
+            }
         }
-
-        viewModel.trendingWeekly.observe(viewLifecycleOwner) { data ->
-            trendingWeeklyAdapter.setItems(data)
-            trendingWeeklyAdapter.itemAction = itemAction
-        }
-
-        viewModel.fetchTrendingToday()
-        viewModel.fetchTrendingWeekly()
     }
 
     private fun showContent(state: Boolean) {

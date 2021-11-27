@@ -2,22 +2,18 @@ package id.dwichan.moviedicts.ui.detail.movies
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieDetailsResponse
+import id.dwichan.moviedicts.core.data.entity.MovieDetailsDataEntity
+import id.dwichan.moviedicts.core.data.entity.MovieTelevisionDataEntity
 import id.dwichan.moviedicts.core.domain.usecase.MoviesUseCase
-import id.dwichan.moviedicts.core.util.SingleEvent
+import id.dwichan.moviedicts.vo.Resource
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailMoviesViewModel @Inject constructor(private val moviesUseCase: MoviesUseCase) :
     ViewModel() {
-
-    val data: LiveData<MovieDetailsResponse> = moviesUseCase.getMovieDetailsData()
-
-    val isLoading: LiveData<Boolean> = moviesUseCase.getLoadingDetailsState()
-
-    val errorReason: LiveData<SingleEvent<String>> = moviesUseCase.getErrorReason()
 
     private var _movieId = MutableLiveData<Int>()
 
@@ -25,7 +21,19 @@ class DetailMoviesViewModel @Inject constructor(private val moviesUseCase: Movie
         _movieId.value = id
     }
 
-    fun fetchMovieDetails() {
-        moviesUseCase.getMovieDetails(_movieId.value ?: 0)
+    val movieDetails: LiveData<Resource<MovieDetailsDataEntity>> =
+        Transformations.switchMap(_movieId) { id ->
+            moviesUseCase.getMovieDetails(id)
+        }
+
+    val favoriteStatus: Boolean = moviesUseCase.getFavoriteStatus(_movieId.value ?: 0)
+
+    fun setAsFavorite(data: MovieTelevisionDataEntity) {
+        moviesUseCase.setMovieAsFavorite(data)
     }
+
+    fun removeFromFavorite(data: MovieTelevisionDataEntity) {
+        moviesUseCase.removeFavoriteMovie(data)
+    }
+
 }

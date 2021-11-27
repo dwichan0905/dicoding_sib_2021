@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import id.dwichan.moviedicts.R
-import id.dwichan.moviedicts.core.data.entity.Option
+import id.dwichan.moviedicts.core.data.entity.OptionDataEntity
 import id.dwichan.moviedicts.databinding.FragmentAboutBinding
 
 class AboutFragment : Fragment() {
@@ -30,8 +30,8 @@ class AboutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val options: List<Option> = listOf(
-            Option(
+        val optionDataEntities: List<OptionDataEntity> = listOf(
+            OptionDataEntity(
                 icon = R.drawable.ic_baseline_facebook_24,
                 title = getString(R.string.visit_me_facebook),
                 onClick = {
@@ -40,7 +40,7 @@ class AboutFragment : Fragment() {
                     startActivity(intent)
                 }
             ),
-            Option(
+            OptionDataEntity(
                 icon = R.drawable.github_mark,
                 title = getString(R.string.visit_me_github),
                 onClick = {
@@ -49,7 +49,7 @@ class AboutFragment : Fragment() {
                     startActivity(intent)
                 }
             ),
-            Option(
+            OptionDataEntity(
                 icon = R.drawable.ic_baseline_email_24,
                 title = getString(R.string.send_me_email),
                 onClick = {
@@ -64,7 +64,7 @@ class AboutFragment : Fragment() {
             requireContext(), MaterialDividerItemDecoration.VERTICAL
         )
         binding.listOptions.addItemDecoration(divider)
-        binding.listOptions.adapter = OptionsAdapter(options)
+        binding.listOptions.adapter = OptionsAdapter(optionDataEntities)
     }
 
     // fix memory leak

@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import id.dwichan.moviedicts.BuildConfig
 import id.dwichan.moviedicts.core.data.repository.remote.api.ApiService
+import id.dwichan.moviedicts.core.util.AppExecutors
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -39,4 +40,6 @@ object NetworkModule {
         return retrofit.create(ApiService::class.java)
     }
 
+    @Provides
+    fun provideAppExecutors(): AppExecutors = AppExecutors()
 }

@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import id.dwichan.moviedicts.R
-import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
+import id.dwichan.moviedicts.core.data.entity.TrendingResultsDataEntity
 import id.dwichan.moviedicts.core.util.TrendingResultsItemDiffUtilCallback
 import id.dwichan.moviedicts.databinding.ItemTvShowsTrendingBinding
 
 class TrendingTelevisionShowAdapter :
     RecyclerView.Adapter<TrendingTelevisionShowAdapter.TrendingTelevisionShowViewHolder>() {
 
-    private var data: ArrayList<TrendingResultsItem> = ArrayList()
+    private var data: ArrayList<TrendingResultsDataEntity> = ArrayList()
     var itemAction: OnItemActionListener? = null
 
     inner class TrendingTelevisionShowViewHolder(itemView: View) :
@@ -22,7 +22,7 @@ class TrendingTelevisionShowAdapter :
 
         private val binding = ItemTvShowsTrendingBinding.bind(itemView)
 
-        fun bind(position: Int, item: TrendingResultsItem) {
+        fun bind(position: Int, item: TrendingResultsDataEntity) {
             binding.apply {
                 Glide.with(itemView)
                     .load("https://image.tmdb.org/t/p/original${item.posterPath}")
@@ -44,7 +44,7 @@ class TrendingTelevisionShowAdapter :
         }
     }
 
-    fun setItems(list: List<TrendingResultsItem>) {
+    fun setItems(list: List<TrendingResultsDataEntity>) {
         val callback = TrendingResultsItemDiffUtilCallback(this.data, list)
         val diffUtil = DiffUtil.calculateDiff(callback)
         this.data.clear()
@@ -74,7 +74,7 @@ class TrendingTelevisionShowAdapter :
         fun onItemClick(
             position: Int,
             itemBind: ItemTvShowsTrendingBinding,
-            item: TrendingResultsItem
+            item: TrendingResultsDataEntity
         )
     }
 }

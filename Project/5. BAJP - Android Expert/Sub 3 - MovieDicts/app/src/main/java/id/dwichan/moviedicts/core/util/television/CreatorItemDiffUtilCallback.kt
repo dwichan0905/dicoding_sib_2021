@@ -1,11 +1,12 @@
 package id.dwichan.moviedicts.core.util.television
 
 import androidx.recyclerview.widget.DiffUtil
+import id.dwichan.moviedicts.core.data.entity.CreatedByDataEntity
 import id.dwichan.moviedicts.core.data.repository.remote.response.television.CreatedByItem
 
 class CreatorItemDiffUtilCallback(
-    private val oldList: List<CreatedByItem>,
-    private val newList: List<CreatedByItem>
+    private val oldList: List<CreatedByDataEntity>,
+    private val newList: List<CreatedByDataEntity>
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldList.size
 

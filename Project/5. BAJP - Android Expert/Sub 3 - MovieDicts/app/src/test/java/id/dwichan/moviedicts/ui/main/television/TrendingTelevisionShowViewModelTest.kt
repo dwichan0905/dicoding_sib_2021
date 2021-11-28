@@ -3,12 +3,13 @@ package id.dwichan.moviedicts.ui.main.television
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import id.dwichan.moviedicts.core.data.entity.TrendingResultsDataEntity
 import id.dwichan.moviedicts.core.data.repository.TelevisionShowRepository
 import id.dwichan.moviedicts.core.data.repository.remote.api.ApiService
 import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResponse
-import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResultsItem
 import id.dwichan.moviedicts.core.di.NetworkModule
 import id.dwichan.moviedicts.core.domain.usecase.TelevisionShowInteractor
+import id.dwichan.moviedicts.vo.Resource
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -16,7 +17,6 @@ import org.junit.Test
 import org.junit.rules.TestRule
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.anyList
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
@@ -36,7 +36,7 @@ class TrendingTelevisionShowViewModelTest {
     var rule: TestRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var observer: Observer<List<TrendingResultsItem>>
+    private lateinit var observer: Observer<Resource<List<TrendingResultsDataEntity>>>
 
     @Before
     fun setup() {
@@ -82,15 +82,31 @@ class TrendingTelevisionShowViewModelTest {
     @Test
     @Suppress("UNCHECKED_CAST")
     fun `ViewModel for Trending Daily should be returned correct values`() {
-        val liveData = MutableLiveData<List<TrendingResultsItem>>()
+        val liveData = MutableLiveData<Resource<List<TrendingResultsDataEntity>>>()
         try {
-            val call = apiService.getTrendingMoviesWeekly()
+            val network = NetworkModule.provideApiService(NetworkModule.provideOkHttpClient())
+            val call = network.getTrendingTelevisionShowToday()
+
             val response = call.execute()
             val responseBody = response.body()
+            val itemList = responseBody!!.results!!
 
-            if (responseBody != null) {
-                liveData.value = responseBody.results as List<TrendingResultsItem>
+            val received = ArrayList<TrendingResultsDataEntity>()
+            for (position in itemList.indices) {
+                val item = TrendingResultsDataEntity(
+                    originalTitle = itemList[position]?.originalTitle,
+                    title = itemList[position]?.title,
+                    backdropPath = itemList[position]?.backdropPath,
+                    posterPath = itemList[position]?.posterPath,
+                    voteAverage = itemList[position]?.voteAverage,
+                    id = itemList[position]?.id,
+                    name = itemList[position]?.name,
+                    originalName = itemList[position]?.originalName,
+                    adult = itemList[position]?.adult
+                )
+                received.add(item)
             }
+            liveData.value = Resource.success(received)
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -98,7 +114,7 @@ class TrendingTelevisionShowViewModelTest {
         val mockApi = Mockito.mock(ApiService::class.java)
         val mockCall = Mockito.mock(Call::class.java) as Call<TrendingResponse>
 
-        Mockito.`when`(televisionShowRepository.getTrendingTelevisionShowTodayData())
+        Mockito.`when`(televisionShowRepository.getTrendingTelevisionShowToday())
             .thenReturn(liveData)
         Mockito.`when`(mockApi.getTrendingTelevisionShowToday()).thenReturn(mockCall)
         Mockito.doAnswer {
@@ -108,25 +124,39 @@ class TrendingTelevisionShowViewModelTest {
         }.`when`(mockCall).enqueue(any())
 
         val viewModel = TrendingTelevisionShowViewModel(televisionShowInteractor)
-        viewModel.fetchTrendingToday()
-        Thread.sleep(SLEEP_WAIT_TIME)
         viewModel.trendingToday.observeForever(observer)
-        Mockito.verify(observer).onChanged(anyList())
+        Mockito.verify(observer).onChanged(any())
         viewModel.trendingToday.removeObserver(observer)
     }
 
     @Test
     @Suppress("UNCHECKED_CAST")
     fun `ViewModel for Trending Weekly should be returned correct values`() {
-        val liveData = MutableLiveData<List<TrendingResultsItem>>()
+        val liveData = MutableLiveData<Resource<List<TrendingResultsDataEntity>>>()
         try {
-            val call = apiService.getTrendingMoviesWeekly()
+            val network = NetworkModule.provideApiService(NetworkModule.provideOkHttpClient())
+            val call = network.getTrendingTelevisionShowToday()
+
             val response = call.execute()
             val responseBody = response.body()
+            val itemList = responseBody!!.results!!
 
-            if (responseBody != null) {
-                liveData.value = responseBody.results as List<TrendingResultsItem>
+            val received = ArrayList<TrendingResultsDataEntity>()
+            for (position in itemList.indices) {
+                val item = TrendingResultsDataEntity(
+                    originalTitle = itemList[position]?.originalTitle,
+                    title = itemList[position]?.title,
+                    backdropPath = itemList[position]?.backdropPath,
+                    posterPath = itemList[position]?.posterPath,
+                    voteAverage = itemList[position]?.voteAverage,
+                    id = itemList[position]?.id,
+                    name = itemList[position]?.name,
+                    originalName = itemList[position]?.originalName,
+                    adult = itemList[position]?.adult
+                )
+                received.add(item)
             }
+            liveData.value = Resource.success(received)
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -134,7 +164,7 @@ class TrendingTelevisionShowViewModelTest {
         val mockApi = Mockito.mock(ApiService::class.java)
         val mockCall = Mockito.mock(Call::class.java) as Call<TrendingResponse>
 
-        Mockito.`when`(televisionShowRepository.getTrendingTelevisionShowWeeklyData())
+        Mockito.`when`(televisionShowRepository.getTrendingTelevisionShowWeekly())
             .thenReturn(liveData)
         Mockito.`when`(mockApi.getTrendingTelevisionShowWeekly()).thenReturn(mockCall)
         Mockito.doAnswer {
@@ -144,10 +174,8 @@ class TrendingTelevisionShowViewModelTest {
         }.`when`(mockCall).enqueue(any())
 
         val viewModel = TrendingTelevisionShowViewModel(televisionShowInteractor)
-        viewModel.fetchTrendingToday()
-        Thread.sleep(SLEEP_WAIT_TIME)
         viewModel.trendingWeekly.observeForever(observer)
-        Mockito.verify(observer).onChanged(anyList())
+        Mockito.verify(observer).onChanged(any())
         viewModel.trendingWeekly.removeObserver(observer)
     }
 

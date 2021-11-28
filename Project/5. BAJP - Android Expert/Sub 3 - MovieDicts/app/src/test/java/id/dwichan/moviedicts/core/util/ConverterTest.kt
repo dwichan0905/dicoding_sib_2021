@@ -1,15 +1,14 @@
 package id.dwichan.moviedicts.core.util
 
-import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieGenresItem
-import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionShowGenresItem
+import id.dwichan.moviedicts.core.data.entity.GenresDataEntity
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
 class ConverterTest {
 
-    private val dummyMovieGenres = ArrayList<MovieGenresItem>()
-    private val dummyTvShowGenres = ArrayList<TelevisionShowGenresItem>()
+    private val dummyMovieGenres = ArrayList<GenresDataEntity>()
+    private val dummyTvShowGenres = ArrayList<GenresDataEntity>()
 
     private val expectedMovieGenres = "Action, Adventure"
     private val expectedTvShowGenres = "Family, Action"
@@ -20,25 +19,25 @@ class ConverterTest {
     @Before
     fun setup() {
         dummyMovieGenres.add(
-            MovieGenresItem(
+            GenresDataEntity(
                 id = 1,
                 name = "Action"
             )
         )
         dummyMovieGenres.add(
-            MovieGenresItem(
+            GenresDataEntity(
                 id = 2,
                 name = "Adventure"
             )
         )
         dummyTvShowGenres.add(
-            TelevisionShowGenresItem(
+            GenresDataEntity(
                 id = 1,
                 name = "Family"
             )
         )
         dummyTvShowGenres.add(
-            TelevisionShowGenresItem(
+            GenresDataEntity(
                 id = 2,
                 name = "Action"
             )

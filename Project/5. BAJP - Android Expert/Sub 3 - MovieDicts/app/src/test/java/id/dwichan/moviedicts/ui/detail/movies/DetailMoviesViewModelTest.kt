@@ -3,12 +3,15 @@ package id.dwichan.moviedicts.ui.detail.movies
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import id.dwichan.moviedicts.core.data.entity.GenresDataEntity
+import id.dwichan.moviedicts.core.data.entity.MovieDetailsDataEntity
+import id.dwichan.moviedicts.core.data.entity.ProductionCompaniesDataEntity
 import id.dwichan.moviedicts.core.data.repository.MoviesRepository
 import id.dwichan.moviedicts.core.data.repository.remote.api.ApiService
 import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieDetailsResponse
 import id.dwichan.moviedicts.core.di.NetworkModule
 import id.dwichan.moviedicts.core.domain.usecase.MoviesInteractor
-import id.dwichan.moviedicts.core.util.SingleEvent
+import id.dwichan.moviedicts.vo.Resource
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -41,10 +44,10 @@ class DetailMoviesViewModelTest {
     var rule: TestRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var observer: Observer<MovieDetailsResponse>
+    private lateinit var observer: Observer<Resource<MovieDetailsDataEntity>>
 
     @Mock
-    private lateinit var observerError: Observer<SingleEvent<String>>
+    private lateinit var observerError: Observer<Resource<MovieDetailsDataEntity>>
 
     @Before
     fun setup() {
@@ -74,13 +77,54 @@ class DetailMoviesViewModelTest {
     @Test
     @Suppress("UNCHECKED_CAST")
     fun `ViewModel should be returned correct values`() {
-        val liveData = MutableLiveData<MovieDetailsResponse>()
+        val liveData = MutableLiveData<Resource<MovieDetailsDataEntity>>()
         try {
-            val call = apiService.getMovieDetails(dummyMovieId)
+            val network = NetworkModule.provideApiService(NetworkModule.provideOkHttpClient())
+            val call = network.getMovieDetails(dummyMovieId)
+
             val response = call.execute()
             val responseBody = response.body()
 
-            liveData.value = responseBody
+            // convert genres
+            val genreNet = responseBody!!.genres!!
+            val genreReceived = ArrayList<GenresDataEntity>()
+            for (position in genreNet.indices) {
+                val item = GenresDataEntity(
+                    id = genreNet[position]?.id,
+                    name = genreNet[position]?.name
+                )
+                genreReceived.add(item)
+            }
+
+            // convert companies
+            val companyNet = responseBody.productionCompanies!!
+            val companyReceived = ArrayList<ProductionCompaniesDataEntity>()
+            for (position in companyNet.indices) {
+                val item = ProductionCompaniesDataEntity(
+                    id = companyNet[position]?.id,
+                    name = companyNet[position]?.name,
+                    logoPath = companyNet[position]?.logoPath
+                )
+                companyReceived.add(item)
+            }
+
+            // convert details
+            val details = MovieDetailsDataEntity(
+                title = responseBody.title,
+                adult = responseBody.adult,
+                voteAverage = responseBody.voteAverage,
+                posterPath = responseBody.posterPath,
+                backdropPath = responseBody.backdropPath,
+                originalTitle = responseBody.originalTitle,
+                productionCompanies = companyReceived,
+                overview = responseBody.overview,
+                status = responseBody.status,
+                tagline = responseBody.tagline,
+                genres = genreReceived,
+                runtime = responseBody.runtime,
+                releaseDate = responseBody.releaseDate
+            )
+            liveData.value = Resource.success(details)
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -88,7 +132,7 @@ class DetailMoviesViewModelTest {
         val mockApi = Mockito.mock(ApiService::class.java)
         val mockCall = Mockito.mock(Call::class.java) as Call<MovieDetailsResponse>
 
-        Mockito.`when`(moviesRepository.getMovieDetailsData()).thenReturn(liveData)
+        Mockito.`when`(moviesRepository.getMovieDetails(dummyMovieId)).thenReturn(liveData)
         Mockito.`when`(mockApi.getMovieDetails(dummyMovieId)).thenReturn(mockCall)
         Mockito.doAnswer {
             val callback = it.getArgument(0, Callback::class.java) as Callback<MovieDetailsResponse>
@@ -100,40 +144,26 @@ class DetailMoviesViewModelTest {
 
         val viewModel = DetailMoviesViewModel(moviesInteractor)
         viewModel.setMovieId(dummyMovieId)
-        viewModel.fetchMovieDetails()
-        Thread.sleep(TIME_TO_WAIT)
-        viewModel.data.observeForever(observer)
-        Mockito.verify(observer).onChanged(any(MovieDetailsResponse::class.java))
-        viewModel.data.removeObserver(observer)
+        viewModel.movieDetails.observeForever(observer)
+        Mockito.verify(observer).onChanged(any())
+        viewModel.movieDetails.removeObserver(observer)
     }
 
     @Test
     @Suppress("UNCHECKED_CAST")
     fun `ViewModel should be returned error when Movie ID is 0`() {
-        val liveData = MutableLiveData<MovieDetailsResponse>()
-        val liveDataError = MutableLiveData<SingleEvent<String>>()
-        try {
-            val call = apiService.getMovieDetails(dummyMovieId)
-            val response = call.execute()
-            val responseBody = response.body()
-
-            liveData.value = responseBody
-            liveDataError.value = SingleEvent(response.errorBody()?.string().toString())
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
+        val liveDataError = MutableLiveData<Resource<MovieDetailsDataEntity>>()
+        liveDataError.value = Resource.error("stub!", MovieDetailsDataEntity())
 
         val mockApi = Mockito.mock(ApiService::class.java)
         val mockCall = Mockito.mock(Call::class.java) as Call<MovieDetailsResponse>
         val mockThrowable = Mockito.mock(Throwable::class.java)
 
-        Mockito.`when`(moviesRepository.getMovieDetailsData()).thenReturn(liveData)
-        Mockito.`when`(moviesRepository.getErrorReason()).thenReturn(liveDataError)
+        Mockito.`when`(moviesRepository.getMovieDetails(dummyEmptyMovieId)).thenReturn(liveDataError)
         Mockito.`when`(mockApi.getMovieDetails(dummyEmptyMovieId)).thenReturn(mockCall)
         Mockito.doAnswer {
             val callback = it.getArgument(0, Callback::class.java) as Callback<MovieDetailsResponse>
 
-            callback.onResponse(mockCall, Response.success(MovieDetailsResponse()))
             callback.onFailure(mockCall, mockThrowable)
 
             null
@@ -141,11 +171,9 @@ class DetailMoviesViewModelTest {
 
         val viewModel = DetailMoviesViewModel(moviesInteractor)
         viewModel.setMovieId(dummyEmptyMovieId)
-        viewModel.fetchMovieDetails()
-        Thread.sleep(TIME_TO_WAIT)
-        viewModel.errorReason.observeForever(observerError)
+        viewModel.movieDetails.observeForever(observerError)
         Mockito.verify(observerError).onChanged(any())
-        viewModel.errorReason.removeObserver(observerError)
+        viewModel.movieDetails.removeObserver(observerError)
     }
 
     companion object {

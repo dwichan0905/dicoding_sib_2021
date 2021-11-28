@@ -3,12 +3,16 @@ package id.dwichan.moviedicts.ui.detail.television
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import id.dwichan.moviedicts.core.data.entity.CreatedByDataEntity
+import id.dwichan.moviedicts.core.data.entity.GenresDataEntity
+import id.dwichan.moviedicts.core.data.entity.ProductionCompaniesDataEntity
+import id.dwichan.moviedicts.core.data.entity.TelevisionDetailsDataEntity
 import id.dwichan.moviedicts.core.data.repository.TelevisionShowRepository
 import id.dwichan.moviedicts.core.data.repository.remote.api.ApiService
 import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionDetailsResponse
 import id.dwichan.moviedicts.core.di.NetworkModule
 import id.dwichan.moviedicts.core.domain.usecase.TelevisionShowInteractor
-import id.dwichan.moviedicts.core.util.SingleEvent
+import id.dwichan.moviedicts.vo.Resource
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -41,10 +45,10 @@ class DetailTelevisionShowViewModelTest {
     private lateinit var televisionShowInteractor: TelevisionShowInteractor
 
     @Mock
-    private lateinit var observer: Observer<TelevisionDetailsResponse>
+    private lateinit var observer: Observer<Resource<TelevisionDetailsDataEntity>>
 
     @Mock
-    private lateinit var observerError: Observer<SingleEvent<String>>
+    private lateinit var observerError: Observer<Resource<TelevisionDetailsDataEntity>>
 
     @Before
     fun setup() {
@@ -74,13 +78,70 @@ class DetailTelevisionShowViewModelTest {
     @Test
     @Suppress("UNCHECKED_CAST")
     fun `ViewModel should be returned correct values`() {
-        val liveData = MutableLiveData<TelevisionDetailsResponse>()
+        val liveData = MutableLiveData<Resource<TelevisionDetailsDataEntity>>()
         try {
-            val call = apiService.getTelevisionShowDetails(dummyTvId)
+            val network = NetworkModule.provideApiService(NetworkModule.provideOkHttpClient())
+            val call = network.getTelevisionShowDetails(dummyTvId)
+
             val response = call.execute()
             val responseBody = response.body()
 
-            liveData.value = responseBody
+            // convert genres
+            val genreNet = responseBody!!.genres!!
+            val genreReceived = ArrayList<GenresDataEntity>()
+            for (position in genreNet.indices) {
+                val item = GenresDataEntity(
+                    id = genreNet[position]?.id,
+                    name = genreNet[position]?.name
+                )
+                genreReceived.add(item)
+            }
+
+            // convert companies
+            val companyNet = responseBody.productionCompanies!!
+            val companyReceived = ArrayList<ProductionCompaniesDataEntity>()
+            for (position in companyNet.indices) {
+                val item = ProductionCompaniesDataEntity(
+                    id = companyNet[position]?.id,
+                    name = companyNet[position]?.name,
+                    logoPath = companyNet[position]?.logoPath
+                )
+                companyReceived.add(item)
+            }
+
+            // convert creators
+            val creatorNet = responseBody.createdBy!!
+            val creatorReceived = ArrayList<CreatedByDataEntity>()
+            for (position in creatorNet.indices) {
+                val item = CreatedByDataEntity(
+                    id = creatorNet[position]?.id,
+                    name = creatorNet[position]?.name,
+                    profilePath = creatorNet[position]?.profilePath,
+                    gender = creatorNet[position]?.gender,
+                    creditId = creatorNet[position]?.creditId
+                )
+                creatorReceived.add(item)
+            }
+
+            // convert details
+            val details = TelevisionDetailsDataEntity(
+                voteAverage = responseBody.voteAverage,
+                posterPath = responseBody.posterPath,
+                backdropPath = responseBody.backdropPath,
+                productionCompanies = companyReceived,
+                overview = responseBody.overview,
+                status = responseBody.status,
+                tagline = responseBody.tagline,
+                genres = genreReceived,
+                name = responseBody.name,
+                originalName = responseBody.originalName,
+                numberOfSeasons = responseBody.numberOfSeasons,
+                numberOfEpisodes = responseBody.numberOfEpisodes,
+                firstAirDate = responseBody.firstAirDate,
+                episodeRunTime = responseBody.episodeRunTime,
+                createdBy = creatorReceived
+            )
+            liveData.value = Resource.success(details)
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -88,7 +149,7 @@ class DetailTelevisionShowViewModelTest {
         val mockApi = Mockito.mock(ApiService::class.java)
         val mockCall = Mockito.mock(Call::class.java) as Call<TelevisionDetailsResponse>
 
-        Mockito.`when`(televisionShowRepository.getTelevisionShowDetailsData()).thenReturn(liveData)
+        Mockito.`when`(televisionShowRepository.getTelevisionShowDetails(dummyTvId)).thenReturn(liveData)
         Mockito.`when`(mockApi.getTelevisionShowDetails(dummyTvId)).thenReturn(mockCall)
         Mockito.doAnswer {
             val callback =
@@ -101,41 +162,26 @@ class DetailTelevisionShowViewModelTest {
 
         val viewModel = DetailTelevisionShowViewModel(televisionShowInteractor)
         viewModel.setTelevisionId(dummyTvId)
-        viewModel.fetchTelevisionShowDetails()
-        Thread.sleep(TIME_TO_WAIT)
-        viewModel.data.observeForever(observer)
-        Mockito.verify(observer).onChanged(any(TelevisionDetailsResponse::class.java))
-        viewModel.data.removeObserver(observer)
+        viewModel.tvShowDetails.observeForever(observer)
+        Mockito.verify(observer).onChanged(any())
+        viewModel.tvShowDetails.removeObserver(observer)
     }
 
     @Test
     @Suppress("UNCHECKED_CAST")
     fun `ViewModel should be returned error when Television ID is 0`() {
-        val liveData = MutableLiveData<TelevisionDetailsResponse>()
-        val liveDataError = MutableLiveData<SingleEvent<String>>()
-        try {
-            val call = apiService.getTelevisionShowDetails(dummyTvId)
-            val response = call.execute()
-            val responseBody = response.body()
-
-            liveData.value = responseBody
-            liveDataError.value = SingleEvent(response.errorBody()?.string().toString())
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
+        val liveDataError = MutableLiveData<Resource<TelevisionDetailsDataEntity>>()
+        liveDataError.value = Resource.error("stub!", TelevisionDetailsDataEntity())
 
         val mockApi = Mockito.mock(ApiService::class.java)
         val mockCall = Mockito.mock(Call::class.java) as Call<TelevisionDetailsResponse>
         val mockThrowable = Mockito.mock(Throwable::class.java)
 
-        Mockito.`when`(televisionShowRepository.getTelevisionShowDetailsData()).thenReturn(liveData)
-        Mockito.`when`(televisionShowRepository.getErrorReason()).thenReturn(liveDataError)
-        Mockito.`when`(mockApi.getTelevisionShowDetails(dummyTvId)).thenReturn(mockCall)
+        Mockito.`when`(televisionShowRepository.getTelevisionShowDetails(dummyEmptyTvId)).thenReturn(liveDataError)
+        Mockito.`when`(mockApi.getTelevisionShowDetails(dummyEmptyTvId)).thenReturn(mockCall)
         Mockito.doAnswer {
-            val callback =
-                it.getArgument(0, Callback::class.java) as Callback<TelevisionDetailsResponse>
+            val callback = it.getArgument(0, Callback::class.java) as Callback<TelevisionDetailsResponse>
 
-            callback.onResponse(mockCall, Response.success(TelevisionDetailsResponse()))
             callback.onFailure(mockCall, mockThrowable)
 
             null
@@ -143,11 +189,9 @@ class DetailTelevisionShowViewModelTest {
 
         val viewModel = DetailTelevisionShowViewModel(televisionShowInteractor)
         viewModel.setTelevisionId(dummyEmptyTvId)
-        viewModel.fetchTelevisionShowDetails()
-        Thread.sleep(TIME_TO_WAIT)
-        viewModel.errorReason.observeForever(observerError)
+        viewModel.tvShowDetails.observeForever(observerError)
         Mockito.verify(observerError).onChanged(any())
-        viewModel.errorReason.removeObserver(observerError)
+        viewModel.tvShowDetails.removeObserver(observerError)
     }
 
     companion object {

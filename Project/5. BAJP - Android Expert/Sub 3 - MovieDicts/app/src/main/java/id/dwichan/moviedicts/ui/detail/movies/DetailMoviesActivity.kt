@@ -24,8 +24,6 @@ import id.dwichan.moviedicts.core.data.entity.GenresDataEntity
 import id.dwichan.moviedicts.core.data.entity.MovieDetailsDataEntity
 import id.dwichan.moviedicts.core.data.entity.MovieTelevisionDataEntity
 import id.dwichan.moviedicts.core.data.entity.ProductionCompaniesDataEntity
-import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieGenresItem
-import id.dwichan.moviedicts.core.data.repository.remote.response.movie.ProductionCompaniesItem
 import id.dwichan.moviedicts.core.util.Converter
 import id.dwichan.moviedicts.core.util.IdlingResources
 import id.dwichan.moviedicts.databinding.ActivityDetailMoviesBinding

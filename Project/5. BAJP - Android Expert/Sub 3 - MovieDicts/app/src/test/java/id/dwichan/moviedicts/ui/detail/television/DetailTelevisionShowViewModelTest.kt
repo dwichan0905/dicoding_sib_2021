@@ -149,7 +149,8 @@ class DetailTelevisionShowViewModelTest {
         val mockApi = Mockito.mock(ApiService::class.java)
         val mockCall = Mockito.mock(Call::class.java) as Call<TelevisionDetailsResponse>
 
-        Mockito.`when`(televisionShowRepository.getTelevisionShowDetails(dummyTvId)).thenReturn(liveData)
+        Mockito.`when`(televisionShowRepository.getTelevisionShowDetails(dummyTvId))
+            .thenReturn(liveData)
         Mockito.`when`(mockApi.getTelevisionShowDetails(dummyTvId)).thenReturn(mockCall)
         Mockito.doAnswer {
             val callback =
@@ -177,10 +178,12 @@ class DetailTelevisionShowViewModelTest {
         val mockCall = Mockito.mock(Call::class.java) as Call<TelevisionDetailsResponse>
         val mockThrowable = Mockito.mock(Throwable::class.java)
 
-        Mockito.`when`(televisionShowRepository.getTelevisionShowDetails(dummyEmptyTvId)).thenReturn(liveDataError)
+        Mockito.`when`(televisionShowRepository.getTelevisionShowDetails(dummyEmptyTvId))
+            .thenReturn(liveDataError)
         Mockito.`when`(mockApi.getTelevisionShowDetails(dummyEmptyTvId)).thenReturn(mockCall)
         Mockito.doAnswer {
-            val callback = it.getArgument(0, Callback::class.java) as Callback<TelevisionDetailsResponse>
+            val callback =
+                it.getArgument(0, Callback::class.java) as Callback<TelevisionDetailsResponse>
 
             callback.onFailure(mockCall, mockThrowable)
 
@@ -194,7 +197,4 @@ class DetailTelevisionShowViewModelTest {
         viewModel.tvShowDetails.removeObserver(observerError)
     }
 
-    companion object {
-        const val TIME_TO_WAIT = 10000L // 10 seconds
-    }
 }

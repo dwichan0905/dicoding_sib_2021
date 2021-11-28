@@ -7,7 +7,6 @@ import id.dwichan.moviedicts.core.data.repository.local.LocalDataSource
 import id.dwichan.moviedicts.core.data.repository.local.entity.TrendingEntity
 import id.dwichan.moviedicts.core.data.repository.local.entity.movie.MovieDetailsEntity
 import id.dwichan.moviedicts.core.data.repository.remote.RemoteDataSource
-import id.dwichan.moviedicts.core.data.repository.remote.api.ApiService
 import id.dwichan.moviedicts.core.di.NetworkModule
 import id.dwichan.moviedicts.core.util.AppExecutors
 import id.dwichan.moviedicts.vo.Resource
@@ -24,7 +23,6 @@ class MoviesRepositoryTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
-    private val api = mock(ApiService::class.java)
     private val remoteDataSource = mock(RemoteDataSource::class.java)
     private val localDataSource = mock(LocalDataSource::class.java)
     private val appExecutor = mock(AppExecutors::class.java)

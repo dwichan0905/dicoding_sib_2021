@@ -181,7 +181,9 @@ class FakeTelevisionShowRepository(
     @Suppress("SENSELESS_COMPARISON") // avoid warning comparison always true
     override fun getTelevisionShowDetails(id: Int): LiveData<Resource<TelevisionDetailsDataEntity>> {
         return object :
-            NetworkBoundResource<TelevisionDetailsDataEntity, TelevisionDetailsResponse>(appExecutors) {
+            NetworkBoundResource<TelevisionDetailsDataEntity, TelevisionDetailsResponse>(
+                appExecutors
+            ) {
             override fun loadFromDatabase(): LiveData<TelevisionDetailsDataEntity> {
                 // load genres
                 val genre = ArrayList<GenresDataEntity>()

@@ -1,17 +1,12 @@
 package id.dwichan.moviedicts.core.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import id.dwichan.moviedicts.core.data.entity.*
+import id.dwichan.moviedicts.core.data.entity.TelevisionDetailsDataEntity
 import id.dwichan.moviedicts.core.data.repository.local.LocalDataSource
 import id.dwichan.moviedicts.core.data.repository.local.entity.TrendingEntity
 import id.dwichan.moviedicts.core.data.repository.local.entity.tvshow.TelevisionDetailsEntity
-import id.dwichan.moviedicts.core.data.repository.remote.ApiResponse
 import id.dwichan.moviedicts.core.data.repository.remote.RemoteDataSource
-import id.dwichan.moviedicts.core.data.repository.remote.api.ApiService
-import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionDetailsResponse
-import id.dwichan.moviedicts.core.data.repository.remote.response.trending.TrendingResponse
 import id.dwichan.moviedicts.core.di.NetworkModule
 import id.dwichan.moviedicts.core.util.AppExecutors
 import id.dwichan.moviedicts.vo.Resource
@@ -21,9 +16,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 import org.mockito.Mockito
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.IOException
 
 class TelevisionShowRepositoryTest {
@@ -31,7 +23,6 @@ class TelevisionShowRepositoryTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
-    private val api = Mockito.mock(ApiService::class.java)
     private val remoteDataSource = Mockito.mock(RemoteDataSource::class.java)
     private val localDataSource = Mockito.mock(LocalDataSource::class.java)
     private val appExecutor = Mockito.mock(AppExecutors::class.java)
@@ -146,12 +137,14 @@ class TelevisionShowRepositoryTest {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        Mockito.`when`(localDataSource.getTvShowDetails(dummyTvId)).thenReturn(televisionDetailsEntity)
+        Mockito.`when`(localDataSource.getTvShowDetails(dummyTvId))
+            .thenReturn(televisionDetailsEntity)
         val response = televisionShowRepository.getTelevisionShowDetails(dummyTvId)
         Mockito.verify(localDataSource).getTvShowDetails(dummyTvId)
         assertNotNull(response)
 
-        val observer = Mockito.mock(Observer::class.java) as Observer<Resource<TelevisionDetailsDataEntity>>
+        val observer =
+            Mockito.mock(Observer::class.java) as Observer<Resource<TelevisionDetailsDataEntity>>
         response.observeForever(observer)
         Mockito.verify(observer).onChanged(Mockito.any())
         response.removeObserver(observer)

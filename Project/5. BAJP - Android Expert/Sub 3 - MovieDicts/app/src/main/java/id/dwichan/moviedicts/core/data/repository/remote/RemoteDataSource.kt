@@ -33,9 +33,11 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
                     if (responseBody?.results != null) {
                         trendingMoviesToday.value = ApiResponse.success(responseBody)
                     } else {
-                        trendingMoviesToday.postValue(ApiResponse.empty(
-                            "Trending Movies Today is empty.", TrendingResponse()
-                        ))
+                        trendingMoviesToday.postValue(
+                            ApiResponse.empty(
+                                "Trending Movies Today is empty.", TrendingResponse()
+                            )
+                        )
                     }
                 } else {
                     trendingMoviesToday.value = ApiResponse.error(

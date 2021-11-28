@@ -2,7 +2,6 @@ package id.dwichan.moviedicts.core.util.television
 
 import androidx.recyclerview.widget.DiffUtil
 import id.dwichan.moviedicts.core.data.entity.ProductionCompaniesDataEntity
-import id.dwichan.moviedicts.core.data.repository.remote.response.television.ProductionCompaniesItem
 
 class ProductionCompanyDiffUtilCallback(
     private val oldList: List<ProductionCompaniesDataEntity>,

@@ -159,7 +159,8 @@ class DetailMoviesViewModelTest {
         val mockCall = Mockito.mock(Call::class.java) as Call<MovieDetailsResponse>
         val mockThrowable = Mockito.mock(Throwable::class.java)
 
-        Mockito.`when`(moviesRepository.getMovieDetails(dummyEmptyMovieId)).thenReturn(liveDataError)
+        Mockito.`when`(moviesRepository.getMovieDetails(dummyEmptyMovieId))
+            .thenReturn(liveDataError)
         Mockito.`when`(mockApi.getMovieDetails(dummyEmptyMovieId)).thenReturn(mockCall)
         Mockito.doAnswer {
             val callback = it.getArgument(0, Callback::class.java) as Callback<MovieDetailsResponse>
@@ -174,10 +175,6 @@ class DetailMoviesViewModelTest {
         viewModel.movieDetails.observeForever(observerError)
         Mockito.verify(observerError).onChanged(any())
         viewModel.movieDetails.removeObserver(observerError)
-    }
-
-    companion object {
-        const val TIME_TO_WAIT = 10000L // 10 seconds
     }
 
 }

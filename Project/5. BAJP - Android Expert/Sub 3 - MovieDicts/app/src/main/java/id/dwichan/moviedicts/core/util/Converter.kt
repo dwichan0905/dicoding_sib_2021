@@ -1,8 +1,6 @@
 package id.dwichan.moviedicts.core.util
 
 import id.dwichan.moviedicts.core.data.entity.GenresDataEntity
-import id.dwichan.moviedicts.core.data.repository.remote.response.movie.MovieGenresItem
-import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionShowGenresItem
 import java.text.SimpleDateFormat
 import java.util.*
 

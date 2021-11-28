@@ -197,7 +197,9 @@ class TelevisionShowRepository @Inject constructor(
     @Suppress("SENSELESS_COMPARISON") // avoid warning comparison always true
     override fun getTelevisionShowDetails(id: Int): LiveData<Resource<TelevisionDetailsDataEntity>> {
         return object :
-            NetworkBoundResource<TelevisionDetailsDataEntity, TelevisionDetailsResponse>(appExecutors) {
+            NetworkBoundResource<TelevisionDetailsDataEntity, TelevisionDetailsResponse>(
+                appExecutors
+            ) {
             override fun loadFromDatabase(): LiveData<TelevisionDetailsDataEntity> {
                 // load genres
                 val genre = ArrayList<GenresDataEntity>()
@@ -324,7 +326,7 @@ class TelevisionShowRepository @Inject constructor(
                             profilePath = creator[position]?.profilePath
                         )
                         localDataSource.insertTvShowCreators(item)
-                        
+
                         val crossRef = TelevisionCreatorCrossRef(
                             tvId = id,
                             creatorId = creator[position]?.id!!
@@ -332,7 +334,7 @@ class TelevisionShowRepository @Inject constructor(
                         localDataSource.insertTvShowCrossCreator(crossRef)
                     }
                 }
-                
+
                 // save details
                 val details = TelevisionDetailsEntity(
                     tvId = id,

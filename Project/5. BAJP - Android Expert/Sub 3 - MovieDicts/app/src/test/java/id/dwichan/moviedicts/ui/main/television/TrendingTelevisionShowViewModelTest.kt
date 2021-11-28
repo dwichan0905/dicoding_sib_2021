@@ -179,7 +179,4 @@ class TrendingTelevisionShowViewModelTest {
         viewModel.trendingWeekly.removeObserver(observer)
     }
 
-    companion object {
-        private const val SLEEP_WAIT_TIME = 10000L // 10 seconds
-    }
 }

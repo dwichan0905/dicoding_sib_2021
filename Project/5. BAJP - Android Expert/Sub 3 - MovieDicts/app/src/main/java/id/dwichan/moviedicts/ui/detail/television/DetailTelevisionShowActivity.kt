@@ -22,9 +22,6 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import id.dwichan.moviedicts.R
 import id.dwichan.moviedicts.core.data.entity.*
-import id.dwichan.moviedicts.core.data.repository.remote.response.television.CreatedByItem
-import id.dwichan.moviedicts.core.data.repository.remote.response.television.ProductionCompaniesItem
-import id.dwichan.moviedicts.core.data.repository.remote.response.television.TelevisionShowGenresItem
 import id.dwichan.moviedicts.core.util.Converter
 import id.dwichan.moviedicts.core.util.IdlingResources
 import id.dwichan.moviedicts.databinding.ActivityDetailTelevisionShowBinding

@@ -124,6 +124,7 @@ class TrendingTelevisionShowViewModelTest {
         }.`when`(mockCall).enqueue(any())
 
         val viewModel = TrendingTelevisionShowViewModel(televisionShowInteractor)
+        viewModel.reload()
         viewModel.trendingToday.observeForever(observer)
         Mockito.verify(observer).onChanged(any())
         viewModel.trendingToday.removeObserver(observer)
@@ -174,6 +175,7 @@ class TrendingTelevisionShowViewModelTest {
         }.`when`(mockCall).enqueue(any())
 
         val viewModel = TrendingTelevisionShowViewModel(televisionShowInteractor)
+        viewModel.reload()
         viewModel.trendingWeekly.observeForever(observer)
         Mockito.verify(observer).onChanged(any())
         viewModel.trendingWeekly.removeObserver(observer)

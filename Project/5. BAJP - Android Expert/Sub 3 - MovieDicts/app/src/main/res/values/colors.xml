@@ -10,4 +10,6 @@
     <color name="colorOnSecondary">#000000</color>
     <color name="placeholder">#AAAAAAAA</color>
     <color name="details_background">#E6FFFFFF</color>
+
+    <color name="remove_button">#D50000</color>
 </resources>

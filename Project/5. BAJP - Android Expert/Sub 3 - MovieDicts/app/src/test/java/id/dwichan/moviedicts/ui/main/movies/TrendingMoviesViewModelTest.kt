@@ -126,6 +126,7 @@ class TrendingMoviesViewModelTest {
         }.`when`(mockCall).enqueue(any())
 
         val viewModel = TrendingMoviesViewModel(moviesInteractor)
+        viewModel.reload()
         viewModel.trendingToday.observeForever(observer)
         verify(observer).onChanged(any())
         viewModel.trendingToday.removeObserver(observer)
@@ -177,9 +178,9 @@ class TrendingMoviesViewModelTest {
         }.`when`(mockCall).enqueue(any())
 
         val viewModel = TrendingMoviesViewModel(moviesInteractor)
+        viewModel.reload()
         viewModel.trendingWeekly.observeForever(observer)
         verify(observer).onChanged(any())
         viewModel.trendingWeekly.removeObserver(observer)
     }
-
 }

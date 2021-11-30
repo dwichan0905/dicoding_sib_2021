@@ -15,5 +15,5 @@ class ProductionCompanyDiffUtilCallback(
         oldItemPosition == newItemPosition
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-        oldItemPosition == newItemPosition
+        oldList[oldItemPosition] == newList[newItemPosition]
 }

@@ -12,11 +12,11 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import id.dwichan.moviedicts.R
@@ -42,6 +42,7 @@ class DetailMoviesActivity : AppCompatActivity() {
     private lateinit var movieTelevisionDataEntity: MovieTelevisionDataEntity
 
     private lateinit var detailsObserver: Observer<Resource<MovieDetailsDataEntity>>
+    private lateinit var favoriteObserver: Observer<Boolean>
 
     // fix memory leak
     private var _binding: ActivityDetailMoviesBinding? = null
@@ -65,14 +66,6 @@ class DetailMoviesActivity : AppCompatActivity() {
             false
         )
         binding.content.recProductionCompany.adapter = productionCompanyAdapter
-
-        binding.content.buttonFavorite.setOnClickListener {
-            MaterialAlertDialogBuilder(this)
-                .setTitle(getString(R.string.coming_soon))
-                .setMessage(R.string.coming_soon_message)
-                .setPositiveButton(getString(R.string.okay), null)
-                .create().show()
-        }
 
         detailsObserver = Observer { response ->
             if (response != null) {
@@ -99,6 +92,13 @@ class DetailMoviesActivity : AppCompatActivity() {
                 }
             }
         }
+        favoriteObserver = Observer { state ->
+            binding.content.apply {
+                if (state != null) {
+                    stateFavoriteButton(state)
+                }
+            }
+        }
 
         val bundle = intent.extras
         if (bundle != null) {
@@ -108,6 +108,7 @@ class DetailMoviesActivity : AppCompatActivity() {
 
             viewModel.setMovieId(movieTelevisionDataEntity.id)
             viewModel.movieDetails.observe(this, detailsObserver)
+            viewModel.bookmarkStatus.observe(this, favoriteObserver)
         } else {
             Toast.makeText(
                 this,
@@ -139,6 +140,46 @@ class DetailMoviesActivity : AppCompatActivity() {
                 // do nothing
             }
         })
+    }
+
+    private fun stateFavoriteButton(state: Boolean) {
+        binding.content.apply {
+            if (state) {
+                buttonBookmark.setIconResource(R.drawable.ic_baseline_bookmark_24)
+                buttonBookmark.text = getString(R.string.button_remove_from_bookmark)
+                buttonBookmark.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this@DetailMoviesActivity, R.color.remove_button
+                    )
+                )
+                buttonBookmark.setOnClickListener {
+                    viewModel.removeFromBookmark(movieTelevisionDataEntity)
+                    stateFavoriteButton(!state)
+                    Toast.makeText(
+                        this@DetailMoviesActivity,
+                        R.string.bookmark_remove_success,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
+                buttonBookmark.setIconResource(R.drawable.ic_baseline_bookmark_border_24)
+                buttonBookmark.text = getString(R.string.button_add_to_bookmark)
+                buttonBookmark.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this@DetailMoviesActivity, R.color.colorPrimary
+                    )
+                )
+                buttonBookmark.setOnClickListener {
+                    viewModel.setAsBookmark(movieTelevisionDataEntity)
+                    stateFavoriteButton(!state)
+                    Toast.makeText(
+                        this@DetailMoviesActivity,
+                        R.string.bookmark_add_success,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
     }
 
     private fun showLoading(state: Boolean) {

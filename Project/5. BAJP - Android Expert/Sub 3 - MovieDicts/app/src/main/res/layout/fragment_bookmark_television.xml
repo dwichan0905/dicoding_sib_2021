@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.main.bookmark.television.BookmarkTelevisionFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rec_tv_bookmarks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/anim_tv_not_found"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="70332-no-data-animation.json"
+        app:lottie_loop="false" />
+
+    <TextView
+        android:id="@+id/text_tv_not_found"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/anim_tv_not_found"
+        android:padding="16dp"
+        android:text="@string/bookmark_not_found_tv"
+        android:textAlignment="center"/>
+
+</RelativeLayout>

@@ -13,11 +13,11 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import id.dwichan.moviedicts.R
@@ -41,6 +41,7 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
     private lateinit var movieTelevisionDataEntity: MovieTelevisionDataEntity
 
     private lateinit var detailsObserver: Observer<Resource<TelevisionDetailsDataEntity>>
+    private lateinit var favoriteObserver: Observer<Boolean>
 
     // fix memory leak
     private var _binding: ActivityDetailTelevisionShowBinding? = null
@@ -84,6 +85,13 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
                 }
             }
         }
+        favoriteObserver = Observer { state ->
+            binding.content.apply {
+                if (state != null) {
+                    setBookmarkButton(state)
+                }
+            }
+        }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.tv_show_details)
@@ -107,14 +115,6 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
         )
         binding.content.recProductionCompany.adapter = productionCompanyAdapter
 
-        binding.content.buttonFavorite.setOnClickListener {
-            MaterialAlertDialogBuilder(this)
-                .setTitle(getString(R.string.coming_soon))
-                .setMessage(R.string.coming_soon_message)
-                .setPositiveButton(getString(R.string.okay), null)
-                .create().show()
-        }
-
         val bundle = intent.extras
         if (bundle != null) {
             movieTelevisionDataEntity = bundle.getParcelable<MovieTelevisionDataEntity>(
@@ -123,6 +123,7 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
 
             viewModel.setTelevisionId(movieTelevisionDataEntity.id)
             viewModel.tvShowDetails.observe(this, detailsObserver)
+            viewModel.bookmarkStatus.observe(this, favoriteObserver)
         } else {
             Toast.makeText(
                 this,
@@ -265,6 +266,46 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
             productionCompanyAdapter.setCompanies(
                 (this.productionCompanies ?: ArrayList()) as List<ProductionCompaniesDataEntity>
             )
+        }
+    }
+
+    private fun setBookmarkButton(state: Boolean) {
+        binding.content.apply {
+            if (state) {
+                buttonBookmark.setIconResource(R.drawable.ic_baseline_bookmark_24)
+                buttonBookmark.text = getString(R.string.button_remove_from_bookmark)
+                buttonBookmark.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this@DetailTelevisionShowActivity, R.color.remove_button
+                    )
+                )
+                buttonBookmark.setOnClickListener {
+                    viewModel.removeFromBookmark(movieTelevisionDataEntity)
+                    setBookmarkButton(!state)
+                    Toast.makeText(
+                        this@DetailTelevisionShowActivity,
+                        R.string.bookmark_remove_success,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
+                buttonBookmark.setIconResource(R.drawable.ic_baseline_bookmark_border_24)
+                buttonBookmark.text = getString(R.string.button_add_to_bookmark)
+                buttonBookmark.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this@DetailTelevisionShowActivity, R.color.colorPrimary
+                    )
+                )
+                buttonBookmark.setOnClickListener {
+                    viewModel.setAsBookmark(movieTelevisionDataEntity)
+                    setBookmarkButton(!state)
+                    Toast.makeText(
+                        this@DetailTelevisionShowActivity,
+                        R.string.bookmark_add_success,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
     }
 

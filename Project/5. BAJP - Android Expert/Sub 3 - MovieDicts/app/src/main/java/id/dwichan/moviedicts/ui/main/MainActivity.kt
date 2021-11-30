@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNavView.setupWithNavController(navController)
+
+        supportActionBar?.elevation = 0f
     }
 
     // fix memory leak in Android 10+ after last activity finished

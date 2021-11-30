@@ -27,13 +27,15 @@ class DetailTelevisionShowViewModel @Inject constructor(
             televisionShowUseCase.getTelevisionShowDetails(id)
         }
 
-    val favoriteStatus: Boolean = televisionShowUseCase.getFavoriteStatus(_tvId.value ?: 0)
-
-    fun setAsFavorite(data: MovieTelevisionDataEntity) {
-        televisionShowUseCase.setTvShowAsFavorite(data)
+    val bookmarkStatus: LiveData<Boolean> = Transformations.switchMap(_tvId) { id ->
+        televisionShowUseCase.getBookmarkStatus(id)
     }
 
-    fun removeFromFavorite(data: MovieTelevisionDataEntity) {
-        televisionShowUseCase.removeFavoriteTvShow(data)
+    fun setAsBookmark(data: MovieTelevisionDataEntity) {
+        televisionShowUseCase.setTvShowAsBookmark(data)
+    }
+
+    fun removeFromBookmark(data: MovieTelevisionDataEntity) {
+        televisionShowUseCase.removeFromBookmark(data)
     }
 }

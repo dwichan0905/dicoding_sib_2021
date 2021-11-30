@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import id.dwichan.moviedicts.core.data.entity.*
 import id.dwichan.moviedicts.core.data.repository.local.LocalDataSource
-import id.dwichan.moviedicts.core.data.repository.local.entity.FavoriteEntity
+import id.dwichan.moviedicts.core.data.repository.local.entity.BookmarkEntity
 import id.dwichan.moviedicts.core.data.repository.local.entity.TrendingEntity
 import id.dwichan.moviedicts.core.data.repository.local.entity.tvshow.TelevisionCreatedByEntity
 import id.dwichan.moviedicts.core.data.repository.local.entity.tvshow.TelevisionDetailsEntity
@@ -35,34 +35,34 @@ class TelevisionShowRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ) : TelevisionShowDataSource {
 
-    override fun getFavoriteStatus(id: Int): Boolean {
-        val db = localDataSource.getFavoriteMovie(id)
-        return db.isNotEmpty()
+    override fun getBookmarkStatus(id: Int): LiveData<Boolean> {
+        val db = localDataSource.getBookmarkMovie(id)
+        return MutableLiveData(db.isNotEmpty())
     }
 
-    override fun setTvShowAsFavorite(data: MovieTelevisionDataEntity) {
+    override fun setTvShowAsBookmark(data: MovieTelevisionDataEntity) {
         appExecutors.diskIO().execute {
-            val item = FavoriteEntity(
+            val item = BookmarkEntity(
                 id = data.id,
                 title = data.title,
                 posterPath = data.posterPath,
                 backdropPath = data.backdropPath,
-                mediaType = Type.MEDIA_TYPE_MOVIES
+                mediaType = Type.MEDIA_TYPE_TELEVISION
             )
-            localDataSource.insertFavoriteMovie(item)
+            localDataSource.insertBookmarkMovie(item)
         }
     }
 
-    override fun removeFavoriteTvShow(data: MovieTelevisionDataEntity) {
+    override fun removeFromBookmark(data: MovieTelevisionDataEntity) {
         appExecutors.diskIO().execute {
-            val item = FavoriteEntity(
+            val item = BookmarkEntity(
                 id = data.id,
                 title = data.title,
                 posterPath = data.posterPath,
                 backdropPath = data.backdropPath,
                 mediaType = Type.MEDIA_TYPE_MOVIES
             )
-            localDataSource.deleteFavorite(item)
+            localDataSource.deleteBookmark(item)
         }
     }
 

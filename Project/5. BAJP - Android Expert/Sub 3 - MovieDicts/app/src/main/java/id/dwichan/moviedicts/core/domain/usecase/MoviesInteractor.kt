@@ -11,15 +11,15 @@ import javax.inject.Inject
 class MoviesInteractor @Inject constructor(private val moviesDataSource: MoviesDataSource) :
     MoviesUseCase {
 
-    override fun getFavoriteStatus(id: Int): Boolean =
-        moviesDataSource.getFavoriteStatus(id)
+    override fun getBookmarkStatus(id: Int): LiveData<Boolean> =
+        moviesDataSource.getBookmarkStatus(id)
 
-    override fun setMovieAsFavorite(data: MovieTelevisionDataEntity) {
-        moviesDataSource.setMovieAsFavorite(data)
+    override fun setMovieAsBookmark(data: MovieTelevisionDataEntity) {
+        moviesDataSource.setMovieAsBookmark(data)
     }
 
-    override fun removeFavoriteMovie(data: MovieTelevisionDataEntity) {
-        moviesDataSource.removeFavoriteMovie(data)
+    override fun removeFromBookmark(data: MovieTelevisionDataEntity) {
+        moviesDataSource.removeFromBookmark(data)
     }
 
     override fun getTrendingMoviesToday(): LiveData<Resource<List<TrendingResultsDataEntity>>> =

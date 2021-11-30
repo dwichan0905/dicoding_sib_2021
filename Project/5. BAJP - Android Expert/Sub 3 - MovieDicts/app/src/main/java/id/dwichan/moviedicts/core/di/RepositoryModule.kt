@@ -4,8 +4,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import id.dwichan.moviedicts.core.data.repository.BookmarkRepository
 import id.dwichan.moviedicts.core.data.repository.MoviesRepository
 import id.dwichan.moviedicts.core.data.repository.TelevisionShowRepository
+import id.dwichan.moviedicts.core.domain.repository.BookmarkDataSource
 import id.dwichan.moviedicts.core.domain.repository.MoviesDataSource
 import id.dwichan.moviedicts.core.domain.repository.TelevisionShowDataSource
 
@@ -21,4 +23,7 @@ abstract class RepositoryModule {
     abstract fun provideTelevisionShowRepository(televisionShowRepository: TelevisionShowRepository):
             TelevisionShowDataSource
 
+    @Binds
+    abstract fun provideBookmarkRepository(bookmarkRepository: BookmarkRepository):
+            BookmarkDataSource
 }

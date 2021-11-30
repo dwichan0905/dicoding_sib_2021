@@ -12,15 +12,15 @@ class TelevisionShowInteractor @Inject constructor(
     private val televisionShowDataSource: TelevisionShowDataSource
 ) : TelevisionShowUseCase {
 
-    override fun getFavoriteStatus(id: Int): Boolean =
-        televisionShowDataSource.getFavoriteStatus(id)
+    override fun getBookmarkStatus(id: Int): LiveData<Boolean> =
+        televisionShowDataSource.getBookmarkStatus(id)
 
-    override fun setTvShowAsFavorite(data: MovieTelevisionDataEntity) {
-        televisionShowDataSource.setTvShowAsFavorite(data)
+    override fun setTvShowAsBookmark(data: MovieTelevisionDataEntity) {
+        televisionShowDataSource.setTvShowAsBookmark(data)
     }
 
-    override fun removeFavoriteTvShow(data: MovieTelevisionDataEntity) {
-        televisionShowDataSource.removeFavoriteTvShow(data)
+    override fun removeFromBookmark(data: MovieTelevisionDataEntity) {
+        televisionShowDataSource.removeFromBookmark(data)
     }
 
     override fun getTrendingTelevisionShowToday(): LiveData<Resource<List<TrendingResultsDataEntity>>> =

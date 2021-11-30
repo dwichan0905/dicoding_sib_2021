@@ -2,11 +2,11 @@ package id.dwichan.moviedicts.core.data.repository.local.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import id.dwichan.moviedicts.core.data.repository.local.dao.FavoriteDao
+import id.dwichan.moviedicts.core.data.repository.local.dao.BookmarkDao
 import id.dwichan.moviedicts.core.data.repository.local.dao.MoviesDao
 import id.dwichan.moviedicts.core.data.repository.local.dao.TelevisionShowsDao
 import id.dwichan.moviedicts.core.data.repository.local.dao.TrendingDao
-import id.dwichan.moviedicts.core.data.repository.local.entity.FavoriteEntity
+import id.dwichan.moviedicts.core.data.repository.local.entity.BookmarkEntity
 import id.dwichan.moviedicts.core.data.repository.local.entity.TrendingEntity
 import id.dwichan.moviedicts.core.data.repository.local.entity.movie.MovieDetailsEntity
 import id.dwichan.moviedicts.core.data.repository.local.entity.movie.MovieGenreEntity
@@ -24,7 +24,7 @@ import id.dwichan.moviedicts.core.data.repository.local.entity.tvshow.helpers.Te
 @Database(
     entities = [
         TrendingEntity::class,
-        FavoriteEntity::class,
+        BookmarkEntity::class,
 
         MovieDetailsEntity::class,
         MovieGenreEntity::class,
@@ -45,7 +45,7 @@ import id.dwichan.moviedicts.core.data.repository.local.entity.tvshow.helpers.Te
 )
 abstract class MovieDictsDatabase : RoomDatabase() {
 
-    abstract fun favoriteDao(): FavoriteDao
+    abstract fun bookmarkDao(): BookmarkDao
 
     abstract fun moviesDao(): MoviesDao
 

@@ -1,10 +1,10 @@
 package id.dwichan.moviedicts.core.data.repository.local
 
-import id.dwichan.moviedicts.core.data.repository.local.dao.FavoriteDao
+import id.dwichan.moviedicts.core.data.repository.local.dao.BookmarkDao
 import id.dwichan.moviedicts.core.data.repository.local.dao.MoviesDao
 import id.dwichan.moviedicts.core.data.repository.local.dao.TelevisionShowsDao
 import id.dwichan.moviedicts.core.data.repository.local.dao.TrendingDao
-import id.dwichan.moviedicts.core.data.repository.local.entity.FavoriteEntity
+import id.dwichan.moviedicts.core.data.repository.local.entity.BookmarkEntity
 import id.dwichan.moviedicts.core.data.repository.local.entity.TrendingEntity
 import id.dwichan.moviedicts.core.data.repository.local.entity.movie.MovieDetailsEntity
 import id.dwichan.moviedicts.core.data.repository.local.entity.movie.MovieGenreEntity
@@ -28,7 +28,7 @@ import javax.inject.Singleton
 
 @Singleton
 class LocalDataSource @Inject constructor(
-    private val favoriteDao: FavoriteDao,
+    private val bookmarkDao: BookmarkDao,
     private val moviesDao: MoviesDao,
     private val televisionShowsDao: TelevisionShowsDao,
     private val trendingDao: TrendingDao
@@ -50,16 +50,16 @@ class LocalDataSource @Inject constructor(
         trendingDao.insertWithTimestamp(trendingEntity)
     }
 
-    fun getFavoriteMovie(id: Int): List<FavoriteEntity> = favoriteDao.getFavoriteMovie(id)
+    fun getBookmarkMovie(id: Int): List<BookmarkEntity> = bookmarkDao.getBookmark(id)
 
-    fun getAllFavoriteMovie(): List<FavoriteEntity> = favoriteDao.getAllFavoriteMovie()
+    fun getAllBookmark(mediaType: String): List<BookmarkEntity> = bookmarkDao.getAllBookmark(mediaType)
 
-    fun insertFavoriteMovie(favorite: FavoriteEntity) {
-        favoriteDao.insertFavoriteMovie(favorite)
+    fun insertBookmarkMovie(bookmark: BookmarkEntity) {
+        bookmarkDao.insertBookmarkMovie(bookmark)
     }
 
-    fun deleteFavorite(favorite: FavoriteEntity) {
-        favoriteDao.deleteFavorite(favorite)
+    fun deleteBookmark(bookmark: BookmarkEntity) {
+        bookmarkDao.deleteBookmark(bookmark)
     }
 
     fun getMovieDetails(id: Int): MovieDetailsEntity = moviesDao.getMovieDetails(id)

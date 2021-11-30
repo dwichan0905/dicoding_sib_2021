@@ -26,14 +26,17 @@ class DetailMoviesViewModel @Inject constructor(private val moviesUseCase: Movie
             moviesUseCase.getMovieDetails(id)
         }
 
-    val favoriteStatus: Boolean = moviesUseCase.getFavoriteStatus(_movieId.value ?: 0)
+    val bookmarkStatus: LiveData<Boolean> = Transformations.switchMap(_movieId) { id ->
+            moviesUseCase.getBookmarkStatus(id)
+        }
 
-    fun setAsFavorite(data: MovieTelevisionDataEntity) {
-        moviesUseCase.setMovieAsFavorite(data)
+
+    fun setAsBookmark(data: MovieTelevisionDataEntity) {
+        moviesUseCase.setMovieAsBookmark(data)
     }
 
-    fun removeFromFavorite(data: MovieTelevisionDataEntity) {
-        moviesUseCase.removeFavoriteMovie(data)
+    fun removeFromBookmark(data: MovieTelevisionDataEntity) {
+        moviesUseCase.removeFromBookmark(data)
     }
 
 }

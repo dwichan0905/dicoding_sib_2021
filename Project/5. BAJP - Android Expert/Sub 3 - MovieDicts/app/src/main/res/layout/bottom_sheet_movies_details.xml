@@ -148,7 +148,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/pb_user_score" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_favorite"
+                android:id="@+id/button_bookmark"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/button_add_to_bookmark"

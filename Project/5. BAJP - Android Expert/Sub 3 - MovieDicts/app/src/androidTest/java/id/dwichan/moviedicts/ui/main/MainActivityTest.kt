@@ -1,16 +1,20 @@
 package id.dwichan.moviedicts.ui.main
 
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import androidx.test.espresso.*
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.google.android.material.tabs.TabLayout
 import id.dwichan.moviedicts.R
 import id.dwichan.moviedicts.core.util.IdlingResources
+import org.hamcrest.Matcher
+import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
@@ -242,6 +246,103 @@ class MainActivityTest {
         onView(withId(R.id.text_genres)).check(matches(not(withText(""))))
     }
 
+    @Test
+    fun shouldBookmarkMovieWorked() {
+        onView(withId(R.id.navigation_bookmark)).perform(click())
+
+        // check "not found" is displayed
+        onView(withId(R.id.tabs)).perform(selectTabAtPosition(0))
+        onView(withId(R.id.anim_movie_not_found)).check(matches(isDisplayed()))
+        onView(withId(R.id.text_movie_not_found)).check(matches(isDisplayed()))
+
+        // add to bookmark
+        onView(withId(R.id.navigation_movies)).perform(click())
+        onView(withId(R.id.rec_movies_trending_today)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0,
+                click()
+            )
+        )
+        onView(withId(R.id.button_bookmark)).perform(click())
+        Espresso.pressBack()
+
+        // check and remove from bookmark
+        onView(withId(R.id.navigation_bookmark)).perform(click())
+        onView(withId(R.id.tabs)).perform(selectTabAtPosition(0))
+        // check "not found" message is gone
+        onView(withId(R.id.rec_movie_bookmarks)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0,
+                click()
+            )
+        )
+        onView(withId(R.id.button_bookmark)).perform(click())
+        Espresso.pressBack()
+
+        // check "not found" is displayed
+        onView(withId(R.id.tabs)).perform(selectTabAtPosition(0))
+        onView(withId(R.id.anim_movie_not_found)).check(matches(isDisplayed()))
+        onView(withId(R.id.text_movie_not_found)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun shouldBookmarkTvShowWorked() {
+        onView(withId(R.id.navigation_bookmark)).perform(click())
+
+        // check "not found" is displayed
+        onView(withId(R.id.tabs)).perform(selectTabAtPosition(1))
+        onView(withId(R.id.anim_tv_not_found)).check(matches(isDisplayed()))
+        onView(withId(R.id.text_tv_not_found)).check(matches(isDisplayed()))
+
+        // add to bookmark
+        onView(withId(R.id.navigation_television)).perform(click())
+        onView(withId(R.id.rec_tv_trending_today)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0,
+                click()
+            )
+        )
+        onView(withId(R.id.button_bookmark)).perform(click())
+        Espresso.pressBack()
+
+        // check and remove from bookmark
+        onView(withId(R.id.navigation_bookmark)).perform(click())
+        onView(withId(R.id.tabs)).perform(selectTabAtPosition(1))
+        // check "not found" message is gone
+        onView(withId(R.id.rec_tv_bookmarks)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0,
+                click()
+            )
+        )
+        onView(withId(R.id.button_bookmark)).perform(click())
+        Espresso.pressBack()
+
+        // check "not found" is displayed
+        onView(withId(R.id.tabs)).perform(selectTabAtPosition(1))
+        onView(withId(R.id.anim_tv_not_found)).check(matches(isDisplayed()))
+        onView(withId(R.id.text_tv_not_found)).check(matches(isDisplayed()))
+    }
+
+    private fun selectTabAtPosition(tabIndex: Int): ViewAction {
+        return object : ViewAction {
+            override fun getConstraints(): Matcher<View> =
+                allOf(isDisplayed(), isAssignableFrom(TabLayout::class.java))
+
+            override fun getDescription(): String = "select tab at index: $tabIndex"
+
+            override fun perform(uiController: UiController?, view: View?) {
+                val tabLayout = view as TabLayout
+                val tabAtIndex: TabLayout.Tab = tabLayout.getTabAt(tabIndex)
+                    ?: throw PerformException.Builder()
+                        .withCause(Throwable("No tab at index $tabIndex"))
+                        .build()
+
+                tabAtIndex.select()
+            }
+        }
+    }
+
     companion object {
         const val MOVIE_TITLE = "Movie"
         const val TELEVISION_SHOW_TITLE = "Television Show"
@@ -250,5 +351,4 @@ class MainActivityTest {
 
         const val TOTAL_DATA_SHOWN = 20 // 20 items per page
     }
-
 }

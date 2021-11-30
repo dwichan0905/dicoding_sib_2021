@@ -7,7 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import id.dwichan.moviedicts.core.data.repository.local.dao.FavoriteDao
+import id.dwichan.moviedicts.core.data.repository.local.dao.BookmarkDao
 import id.dwichan.moviedicts.core.data.repository.local.dao.MoviesDao
 import id.dwichan.moviedicts.core.data.repository.local.dao.TelevisionShowsDao
 import id.dwichan.moviedicts.core.data.repository.local.dao.TrendingDao
@@ -19,8 +19,8 @@ import javax.inject.Singleton
 object DatabaseModule {
 
     @Provides
-    fun provideFavoriteDao(database: MovieDictsDatabase): FavoriteDao =
-        database.favoriteDao()
+    fun provideFavoriteDao(database: MovieDictsDatabase): BookmarkDao =
+        database.bookmarkDao()
 
     @Provides
     fun provideMoviesDao(database: MovieDictsDatabase): MoviesDao =

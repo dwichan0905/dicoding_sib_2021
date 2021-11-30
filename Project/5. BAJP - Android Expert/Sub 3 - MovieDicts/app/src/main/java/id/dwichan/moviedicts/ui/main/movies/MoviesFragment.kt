@@ -27,6 +27,8 @@ class MoviesFragment : Fragment() {
     // fix memory leak
     private var _binding: FragmentMoviesBinding? = null
     private val binding get() = _binding!!
+    private var trendingTodayObserver: Observer<Resource<List<TrendingResultsDataEntity>>>? = null
+    private var trendingWeeklyObserver: Observer<Resource<List<TrendingResultsDataEntity>>>? = null
 
     private val viewModel: TrendingMoviesViewModel by viewModels()
 
@@ -54,12 +56,6 @@ class MoviesFragment : Fragment() {
         }
     }
 
-    private lateinit var trendingTodayObserver:
-            Observer<Resource<List<TrendingResultsDataEntity>>>
-
-    private lateinit var trendingWeeklyObserver:
-            Observer<Resource<List<TrendingResultsDataEntity>>>
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -68,7 +64,6 @@ class MoviesFragment : Fragment() {
         return binding.root
     }
 
-    // FIXME: Repair these errors and change it to Status like TrendingToday
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -133,13 +128,14 @@ class MoviesFragment : Fragment() {
                 }
             }
 
-            viewModel.trendingToday.observe(viewLifecycleOwner, trendingTodayObserver)
+            viewModel.trendingToday.observe(viewLifecycleOwner, trendingTodayObserver!!)
 
-            viewModel.trendingWeekly.observe(viewLifecycleOwner, trendingWeeklyObserver)
+            viewModel.trendingWeekly.observe(viewLifecycleOwner, trendingWeeklyObserver!!)
+
+            viewModel.reload()
 
             fragmentMovie.setOnRefreshListener {
-                viewModel.trendingToday.observe(viewLifecycleOwner, trendingTodayObserver)
-                viewModel.trendingWeekly.observe(viewLifecycleOwner, trendingWeeklyObserver)
+                viewModel.reload()
                 fragmentMovie.isRefreshing = false
             }
         }
@@ -187,5 +183,7 @@ class MoviesFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        trendingTodayObserver = null
+        trendingWeeklyObserver = null
     }
 }

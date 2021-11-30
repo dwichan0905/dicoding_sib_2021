@@ -5,10 +5,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
-import id.dwichan.moviedicts.core.domain.usecase.MoviesInteractor
-import id.dwichan.moviedicts.core.domain.usecase.MoviesUseCase
-import id.dwichan.moviedicts.core.domain.usecase.TelevisionShowInteractor
-import id.dwichan.moviedicts.core.domain.usecase.TelevisionShowUseCase
+import id.dwichan.moviedicts.core.domain.usecase.*
 
 @Suppress("unused")
 @Module
@@ -24,4 +21,9 @@ abstract class AppModule {
     @ViewModelScoped
     abstract fun provideTelevisionShowUseCase(televisionShowInteractor: TelevisionShowInteractor):
             TelevisionShowUseCase
+
+    @Binds
+    @ViewModelScoped
+    abstract fun provideBookmarkUseCase(bookmarkInteractor: BookmarkInteractor):
+            BookmarkUseCase
 }

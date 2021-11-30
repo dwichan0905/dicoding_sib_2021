@@ -8,11 +8,11 @@ import id.dwichan.moviedicts.vo.Resource
 
 interface TelevisionShowDataSource {
 
-    fun getFavoriteStatus(id: Int): Boolean
+    fun getBookmarkStatus(id: Int): LiveData<Boolean>
 
-    fun setTvShowAsFavorite(data: MovieTelevisionDataEntity)
+    fun setTvShowAsBookmark(data: MovieTelevisionDataEntity)
 
-    fun removeFavoriteTvShow(data: MovieTelevisionDataEntity)
+    fun removeFromBookmark(data: MovieTelevisionDataEntity)
 
     fun getTrendingTelevisionShowToday(): LiveData<Resource<List<TrendingResultsDataEntity>>>
 

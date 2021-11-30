@@ -15,7 +15,6 @@
     <string name="trending_tv_today_desc">Discover trending TV shows today!</string>
     <string name="trending_tv_weekly_desc">Discover trending TV shows this week!</string>
     <string name="adult_status">ADULT</string>
-    <string name="coming_soon_message">We\'re still working on it. Please stay back!</string>
     <string name="error">error</string>
     <string name="example_title">Lorem Ipsum</string>
     <string name="developed_by">Developed by Dwi Candra Permana using TheMovies DB API</string>
@@ -46,8 +45,11 @@
     <string name="visit_me_github">Visit me on GitHub</string>
     <string name="send_me_email">Send me an email</string>
     <string name="movie_details">Movie Details</string>
-    <string name="coming_soon">Coming soon</string>
-    <string name="okay">Okay</string>
     <string name="tv_show_details">Television Show Details</string>
     <string name="unknown">Unknown</string>
+    <string name="button_remove_from_bookmark">Remove from Bookmark</string>
+    <string name="bookmark_not_found_movie">Oops, nothing here! You can find any movies in the Movies tab below.</string>
+    <string name="bookmark_not_found_tv">Oops, nothing here! You can find any television shows in the Television Show tab below.</string>
+    <string name="bookmark_remove_success">Successfully removed from your Bookmark!</string>
+    <string name="bookmark_add_success">Successfully added from your Bookmark!</string>
 </resources>

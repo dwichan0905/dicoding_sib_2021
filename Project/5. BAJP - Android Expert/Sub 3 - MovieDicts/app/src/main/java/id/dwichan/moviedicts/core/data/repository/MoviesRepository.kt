@@ -3,6 +3,8 @@ package id.dwichan.moviedicts.core.data.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import dagger.hilt.android.qualifiers.ApplicationContext
 import id.dwichan.moviedicts.core.data.entity.*
 import id.dwichan.moviedicts.core.data.repository.local.LocalDataSource
@@ -32,6 +34,12 @@ class MoviesRepository @Inject constructor(
     private val appExecutors: AppExecutors,
     @ApplicationContext private val context: Context
 ) : MoviesDataSource {
+
+    private val pagingConfig = PagedList.Config.Builder()
+        .setEnablePlaceholders(false)
+        .setInitialLoadSizeHint(5)
+        .setPageSize(5)
+        .build()
 
     override fun getBookmarkStatus(id: Int): LiveData<Boolean> {
         val liveData = MutableLiveData<Boolean>()
@@ -66,34 +74,28 @@ class MoviesRepository @Inject constructor(
         }
     }
 
-    override fun getTrendingMoviesToday(): LiveData<Resource<List<TrendingResultsDataEntity>>> {
+    override fun getTrendingMoviesToday(): LiveData<Resource<PagedList<TrendingResultsDataEntity>>> {
         return object :
-            NetworkBoundResource<List<TrendingResultsDataEntity>, TrendingResponse>(appExecutors) {
-            override fun loadFromDatabase(): LiveData<List<TrendingResultsDataEntity>> {
-                val liveData = MutableLiveData<List<TrendingResultsDataEntity>>()
-                val data = ArrayList<TrendingResultsDataEntity>()
-                val db = localDataSource.getTrendingMoviesToday()
-
-                for (position in db.indices) {
-                    val entity = TrendingResultsDataEntity(
-                        id = db[position].id,
-                        originalName = db[position].originalName,
-                        name = db[position].name,
-                        originalTitle = db[position].originalTitle,
-                        title = db[position].title,
-                        posterPath = db[position].posterPath,
-                        backdropPath = db[position].backdropPath,
-                        adult = db[position].adult,
-                        voteAverage = db[position].voteAverage
+            NetworkBoundResource<PagedList<TrendingResultsDataEntity>, TrendingResponse>(appExecutors) {
+            override fun loadFromDatabase(): LiveData<PagedList<TrendingResultsDataEntity>> {
+                val db = localDataSource.getTrendingMoviesToday().map { db ->
+                    TrendingResultsDataEntity(
+                        id = db.id,
+                        originalName = db.originalName,
+                        name = db.name,
+                        originalTitle = db.originalTitle,
+                        title = db.title,
+                        posterPath = db.posterPath,
+                        backdropPath = db.backdropPath,
+                        adult = db.adult,
+                        voteAverage = db.voteAverage
                     )
-                    data.add(entity)
                 }
-                liveData.value = data
 
-                return liveData
+                return LivePagedListBuilder(db, pagingConfig).build()
             }
 
-            override fun shouldFetch(data: List<TrendingResultsDataEntity>?): Boolean {
+            override fun shouldFetch(data: PagedList<TrendingResultsDataEntity>?): Boolean {
                 return if (NetUtil.isOnline(context)) {
                     true
                 } else {
@@ -130,34 +132,28 @@ class MoviesRepository @Inject constructor(
         }.asLiveData()
     }
 
-    override fun getTrendingMoviesWeekly(): LiveData<Resource<List<TrendingResultsDataEntity>>> {
+    override fun getTrendingMoviesWeekly(): LiveData<Resource<PagedList<TrendingResultsDataEntity>>> {
         return object :
-            NetworkBoundResource<List<TrendingResultsDataEntity>, TrendingResponse>(appExecutors) {
-            override fun loadFromDatabase(): LiveData<List<TrendingResultsDataEntity>> {
-                val liveData = MutableLiveData<List<TrendingResultsDataEntity>>()
-                val data = ArrayList<TrendingResultsDataEntity>()
-                val db = localDataSource.getTrendingMoviesWeekly()
-
-                for (position in db.indices) {
-                    val entity = TrendingResultsDataEntity(
-                        id = db[position].id,
-                        originalName = db[position].originalName,
-                        name = db[position].name,
-                        originalTitle = db[position].originalTitle,
-                        title = db[position].title,
-                        posterPath = db[position].posterPath,
-                        backdropPath = db[position].backdropPath,
-                        adult = db[position].adult,
-                        voteAverage = db[position].voteAverage
+            NetworkBoundResource<PagedList<TrendingResultsDataEntity>, TrendingResponse>(appExecutors) {
+            override fun loadFromDatabase(): LiveData<PagedList<TrendingResultsDataEntity>> {
+                val db = localDataSource.getTrendingMoviesWeekly().map { db ->
+                    TrendingResultsDataEntity(
+                        id = db.id,
+                        originalName = db.originalName,
+                        name = db.name,
+                        originalTitle = db.originalTitle,
+                        title = db.title,
+                        posterPath = db.posterPath,
+                        backdropPath = db.backdropPath,
+                        adult = db.adult,
+                        voteAverage = db.voteAverage
                     )
-                    data.add(entity)
                 }
-                liveData.value = data
 
-                return liveData
+                return LivePagedListBuilder(db, pagingConfig).build()
             }
 
-            override fun shouldFetch(data: List<TrendingResultsDataEntity>?): Boolean {
+            override fun shouldFetch(data: PagedList<TrendingResultsDataEntity>?): Boolean {
                 return if (NetUtil.isOnline(context)) {
                     true
                 } else {

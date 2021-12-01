@@ -3,6 +3,7 @@ package id.dwichan.moviedicts.ui.main.bookmark.television
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -11,9 +12,10 @@ import id.dwichan.moviedicts.core.data.entity.MovieTelevisionDataEntity
 import id.dwichan.moviedicts.core.util.bookmark.BookmarkDiffUtilCallback
 import id.dwichan.moviedicts.databinding.ItemBookmarkBinding
 
-class BookmarkTelevisionAdapter: RecyclerView.Adapter<BookmarkTelevisionAdapter.BookmarkViewHolder>() {
+class BookmarkTelevisionAdapter: PagedListAdapter<MovieTelevisionDataEntity, BookmarkTelevisionAdapter.BookmarkViewHolder>(
+    diffCallback
+) {
 
-    private val bookmarkItem = ArrayList<MovieTelevisionDataEntity>()
     var itemAction: OnItemActionListener? = null
 
     inner class BookmarkViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -37,24 +39,17 @@ class BookmarkTelevisionAdapter: RecyclerView.Adapter<BookmarkTelevisionAdapter.
         }
     }
 
-    fun setBookmarkList(bookmarks: List<MovieTelevisionDataEntity>) {
-        val callback = BookmarkDiffUtilCallback(bookmarkItem, bookmarks)
-        val diffUtil = DiffUtil.calculateDiff(callback)
-        this.bookmarkItem.clear()
-        this.bookmarkItem.addAll(bookmarks)
-        diffUtil.dispatchUpdatesTo(this)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkViewHolder {
         val binding = ItemBookmarkBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return BookmarkViewHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: BookmarkViewHolder, position: Int) {
-        holder.bind(position, bookmarkItem[position])
+        val item = getItem(position)
+        if (item != null) {
+            holder.bind(position, item)
+        }
     }
-
-    override fun getItemCount(): Int = bookmarkItem.size
 
     interface OnItemActionListener {
         fun onItemClick(
@@ -62,5 +57,23 @@ class BookmarkTelevisionAdapter: RecyclerView.Adapter<BookmarkTelevisionAdapter.
             itemBind: ItemBookmarkBinding,
             item: MovieTelevisionDataEntity
         )
+    }
+
+    companion object {
+        private val diffCallback = object : DiffUtil.ItemCallback<MovieTelevisionDataEntity>() {
+            override fun areItemsTheSame(
+                oldItem: MovieTelevisionDataEntity,
+                newItem: MovieTelevisionDataEntity
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: MovieTelevisionDataEntity,
+                newItem: MovieTelevisionDataEntity
+            ): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }

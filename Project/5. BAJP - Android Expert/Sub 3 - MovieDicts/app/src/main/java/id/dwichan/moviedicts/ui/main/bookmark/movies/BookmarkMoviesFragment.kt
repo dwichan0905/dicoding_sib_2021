@@ -57,11 +57,10 @@ class BookmarkMoviesFragment : Fragment() {
             viewModel.bookmarkList.observe(viewLifecycleOwner) { data ->
                 if (data.isEmpty()) {
                     showNotFoundMessage(true)
-                    adapter.setBookmarkList(ArrayList())
                 } else {
                     showNotFoundMessage(false)
-                    adapter.setBookmarkList(data)
                 }
+                adapter.submitList(data)
             }
         }
     }

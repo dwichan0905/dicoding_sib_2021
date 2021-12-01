@@ -9,6 +9,7 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.dwichan.moviedicts.R
@@ -29,8 +30,8 @@ class TelevisionShowFragment : Fragment() {
     // fix memory leak
     private var _binding: FragmentTelevisionShowBinding? = null
     private val binding get() = _binding!!
-    private var trendingTodayObserver: Observer<Resource<List<TrendingResultsDataEntity>>>? = null
-    private var trendingWeeklyObserver: Observer<Resource<List<TrendingResultsDataEntity>>>? = null
+    private var trendingTodayObserver: Observer<Resource<PagedList<TrendingResultsDataEntity>>>? = null
+    private var trendingWeeklyObserver: Observer<Resource<PagedList<TrendingResultsDataEntity>>>? = null
 
     private val onItemAction = object : TrendingTelevisionShowAdapter.OnItemActionListener {
         override fun onItemClick(
@@ -87,7 +88,7 @@ class TelevisionShowFragment : Fragment() {
                             animLoadingTrendingToday.visibility = View.GONE
                             showContent(true)
                             showError(false)
-                            trendingToday.setItems(response.data ?: ArrayList())
+                            trendingToday.submitList(response.data)
                             trendingToday.itemAction = onItemAction
                         }
                         Status.ERROR -> {
@@ -110,7 +111,7 @@ class TelevisionShowFragment : Fragment() {
                         Status.SUCCESS -> {
                             animLoadingTrendingWeekly.visibility = View.GONE
                             showContent(true)
-                            trendingWeekly.setItems(response.data ?: ArrayList())
+                            trendingWeekly.submitList(response.data)
                             trendingWeekly.itemAction = onItemAction
                         }
                         Status.ERROR -> {

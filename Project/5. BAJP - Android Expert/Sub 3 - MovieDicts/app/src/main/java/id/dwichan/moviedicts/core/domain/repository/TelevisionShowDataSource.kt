@@ -1,6 +1,7 @@
 package id.dwichan.moviedicts.core.domain.repository
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
 import id.dwichan.moviedicts.core.data.entity.MovieTelevisionDataEntity
 import id.dwichan.moviedicts.core.data.entity.TelevisionDetailsDataEntity
 import id.dwichan.moviedicts.core.data.entity.TrendingResultsDataEntity
@@ -14,9 +15,9 @@ interface TelevisionShowDataSource {
 
     fun removeFromBookmark(data: MovieTelevisionDataEntity)
 
-    fun getTrendingTelevisionShowToday(): LiveData<Resource<List<TrendingResultsDataEntity>>>
+    fun getTrendingTelevisionShowToday(): LiveData<Resource<PagedList<TrendingResultsDataEntity>>>
 
-    fun getTrendingTelevisionShowWeekly(): LiveData<Resource<List<TrendingResultsDataEntity>>>
+    fun getTrendingTelevisionShowWeekly(): LiveData<Resource<PagedList<TrendingResultsDataEntity>>>
 
     fun getTelevisionShowDetails(id: Int): LiveData<Resource<TelevisionDetailsDataEntity>>
 }

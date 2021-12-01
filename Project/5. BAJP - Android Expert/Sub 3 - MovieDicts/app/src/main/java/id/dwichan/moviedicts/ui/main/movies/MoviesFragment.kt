@@ -9,6 +9,7 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.dwichan.moviedicts.R
@@ -27,8 +28,8 @@ class MoviesFragment : Fragment() {
     // fix memory leak
     private var _binding: FragmentMoviesBinding? = null
     private val binding get() = _binding!!
-    private var trendingTodayObserver: Observer<Resource<List<TrendingResultsDataEntity>>>? = null
-    private var trendingWeeklyObserver: Observer<Resource<List<TrendingResultsDataEntity>>>? = null
+    private var trendingTodayObserver: Observer<Resource<PagedList<TrendingResultsDataEntity>>>? = null
+    private var trendingWeeklyObserver: Observer<Resource<PagedList<TrendingResultsDataEntity>>>? = null
 
     private val viewModel: TrendingMoviesViewModel by viewModels()
 
@@ -87,7 +88,7 @@ class MoviesFragment : Fragment() {
                             animLoadingTrendingToday.visibility = View.GONE
                             showError(false)
                             showContent(true)
-                            trendingTodayAdapter.setItems(response.data ?: ArrayList())
+                            trendingTodayAdapter.submitList(response.data)
                             trendingTodayAdapter.itemAction = itemAction
                         }
                         Status.ERROR -> {
@@ -111,7 +112,7 @@ class MoviesFragment : Fragment() {
                             animLoadingTrendingWeekly.visibility = View.GONE
                             showError(false)
                             showContent(true)
-                            trendingWeeklyAdapter.setItems(response.data ?: ArrayList())
+                            trendingWeeklyAdapter.submitList(response.data)
                             trendingWeeklyAdapter.itemAction = itemAction
                         }
                         Status.ERROR -> {

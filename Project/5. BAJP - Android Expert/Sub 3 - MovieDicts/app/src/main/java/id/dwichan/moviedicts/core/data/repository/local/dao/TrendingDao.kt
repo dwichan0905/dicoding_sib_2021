@@ -1,5 +1,6 @@
 package id.dwichan.moviedicts.core.data.repository.local.dao
 
+import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -18,7 +19,7 @@ abstract class TrendingDao {
         ORDER BY timestamp DESC
     """
     )
-    abstract fun getTrendingMoviesToday(): List<TrendingEntity>
+    abstract fun getTrendingMoviesToday(): DataSource.Factory<Int, TrendingEntity>
 
     @Query(
         """
@@ -28,7 +29,7 @@ abstract class TrendingDao {
         ORDER BY timestamp DESC
     """
     )
-    abstract fun getTrendingMoviesWeekly(): List<TrendingEntity>
+    abstract fun getTrendingMoviesWeekly(): DataSource.Factory<Int, TrendingEntity>
 
     @Query(
         """
@@ -38,7 +39,7 @@ abstract class TrendingDao {
         ORDER BY timestamp DESC
     """
     )
-    abstract fun getTrendingTelevisionShowToday(): List<TrendingEntity>
+    abstract fun getTrendingTelevisionShowToday(): DataSource.Factory<Int, TrendingEntity>
 
     @Query(
         """
@@ -48,7 +49,7 @@ abstract class TrendingDao {
         ORDER BY timestamp DESC
     """
     )
-    abstract fun getTrendingTelevisionShowWeekly(): List<TrendingEntity>
+    abstract fun getTrendingTelevisionShowWeekly(): DataSource.Factory<Int, TrendingEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertTrendingEntity(trendingEntity: TrendingEntity)

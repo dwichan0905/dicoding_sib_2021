@@ -1,5 +1,6 @@
 package id.dwichan.moviedicts.core.data.repository.local
 
+import androidx.paging.DataSource
 import id.dwichan.moviedicts.core.data.repository.local.dao.BookmarkDao
 import id.dwichan.moviedicts.core.data.repository.local.dao.MoviesDao
 import id.dwichan.moviedicts.core.data.repository.local.dao.TelevisionShowsDao
@@ -34,25 +35,27 @@ class LocalDataSource @Inject constructor(
     private val trendingDao: TrendingDao
 ) {
 
-    fun getTrendingMoviesToday(): List<TrendingEntity> =
+    fun getTrendingMoviesToday(): DataSource.Factory<Int, TrendingEntity> =
         trendingDao.getTrendingMoviesToday()
 
-    fun getTrendingMoviesWeekly(): List<TrendingEntity> =
+    fun getTrendingMoviesWeekly(): DataSource.Factory<Int, TrendingEntity> =
         trendingDao.getTrendingMoviesWeekly()
 
-    fun getTrendingTelevisionShowToday(): List<TrendingEntity> =
+    fun getTrendingTelevisionShowToday(): DataSource.Factory<Int, TrendingEntity> =
         trendingDao.getTrendingTelevisionShowToday()
 
-    fun getTrendingTelevisionShowWeekly(): List<TrendingEntity> =
+    fun getTrendingTelevisionShowWeekly(): DataSource.Factory<Int, TrendingEntity> =
         trendingDao.getTrendingTelevisionShowWeekly()
 
     fun insertTrendingEntity(trendingEntity: TrendingEntity) {
         trendingDao.insertWithTimestamp(trendingEntity)
     }
 
-    fun getBookmarkMovie(id: Int): List<BookmarkEntity> = bookmarkDao.getBookmark(id)
+    fun getBookmarkMovie(id: Int): List<BookmarkEntity> =
+        bookmarkDao.getBookmark(id)
 
-    fun getAllBookmark(mediaType: String): List<BookmarkEntity> = bookmarkDao.getAllBookmark(mediaType)
+    fun getAllBookmark(mediaType: String): DataSource.Factory<Int, BookmarkEntity> =
+        bookmarkDao.getAllBookmark(mediaType)
 
     fun insertBookmarkMovie(bookmark: BookmarkEntity) {
         bookmarkDao.insertBookmarkMovie(bookmark)

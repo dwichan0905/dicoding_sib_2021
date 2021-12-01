@@ -3,6 +3,7 @@ package id.dwichan.moviedicts.ui.main.bookmark.movies
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -11,9 +12,10 @@ import id.dwichan.moviedicts.core.data.entity.MovieTelevisionDataEntity
 import id.dwichan.moviedicts.core.util.bookmark.BookmarkDiffUtilCallback
 import id.dwichan.moviedicts.databinding.ItemBookmarkBinding
 
-class BookmarkMoviesAdapter: RecyclerView.Adapter<BookmarkMoviesAdapter.BookmarkMoviesViewHolder>() {
+class BookmarkMoviesAdapter: PagedListAdapter<MovieTelevisionDataEntity, BookmarkMoviesAdapter.BookmarkMoviesViewHolder>(
+    diffCallback
+) {
 
-    private val bookmarkList = ArrayList<MovieTelevisionDataEntity>()
     var itemAction: OnItemActionListener? = null
 
     inner class BookmarkMoviesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -37,24 +39,17 @@ class BookmarkMoviesAdapter: RecyclerView.Adapter<BookmarkMoviesAdapter.Bookmark
         }
     }
 
-    fun setBookmarkList(bookmarks: List<MovieTelevisionDataEntity>) {
-        val callback = BookmarkDiffUtilCallback(bookmarkList, bookmarks)
-        val diffUtil = DiffUtil.calculateDiff(callback)
-        this.bookmarkList.clear()
-        this.bookmarkList.addAll(bookmarks)
-        diffUtil.dispatchUpdatesTo(this)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkMoviesViewHolder {
         val binding = ItemBookmarkBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return BookmarkMoviesViewHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: BookmarkMoviesViewHolder, position: Int) {
-        holder.bind(position, bookmarkList[position])
+        val item = getItem(position)
+        if (item != null) {
+            holder.bind(position, item)
+        }
     }
-
-    override fun getItemCount(): Int = bookmarkList.size
 
     interface OnItemActionListener {
         fun onItemClick(
@@ -62,5 +57,23 @@ class BookmarkMoviesAdapter: RecyclerView.Adapter<BookmarkMoviesAdapter.Bookmark
             itemBind: ItemBookmarkBinding,
             item: MovieTelevisionDataEntity
         )
+    }
+
+    companion object {
+        private val diffCallback = object : DiffUtil.ItemCallback<MovieTelevisionDataEntity>() {
+            override fun areItemsTheSame(
+                oldItem: MovieTelevisionDataEntity,
+                newItem: MovieTelevisionDataEntity
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: MovieTelevisionDataEntity,
+                newItem: MovieTelevisionDataEntity
+            ): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }

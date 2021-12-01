@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.dwichan.moviedicts.core.data.entity.MovieTelevisionDataEntity
@@ -58,11 +59,10 @@ class BookmarkTelevisionFragment : Fragment() {
             viewModel.bookmarkList.observe(viewLifecycleOwner) { data ->
                 if (data.isEmpty()) {
                     showNotFoundMessage(true)
-                    adapter?.setBookmarkList(ArrayList())
                 } else {
                     showNotFoundMessage(false)
-                    adapter?.setBookmarkList(data)
                 }
+                adapter?.submitList(data)
             }
         }
     }

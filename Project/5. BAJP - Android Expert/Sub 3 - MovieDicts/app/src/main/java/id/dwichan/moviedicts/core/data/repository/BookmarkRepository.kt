@@ -1,7 +1,8 @@
 package id.dwichan.moviedicts.core.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import id.dwichan.moviedicts.core.data.entity.MovieTelevisionDataEntity
 import id.dwichan.moviedicts.core.data.repository.local.LocalDataSource
 import id.dwichan.moviedicts.core.domain.repository.BookmarkDataSource
@@ -13,21 +14,24 @@ class BookmarkRepository @Inject constructor(
     private val localDataSource: LocalDataSource
 ) : BookmarkDataSource {
 
-    override fun getAllBookmark(mediaType: String): LiveData<List<MovieTelevisionDataEntity>> {
-        val listFavorite = ArrayList<MovieTelevisionDataEntity>()
-        val db = localDataSource.getAllBookmark(mediaType)
-        for (position in db.indices) {
-            val item = MovieTelevisionDataEntity(
-                id = db[position].id,
-                backdropPath = db[position].backdropPath,
-                posterPath = db[position].posterPath,
-                title = db[position].title,
-                mediaType = db[position].mediaType
+    private val pagingConfig = PagedList.Config.Builder()
+        .setEnablePlaceholders(false)
+        .setInitialLoadSizeHint(5)
+        .setPageSize(5)
+        .build()
+
+    override fun getAllBookmark(mediaType: String): LiveData<PagedList<MovieTelevisionDataEntity>> {
+        val pagedDb = localDataSource.getAllBookmark(mediaType).map { db ->
+            MovieTelevisionDataEntity(
+                id = db.id,
+                backdropPath = db.backdropPath,
+                posterPath = db.posterPath,
+                title = db.title,
+                mediaType = db.mediaType
             )
-            listFavorite.add(item)
         }
 
-        return MutableLiveData(listFavorite)
+        return LivePagedListBuilder(pagedDb, pagingConfig).build()
     }
 
 }

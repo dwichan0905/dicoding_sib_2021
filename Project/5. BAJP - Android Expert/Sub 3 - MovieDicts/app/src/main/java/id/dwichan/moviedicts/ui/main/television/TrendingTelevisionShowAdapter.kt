@@ -3,6 +3,7 @@ package id.dwichan.moviedicts.ui.main.television
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -12,9 +13,10 @@ import id.dwichan.moviedicts.core.util.TrendingResultsItemDiffUtilCallback
 import id.dwichan.moviedicts.databinding.ItemTvShowsTrendingBinding
 
 class TrendingTelevisionShowAdapter :
-    RecyclerView.Adapter<TrendingTelevisionShowAdapter.TrendingTelevisionShowViewHolder>() {
+    PagedListAdapter<TrendingResultsDataEntity, TrendingTelevisionShowAdapter.TrendingTelevisionShowViewHolder>(
+        diffCallback
+    ) {
 
-    private var data: ArrayList<TrendingResultsDataEntity> = ArrayList()
     var itemAction: OnItemActionListener? = null
 
     inner class TrendingTelevisionShowViewHolder(itemView: View) :
@@ -44,14 +46,6 @@ class TrendingTelevisionShowAdapter :
         }
     }
 
-    fun setItems(list: List<TrendingResultsDataEntity>) {
-        val callback = TrendingResultsItemDiffUtilCallback(this.data, list)
-        val diffUtil = DiffUtil.calculateDiff(callback)
-        this.data.clear()
-        this.data.addAll(list)
-        diffUtil.dispatchUpdatesTo(this)
-    }
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -65,10 +59,11 @@ class TrendingTelevisionShowAdapter :
         holder: TrendingTelevisionShowAdapter.TrendingTelevisionShowViewHolder,
         position: Int
     ) {
-        holder.bind(position, data[position])
+        val item = getItem(position)
+        if (item != null) {
+            holder.bind(position, item)
+        }
     }
-
-    override fun getItemCount(): Int = data.size
 
     interface OnItemActionListener {
         fun onItemClick(
@@ -76,5 +71,23 @@ class TrendingTelevisionShowAdapter :
             itemBind: ItemTvShowsTrendingBinding,
             item: TrendingResultsDataEntity
         )
+    }
+
+    companion object {
+        private val diffCallback = object : DiffUtil.ItemCallback<TrendingResultsDataEntity>() {
+            override fun areItemsTheSame(
+                oldItem: TrendingResultsDataEntity,
+                newItem: TrendingResultsDataEntity
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: TrendingResultsDataEntity,
+                newItem: TrendingResultsDataEntity
+            ): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }

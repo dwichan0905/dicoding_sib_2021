@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.paging.PagedList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.dwichan.moviedicts.core.data.entity.MovieTelevisionDataEntity
 import id.dwichan.moviedicts.core.domain.usecase.BookmarkUseCase
@@ -17,7 +18,7 @@ class BookmarkTelevisionViewModel @Inject constructor(
 
     private val reloadTrigger = MutableLiveData<Boolean>()
 
-    val bookmarkList: LiveData<List<MovieTelevisionDataEntity>> = Transformations.switchMap(reloadTrigger) {
+    val bookmarkList: LiveData<PagedList<MovieTelevisionDataEntity>> = Transformations.switchMap(reloadTrigger) {
         bookmarkUseCase.getAllBookmark(Type.MEDIA_TYPE_TELEVISION)
     }
 

@@ -1,6 +1,7 @@
 package id.dwichan.moviedicts.core.domain.usecase
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
 import id.dwichan.moviedicts.core.data.entity.MovieDetailsDataEntity
 import id.dwichan.moviedicts.core.data.entity.MovieTelevisionDataEntity
 import id.dwichan.moviedicts.core.data.entity.TrendingResultsDataEntity
@@ -22,10 +23,10 @@ class MoviesInteractor @Inject constructor(private val moviesDataSource: MoviesD
         moviesDataSource.removeFromBookmark(data)
     }
 
-    override fun getTrendingMoviesToday(): LiveData<Resource<List<TrendingResultsDataEntity>>> =
+    override fun getTrendingMoviesToday(): LiveData<Resource<PagedList<TrendingResultsDataEntity>>> =
         moviesDataSource.getTrendingMoviesToday()
 
-    override fun getTrendingMoviesWeekly(): LiveData<Resource<List<TrendingResultsDataEntity>>> =
+    override fun getTrendingMoviesWeekly(): LiveData<Resource<PagedList<TrendingResultsDataEntity>>> =
         moviesDataSource.getTrendingMoviesWeekly()
 
     override fun getMovieDetails(id: Int): LiveData<Resource<MovieDetailsDataEntity>> =

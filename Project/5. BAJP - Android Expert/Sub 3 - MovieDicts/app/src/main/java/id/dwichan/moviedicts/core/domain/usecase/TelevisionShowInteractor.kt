@@ -1,6 +1,7 @@
 package id.dwichan.moviedicts.core.domain.usecase
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
 import id.dwichan.moviedicts.core.data.entity.MovieTelevisionDataEntity
 import id.dwichan.moviedicts.core.data.entity.TelevisionDetailsDataEntity
 import id.dwichan.moviedicts.core.data.entity.TrendingResultsDataEntity
@@ -23,10 +24,10 @@ class TelevisionShowInteractor @Inject constructor(
         televisionShowDataSource.removeFromBookmark(data)
     }
 
-    override fun getTrendingTelevisionShowToday(): LiveData<Resource<List<TrendingResultsDataEntity>>> =
+    override fun getTrendingTelevisionShowToday(): LiveData<Resource<PagedList<TrendingResultsDataEntity>>> =
         televisionShowDataSource.getTrendingTelevisionShowToday()
 
-    override fun getTrendingTelevisionShowWeekly(): LiveData<Resource<List<TrendingResultsDataEntity>>> =
+    override fun getTrendingTelevisionShowWeekly(): LiveData<Resource<PagedList<TrendingResultsDataEntity>>> =
         televisionShowDataSource.getTrendingTelevisionShowWeekly()
 
     override fun getTelevisionShowDetails(id: Int): LiveData<Resource<TelevisionDetailsDataEntity>> =

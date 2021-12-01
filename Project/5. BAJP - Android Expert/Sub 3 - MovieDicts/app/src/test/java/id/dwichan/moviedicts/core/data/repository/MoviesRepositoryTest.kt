@@ -9,6 +9,8 @@ import id.dwichan.moviedicts.core.data.repository.local.entity.movie.MovieDetail
 import id.dwichan.moviedicts.core.data.repository.remote.RemoteDataSource
 import id.dwichan.moviedicts.core.di.NetworkModule
 import id.dwichan.moviedicts.core.util.AppExecutors
+import id.dwichan.moviedicts.core.util.ListDataSource
+import id.dwichan.moviedicts.core.util.PagedListUtil
 import id.dwichan.moviedicts.vo.Resource
 import id.dwichan.moviedicts.vo.Type
 import org.junit.Assert.assertNotNull
@@ -66,8 +68,11 @@ class MoviesRepositoryTest {
             e.printStackTrace()
         }
 
-        `when`(localDataSource.getTrendingMoviesToday()).thenReturn(trendingList)
-        val movieResponse = moviesRepository.getTrendingMoviesToday()
+        val mockDataSource = ListDataSource(trendingList)
+        `when`(localDataSource.getTrendingMoviesToday()).thenReturn(mockDataSource)
+        moviesRepository.getTrendingMoviesToday()
+
+        val movieResponse = PagedListUtil.mockPagedList(trendingList)
         verify(localDataSource).getTrendingMoviesToday()
         assertNotNull(movieResponse)
     }
@@ -104,8 +109,12 @@ class MoviesRepositoryTest {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        `when`(localDataSource.getTrendingMoviesWeekly()).thenReturn(trendingList)
-        val response = moviesRepository.getTrendingMoviesWeekly()
+
+        val mockDataSource = ListDataSource(trendingList)
+        `when`(localDataSource.getTrendingMoviesWeekly()).thenReturn(mockDataSource)
+        moviesRepository.getTrendingMoviesWeekly()
+
+        val response = PagedListUtil.mockPagedList(trendingList)
         verify(localDataSource).getTrendingMoviesWeekly()
         assertNotNull(response)
     }

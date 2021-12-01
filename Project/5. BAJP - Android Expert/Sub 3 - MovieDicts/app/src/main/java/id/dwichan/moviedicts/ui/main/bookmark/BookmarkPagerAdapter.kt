@@ -20,7 +20,7 @@ class BookmarkPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(a
 
     override fun createFragment(position: Int): Fragment {
         var fragment: Fragment? = null
-        when(position) {
+        when (position) {
             0 -> fragment = BookmarkMoviesFragment()
             1 -> fragment = BookmarkTelevisionFragment()
         }

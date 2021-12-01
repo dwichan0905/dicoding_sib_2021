@@ -3,8 +3,12 @@ package id.dwichan.moviedicts.core.data.repository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import id.dwichan.moviedicts.core.data.repository.local.LocalDataSource
 import id.dwichan.moviedicts.core.util.DataDummy
+import id.dwichan.moviedicts.core.util.ListDataSource
+import id.dwichan.moviedicts.core.util.PagedListUtil
+import id.dwichan.moviedicts.vo.Resource
 import id.dwichan.moviedicts.vo.Type
-import org.junit.Assert.*
+import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
@@ -20,23 +24,32 @@ class BookmarkRepositoryTest {
         localDataSource
     )
 
+    @Suppress("UNCHECKED_CAST")
     @Test
     fun `Bookmark Movies should be returned correct values`() {
-        val bookmarks = DataDummy.generateDummyBookmarkMovies()
+        val bookmarks = ListDataSource(DataDummy.generateDummyBookmarkMovies())
         Mockito.`when`(localDataSource.getAllBookmark(Type.MEDIA_TYPE_MOVIES)).thenReturn(bookmarks)
-        val response = repository.getAllBookmark(Type.MEDIA_TYPE_MOVIES)
+        repository.getAllBookmark(Type.MEDIA_TYPE_MOVIES)
+
+        val response =
+            Resource.success(PagedListUtil.mockPagedList(DataDummy.generateDummyBookmarkMovies()))
         Mockito.verify(localDataSource).getAllBookmark(Type.MEDIA_TYPE_MOVIES)
         assertNotNull(response)
-        assertNotEquals(0, response.value?.size)
+        assertNotEquals(0, response.data?.size)
     }
 
+    @Suppress("UNCHECKED_CAST")
     @Test
     fun `Bookmark Television Show should be returned correct values`() {
-        val bookmarks = DataDummy.generateDummyBookmarkTvShow()
-        Mockito.`when`(localDataSource.getAllBookmark(Type.MEDIA_TYPE_TELEVISION)).thenReturn(bookmarks)
-        val response = repository.getAllBookmark(Type.MEDIA_TYPE_TELEVISION)
+        val bookmarks = ListDataSource(DataDummy.generateDummyBookmarkTvShow())
+        Mockito.`when`(localDataSource.getAllBookmark(Type.MEDIA_TYPE_TELEVISION))
+            .thenReturn(bookmarks)
+        repository.getAllBookmark(Type.MEDIA_TYPE_TELEVISION)
+
+        val response =
+            Resource.success(PagedListUtil.mockPagedList(DataDummy.generateDummyBookmarkTvShow()))
         Mockito.verify(localDataSource).getAllBookmark(Type.MEDIA_TYPE_TELEVISION)
         assertNotNull(response)
-        assertNotEquals(0, response.value?.size)
+        assertNotEquals(0, response.data?.size)
     }
 }

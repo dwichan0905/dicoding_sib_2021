@@ -2,6 +2,8 @@ package id.dwichan.moviedicts.core.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import id.dwichan.moviedicts.core.data.entity.*
 import id.dwichan.moviedicts.core.data.repository.local.LocalDataSource
 import id.dwichan.moviedicts.core.data.repository.local.entity.BookmarkEntity
@@ -28,11 +30,15 @@ class FakeTelevisionShowRepository(
     private val appExecutors: AppExecutors
 ) : TelevisionShowDataSource {
 
+    private val pagingConfig = PagedList.Config.Builder()
+        .setEnablePlaceholders(false)
+        .setInitialLoadSizeHint(5)
+        .setPageSize(5)
+        .build()
+
     override fun getBookmarkStatus(id: Int): LiveData<Boolean> {
-        val liveData = MutableLiveData<Boolean>()
         val db = localDataSource.getBookmarkMovie(id)
-        liveData.value = db.isNotEmpty()
-        return liveData
+        return MutableLiveData(db.isNotEmpty())
     }
 
     override fun setTvShowAsBookmark(data: MovieTelevisionDataEntity) {
@@ -42,7 +48,7 @@ class FakeTelevisionShowRepository(
                 title = data.title,
                 posterPath = data.posterPath,
                 backdropPath = data.backdropPath,
-                mediaType = Type.MEDIA_TYPE_MOVIES
+                mediaType = Type.MEDIA_TYPE_TELEVISION
             )
             localDataSource.insertBookmarkMovie(item)
         }
@@ -61,34 +67,30 @@ class FakeTelevisionShowRepository(
         }
     }
 
-    override fun getTrendingTelevisionShowToday(): LiveData<Resource<List<TrendingResultsDataEntity>>> {
+    override fun getTrendingTelevisionShowToday(): LiveData<Resource<PagedList<TrendingResultsDataEntity>>> {
         return object :
-            NetworkBoundResource<List<TrendingResultsDataEntity>, TrendingResponse>(appExecutors) {
-            override fun loadFromDatabase(): LiveData<List<TrendingResultsDataEntity>> {
-                val liveData = MutableLiveData<List<TrendingResultsDataEntity>>()
-                val data = ArrayList<TrendingResultsDataEntity>()
-                val db = localDataSource.getTrendingTelevisionShowToday()
-
-                for (position in db.indices) {
-                    val entity = TrendingResultsDataEntity(
-                        id = db[position].id,
-                        originalName = db[position].originalName,
-                        name = db[position].name,
-                        originalTitle = db[position].originalTitle,
-                        title = db[position].title,
-                        posterPath = db[position].posterPath,
-                        backdropPath = db[position].backdropPath,
-                        adult = db[position].adult,
-                        voteAverage = db[position].voteAverage
+            NetworkBoundResource<PagedList<TrendingResultsDataEntity>, TrendingResponse>(
+                appExecutors
+            ) {
+            override fun loadFromDatabase(): LiveData<PagedList<TrendingResultsDataEntity>> {
+                val db = localDataSource.getTrendingTelevisionShowToday().map { db ->
+                    TrendingResultsDataEntity(
+                        id = db.id,
+                        originalName = db.originalName,
+                        name = db.name,
+                        originalTitle = db.originalTitle,
+                        title = db.title,
+                        posterPath = db.posterPath,
+                        backdropPath = db.backdropPath,
+                        adult = db.adult,
+                        voteAverage = db.voteAverage
                     )
-                    data.add(entity)
                 }
-                liveData.value = data
 
-                return liveData
+                return LivePagedListBuilder(db, pagingConfig).build()
             }
 
-            override fun shouldFetch(data: List<TrendingResultsDataEntity>?): Boolean {
+            override fun shouldFetch(data: PagedList<TrendingResultsDataEntity>?): Boolean {
                 return data == null || data.isEmpty()
             }
 
@@ -121,34 +123,30 @@ class FakeTelevisionShowRepository(
         }.asLiveData()
     }
 
-    override fun getTrendingTelevisionShowWeekly(): LiveData<Resource<List<TrendingResultsDataEntity>>> {
+    override fun getTrendingTelevisionShowWeekly(): LiveData<Resource<PagedList<TrendingResultsDataEntity>>> {
         return object :
-            NetworkBoundResource<List<TrendingResultsDataEntity>, TrendingResponse>(appExecutors) {
-            override fun loadFromDatabase(): LiveData<List<TrendingResultsDataEntity>> {
-                val liveData = MutableLiveData<List<TrendingResultsDataEntity>>()
-                val data = ArrayList<TrendingResultsDataEntity>()
-                val db = localDataSource.getTrendingTelevisionShowWeekly()
-
-                for (position in db.indices) {
-                    val entity = TrendingResultsDataEntity(
-                        id = db[position].id,
-                        originalName = db[position].originalName,
-                        name = db[position].name,
-                        originalTitle = db[position].originalTitle,
-                        title = db[position].title,
-                        posterPath = db[position].posterPath,
-                        backdropPath = db[position].backdropPath,
-                        adult = db[position].adult,
-                        voteAverage = db[position].voteAverage
+            NetworkBoundResource<PagedList<TrendingResultsDataEntity>, TrendingResponse>(
+                appExecutors
+            ) {
+            override fun loadFromDatabase(): LiveData<PagedList<TrendingResultsDataEntity>> {
+                val db = localDataSource.getTrendingTelevisionShowWeekly().map { db ->
+                    TrendingResultsDataEntity(
+                        id = db.id,
+                        originalName = db.originalName,
+                        name = db.name,
+                        originalTitle = db.originalTitle,
+                        title = db.title,
+                        posterPath = db.posterPath,
+                        backdropPath = db.backdropPath,
+                        adult = db.adult,
+                        voteAverage = db.voteAverage
                     )
-                    data.add(entity)
                 }
-                liveData.value = data
 
-                return liveData
+                return LivePagedListBuilder(db, pagingConfig).build()
             }
 
-            override fun shouldFetch(data: List<TrendingResultsDataEntity>?): Boolean {
+            override fun shouldFetch(data: PagedList<TrendingResultsDataEntity>?): Boolean {
                 return data == null || data.isEmpty()
             }
 

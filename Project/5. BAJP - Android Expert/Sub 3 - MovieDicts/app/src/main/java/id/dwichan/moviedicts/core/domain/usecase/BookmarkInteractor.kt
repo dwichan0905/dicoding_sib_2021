@@ -7,7 +7,7 @@ import id.dwichan.moviedicts.core.domain.repository.BookmarkDataSource
 import javax.inject.Inject
 
 class BookmarkInteractor @Inject constructor(private val bookmarkDataSource: BookmarkDataSource) :
-BookmarkUseCase {
+    BookmarkUseCase {
     override fun getAllBookmark(mediaType: String): LiveData<PagedList<MovieTelevisionDataEntity>> =
         bookmarkDataSource.getAllBookmark(mediaType)
 }

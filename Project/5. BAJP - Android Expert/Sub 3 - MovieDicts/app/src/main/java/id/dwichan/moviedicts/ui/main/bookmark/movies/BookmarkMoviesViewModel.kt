@@ -18,9 +18,10 @@ class BookmarkMoviesViewModel @Inject constructor(
 
     private val reloadTrigger = MutableLiveData<Boolean>()
 
-    val bookmarkList: LiveData<PagedList<MovieTelevisionDataEntity>> = Transformations.switchMap(reloadTrigger) {
-        bookmarkUseCase.getAllBookmark(Type.MEDIA_TYPE_MOVIES)
-    }
+    val bookmarkList: LiveData<PagedList<MovieTelevisionDataEntity>> =
+        Transformations.switchMap(reloadTrigger) {
+            bookmarkUseCase.getAllBookmark(Type.MEDIA_TYPE_MOVIES)
+        }
 
     fun reload() {
         reloadTrigger.value = true

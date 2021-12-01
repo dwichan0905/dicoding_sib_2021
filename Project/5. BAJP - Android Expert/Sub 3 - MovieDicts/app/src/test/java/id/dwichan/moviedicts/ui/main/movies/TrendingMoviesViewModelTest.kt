@@ -3,6 +3,7 @@ package id.dwichan.moviedicts.ui.main.movies
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import id.dwichan.moviedicts.core.data.entity.TrendingResultsDataEntity
 import id.dwichan.moviedicts.core.data.repository.MoviesRepository
 import id.dwichan.moviedicts.core.data.repository.remote.api.ApiService
@@ -37,7 +38,10 @@ class TrendingMoviesViewModelTest {
     var rule: TestRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var observer: Observer<Resource<List<TrendingResultsDataEntity>>>
+    private lateinit var observer: Observer<Resource<PagedList<TrendingResultsDataEntity>>>
+
+    @Mock
+    private lateinit var mockPagedList: PagedList<TrendingResultsDataEntity>
 
     @Before
     fun setup() {
@@ -83,7 +87,9 @@ class TrendingMoviesViewModelTest {
     @Test
     @Suppress("UNCHECKED_CAST")
     fun `ViewModel for Trending Daily should be returned the correct values`() {
-        val liveData = MutableLiveData<Resource<List<TrendingResultsDataEntity>>>()
+        val liveData = MutableLiveData<Resource<PagedList<TrendingResultsDataEntity>>>()
+        val received = ArrayList<TrendingResultsDataEntity>()
+        liveData.value = Resource.success(mockPagedList)
         try {
             val network = NetworkModule.provideApiService(NetworkModule.provideOkHttpClient())
             val call = network.getTrendingMoviesToday()
@@ -92,7 +98,7 @@ class TrendingMoviesViewModelTest {
             val responseBody = response.body()
             val itemList = responseBody!!.results!!
 
-            val received = ArrayList<TrendingResultsDataEntity>()
+
             for (position in itemList.indices) {
                 val item = TrendingResultsDataEntity(
                     originalTitle = itemList[position]?.originalTitle,
@@ -107,7 +113,6 @@ class TrendingMoviesViewModelTest {
                 )
                 received.add(item)
             }
-            liveData.value = Resource.success(received)
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -115,6 +120,7 @@ class TrendingMoviesViewModelTest {
         val mockApi = Mockito.mock(ApiService::class.java)
         val mockCall = Mockito.mock(Call::class.java) as Call<TrendingResponse>
 
+        Mockito.`when`(liveData.value!!.data?.size).thenReturn(received.size)
         Mockito.`when`(moviesRepository.getTrendingMoviesToday()).thenReturn(liveData)
         Mockito.`when`(mockApi.getTrendingMoviesToday()).thenReturn(mockCall)
         Mockito.doAnswer {
@@ -135,7 +141,9 @@ class TrendingMoviesViewModelTest {
     @Test
     @Suppress("UNCHECKED_CAST")
     fun `ViewModel for Trending Weekly should be returned the correct values`() {
-        val liveData = MutableLiveData<Resource<List<TrendingResultsDataEntity>>>()
+        val liveData = MutableLiveData<Resource<PagedList<TrendingResultsDataEntity>>>()
+        liveData.value = Resource.success(mockPagedList)
+        val received = ArrayList<TrendingResultsDataEntity>()
         try {
             val network = NetworkModule.provideApiService(NetworkModule.provideOkHttpClient())
             val call = network.getTrendingMoviesWeekly()
@@ -144,7 +152,7 @@ class TrendingMoviesViewModelTest {
             val responseBody = response.body()
             val itemList = responseBody!!.results!!
 
-            val received = ArrayList<TrendingResultsDataEntity>()
+
             for (position in itemList.indices) {
                 val item = TrendingResultsDataEntity(
                     originalTitle = itemList[position]?.originalTitle,
@@ -159,7 +167,6 @@ class TrendingMoviesViewModelTest {
                 )
                 received.add(item)
             }
-            liveData.value = Resource.success(received)
         } catch (e: IOException) {
             e.printStackTrace()
         }

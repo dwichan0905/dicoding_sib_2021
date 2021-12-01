@@ -18,13 +18,15 @@ class TrendingTelevisionShowViewModel @Inject constructor(
 
     private val reloadTrigger = MutableLiveData<Boolean>()
 
-    val trendingToday: LiveData<Resource<PagedList<TrendingResultsDataEntity>>> = Transformations.switchMap(reloadTrigger) {
-        televisionShowUseCase.getTrendingTelevisionShowToday()
-    }
+    val trendingToday: LiveData<Resource<PagedList<TrendingResultsDataEntity>>> =
+        Transformations.switchMap(reloadTrigger) {
+            televisionShowUseCase.getTrendingTelevisionShowToday()
+        }
 
-    val trendingWeekly: LiveData<Resource<PagedList<TrendingResultsDataEntity>>> = Transformations.switchMap(reloadTrigger) {
-        televisionShowUseCase.getTrendingTelevisionShowWeekly()
-    }
+    val trendingWeekly: LiveData<Resource<PagedList<TrendingResultsDataEntity>>> =
+        Transformations.switchMap(reloadTrigger) {
+            televisionShowUseCase.getTrendingTelevisionShowWeekly()
+        }
 
     fun reload() {
         reloadTrigger.value = true

@@ -9,6 +9,8 @@ import id.dwichan.moviedicts.core.data.repository.local.entity.tvshow.Television
 import id.dwichan.moviedicts.core.data.repository.remote.RemoteDataSource
 import id.dwichan.moviedicts.core.di.NetworkModule
 import id.dwichan.moviedicts.core.util.AppExecutors
+import id.dwichan.moviedicts.core.util.ListDataSource
+import id.dwichan.moviedicts.core.util.PagedListUtil
 import id.dwichan.moviedicts.vo.Resource
 import id.dwichan.moviedicts.vo.Type
 import org.junit.Assert.assertNotNull
@@ -64,8 +66,12 @@ class TelevisionShowRepositoryTest {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        Mockito.`when`(localDataSource.getTrendingTelevisionShowToday()).thenReturn(trendingList)
-        val response = televisionShowRepository.getTrendingTelevisionShowToday()
+
+        val mockDataSource = ListDataSource(trendingList)
+        Mockito.`when`(localDataSource.getTrendingTelevisionShowToday()).thenReturn(mockDataSource)
+        televisionShowRepository.getTrendingTelevisionShowToday()
+
+        val response = PagedListUtil.mockPagedList(trendingList)
         Mockito.verify(localDataSource).getTrendingTelevisionShowToday()
         assertNotNull(response)
     }
@@ -102,8 +108,12 @@ class TelevisionShowRepositoryTest {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        Mockito.`when`(localDataSource.getTrendingTelevisionShowWeekly()).thenReturn(trendingList)
-        val response = televisionShowRepository.getTrendingTelevisionShowWeekly()
+
+        val mockDataSource = ListDataSource(trendingList)
+        Mockito.`when`(localDataSource.getTrendingTelevisionShowWeekly()).thenReturn(mockDataSource)
+        televisionShowRepository.getTrendingTelevisionShowWeekly()
+
+        val response = PagedListUtil.mockPagedList(trendingList)
         Mockito.verify(localDataSource).getTrendingTelevisionShowWeekly()
         assertNotNull(response)
     }

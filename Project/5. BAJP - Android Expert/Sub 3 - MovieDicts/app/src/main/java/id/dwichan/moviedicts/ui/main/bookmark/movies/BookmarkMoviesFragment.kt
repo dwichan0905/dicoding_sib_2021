@@ -37,7 +37,8 @@ class BookmarkMoviesFragment : Fragment() {
 
         binding.apply {
             adapter = BookmarkMoviesAdapter()
-            recMovieBookmarks.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            recMovieBookmarks.layoutManager =
+                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             recMovieBookmarks.adapter = adapter
             adapter.itemAction = object : BookmarkMoviesAdapter.OnItemActionListener {
                 override fun onItemClick(

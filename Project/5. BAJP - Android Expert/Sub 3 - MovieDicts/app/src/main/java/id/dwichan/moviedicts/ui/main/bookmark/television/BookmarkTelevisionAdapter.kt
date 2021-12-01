@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import id.dwichan.moviedicts.R
 import id.dwichan.moviedicts.core.data.entity.MovieTelevisionDataEntity
-import id.dwichan.moviedicts.core.util.bookmark.BookmarkDiffUtilCallback
 import id.dwichan.moviedicts.databinding.ItemBookmarkBinding
 
-class BookmarkTelevisionAdapter: PagedListAdapter<MovieTelevisionDataEntity, BookmarkTelevisionAdapter.BookmarkViewHolder>(
-    diffCallback
-) {
+class BookmarkTelevisionAdapter :
+    PagedListAdapter<MovieTelevisionDataEntity, BookmarkTelevisionAdapter.BookmarkViewHolder>(
+        diffCallback
+    ) {
 
     var itemAction: OnItemActionListener? = null
 
@@ -40,7 +40,8 @@ class BookmarkTelevisionAdapter: PagedListAdapter<MovieTelevisionDataEntity, Boo
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkViewHolder {
-        val binding = ItemBookmarkBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemBookmarkBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return BookmarkViewHolder(binding.root)
     }
 

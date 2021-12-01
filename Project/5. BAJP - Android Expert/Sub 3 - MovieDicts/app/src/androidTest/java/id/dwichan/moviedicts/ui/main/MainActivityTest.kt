@@ -118,16 +118,7 @@ class MainActivityTest {
     fun shouldTrendingDailyMovieItemsAreValid() {
         onView(withId(R.id.navigation_movies)).perform(click())
 
-        onView(withId(R.id.rec_movies_trending_today)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                TOTAL_DATA_SHOWN
-            )
-        )
-        onView(withId(R.id.rec_movies_trending_today)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                0
-            )
-        )
+        Thread.sleep(HOLD_PAGING_TIME)
         onView(withId(R.id.rec_movies_trending_today)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
@@ -151,16 +142,7 @@ class MainActivityTest {
     fun shouldTrendingWeeklyMovieItemsAreValid() {
         onView(withId(R.id.navigation_movies)).perform(click())
 
-        onView(withId(R.id.rec_movies_trending_weekly)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                TOTAL_DATA_SHOWN
-            )
-        )
-        onView(withId(R.id.rec_movies_trending_weekly)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                0
-            )
-        )
+        Thread.sleep(HOLD_PAGING_TIME)
         onView(withId(R.id.rec_movies_trending_weekly)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
@@ -184,16 +166,7 @@ class MainActivityTest {
     fun shouldTrendingDailyTvShowItemsAreValid() {
         onView(withId(R.id.navigation_television)).perform(click())
 
-        onView(withId(R.id.rec_tv_trending_today)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                TOTAL_DATA_SHOWN
-            )
-        )
-        onView(withId(R.id.rec_tv_trending_today)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                0
-            )
-        )
+        Thread.sleep(HOLD_PAGING_TIME)
         onView(withId(R.id.rec_tv_trending_today)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
@@ -217,16 +190,7 @@ class MainActivityTest {
     fun shouldTrendingWeeklyTvShowItemsAreValid() {
         onView(withId(R.id.navigation_television)).perform(click())
 
-        onView(withId(R.id.rec_tv_trending_today)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                TOTAL_DATA_SHOWN
-            )
-        )
-        onView(withId(R.id.rec_tv_trending_today)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                0
-            )
-        )
+        Thread.sleep(HOLD_PAGING_TIME)
         onView(withId(R.id.rec_tv_trending_today)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
@@ -257,6 +221,7 @@ class MainActivityTest {
 
         // add to bookmark
         onView(withId(R.id.navigation_movies)).perform(click())
+        Thread.sleep(HOLD_PAGING_TIME)
         onView(withId(R.id.rec_movies_trending_today)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
@@ -270,6 +235,7 @@ class MainActivityTest {
         onView(withId(R.id.navigation_bookmark)).perform(click())
         onView(withId(R.id.tabs)).perform(selectTabAtPosition(0))
         // check "not found" message is gone
+        Thread.sleep(HOLD_PAGING_TIME)
         onView(withId(R.id.rec_movie_bookmarks)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
@@ -296,6 +262,7 @@ class MainActivityTest {
 
         // add to bookmark
         onView(withId(R.id.navigation_television)).perform(click())
+        Thread.sleep(HOLD_PAGING_TIME)
         onView(withId(R.id.rec_tv_trending_today)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
@@ -309,6 +276,7 @@ class MainActivityTest {
         onView(withId(R.id.navigation_bookmark)).perform(click())
         onView(withId(R.id.tabs)).perform(selectTabAtPosition(1))
         // check "not found" message is gone
+        Thread.sleep(HOLD_PAGING_TIME)
         onView(withId(R.id.rec_tv_bookmarks)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
@@ -349,6 +317,6 @@ class MainActivityTest {
         const val BOOKMARKS_TITLE = "Bookmarks"
         const val ABOUT_TITLE = "About"
 
-        const val TOTAL_DATA_SHOWN = 20 // 20 items per page
+        const val HOLD_PAGING_TIME = 1000L // 1 second
     }
 }

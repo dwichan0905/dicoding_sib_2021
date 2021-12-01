@@ -30,8 +30,10 @@ class TelevisionShowFragment : Fragment() {
     // fix memory leak
     private var _binding: FragmentTelevisionShowBinding? = null
     private val binding get() = _binding!!
-    private var trendingTodayObserver: Observer<Resource<PagedList<TrendingResultsDataEntity>>>? = null
-    private var trendingWeeklyObserver: Observer<Resource<PagedList<TrendingResultsDataEntity>>>? = null
+    private var trendingTodayObserver: Observer<Resource<PagedList<TrendingResultsDataEntity>>>? =
+        null
+    private var trendingWeeklyObserver: Observer<Resource<PagedList<TrendingResultsDataEntity>>>? =
+        null
 
     private val onItemAction = object : TrendingTelevisionShowAdapter.OnItemActionListener {
         override fun onItemClick(

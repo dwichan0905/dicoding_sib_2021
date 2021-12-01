@@ -37,12 +37,6 @@ class TelevisionShowRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ) : TelevisionShowDataSource {
 
-    private val pagingConfig = PagedList.Config.Builder()
-        .setEnablePlaceholders(false)
-        .setInitialLoadSizeHint(5)
-        .setPageSize(5)
-        .build()
-
     override fun getBookmarkStatus(id: Int): LiveData<Boolean> {
         val db = localDataSource.getBookmarkMovie(id)
         return MutableLiveData(db.isNotEmpty())
@@ -76,7 +70,9 @@ class TelevisionShowRepository @Inject constructor(
 
     override fun getTrendingTelevisionShowToday(): LiveData<Resource<PagedList<TrendingResultsDataEntity>>> {
         return object :
-            NetworkBoundResource<PagedList<TrendingResultsDataEntity>, TrendingResponse>(appExecutors) {
+            NetworkBoundResource<PagedList<TrendingResultsDataEntity>, TrendingResponse>(
+                appExecutors
+            ) {
             override fun loadFromDatabase(): LiveData<PagedList<TrendingResultsDataEntity>> {
                 val db = localDataSource.getTrendingTelevisionShowToday().map { db ->
                     TrendingResultsDataEntity(
@@ -92,7 +88,7 @@ class TelevisionShowRepository @Inject constructor(
                     )
                 }
 
-                return LivePagedListBuilder(db, pagingConfig).build()
+                return LivePagedListBuilder(db, 20).build()
             }
 
             override fun shouldFetch(data: PagedList<TrendingResultsDataEntity>?): Boolean {
@@ -134,7 +130,9 @@ class TelevisionShowRepository @Inject constructor(
 
     override fun getTrendingTelevisionShowWeekly(): LiveData<Resource<PagedList<TrendingResultsDataEntity>>> {
         return object :
-            NetworkBoundResource<PagedList<TrendingResultsDataEntity>, TrendingResponse>(appExecutors) {
+            NetworkBoundResource<PagedList<TrendingResultsDataEntity>, TrendingResponse>(
+                appExecutors
+            ) {
             override fun loadFromDatabase(): LiveData<PagedList<TrendingResultsDataEntity>> {
                 val db = localDataSource.getTrendingTelevisionShowWeekly().map { db ->
                     TrendingResultsDataEntity(
@@ -150,7 +148,7 @@ class TelevisionShowRepository @Inject constructor(
                     )
                 }
 
-                return LivePagedListBuilder(db, pagingConfig).build()
+                return LivePagedListBuilder(db, 20).build()
             }
 
             override fun shouldFetch(data: PagedList<TrendingResultsDataEntity>?): Boolean {

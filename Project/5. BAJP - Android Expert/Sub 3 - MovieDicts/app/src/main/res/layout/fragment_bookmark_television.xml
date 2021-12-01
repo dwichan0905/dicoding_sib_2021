@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.main.bookmark.television.BookmarkTelevisionFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -27,6 +27,6 @@
         android:layout_below="@+id/anim_tv_not_found"
         android:padding="16dp"
         android:text="@string/bookmark_not_found_tv"
-        android:textAlignment="center"/>
+        android:textAlignment="center" />
 
 </RelativeLayout>

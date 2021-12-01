@@ -27,8 +27,8 @@ class DetailMoviesViewModel @Inject constructor(private val moviesUseCase: Movie
         }
 
     val bookmarkStatus: LiveData<Boolean> = Transformations.switchMap(_movieId) { id ->
-            moviesUseCase.getBookmarkStatus(id)
-        }
+        moviesUseCase.getBookmarkStatus(id)
+    }
 
 
     fun setAsBookmark(data: MovieTelevisionDataEntity) {

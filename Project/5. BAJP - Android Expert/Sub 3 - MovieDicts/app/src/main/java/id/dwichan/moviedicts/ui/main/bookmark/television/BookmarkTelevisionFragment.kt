@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.dwichan.moviedicts.core.data.entity.MovieTelevisionDataEntity
@@ -39,7 +38,8 @@ class BookmarkTelevisionFragment : Fragment() {
 
         binding.apply {
             adapter = BookmarkTelevisionAdapter()
-            recTvBookmarks.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            recTvBookmarks.layoutManager =
+                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             recTvBookmarks.adapter = adapter
             adapter?.itemAction = object : BookmarkTelevisionAdapter.OnItemActionListener {
                 override fun onItemClick(

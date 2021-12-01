@@ -14,13 +14,12 @@ class BookmarkRepository @Inject constructor(
     private val localDataSource: LocalDataSource
 ) : BookmarkDataSource {
 
-    private val pagingConfig = PagedList.Config.Builder()
-        .setEnablePlaceholders(false)
-        .setInitialLoadSizeHint(5)
-        .setPageSize(5)
-        .build()
-
     override fun getAllBookmark(mediaType: String): LiveData<PagedList<MovieTelevisionDataEntity>> {
+        val pagingConfig = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(5)
+            .setPageSize(5)
+            .build()
         val pagedDb = localDataSource.getAllBookmark(mediaType).map { db ->
             MovieTelevisionDataEntity(
                 id = db.id,

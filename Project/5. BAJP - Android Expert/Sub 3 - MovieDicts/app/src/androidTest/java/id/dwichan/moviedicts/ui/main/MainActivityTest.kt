@@ -1,5 +1,7 @@
 package id.dwichan.moviedicts.ui.main
 
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.*
@@ -7,9 +9,17 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.Until
 import com.google.android.material.tabs.TabLayout
 import id.dwichan.moviedicts.R
 import id.dwichan.moviedicts.core.util.IdlingResources
@@ -28,14 +38,19 @@ class MainActivityTest {
     @get:Rule
     var activityRule = ActivityScenarioRule(MainActivity::class.java)
 
+    private lateinit var uiDevice: UiDevice
+
     @Before
     fun setup() {
+        Intents.init()
         IdlingRegistry.getInstance().register(IdlingResources.idlingResource)
+        uiDevice = UiDevice.getInstance(getInstrumentation())
     }
 
     @After
     fun tearDown() {
         IdlingRegistry.getInstance().unregister(IdlingResources.idlingResource)
+        Intents.release()
     }
 
     @Test
@@ -312,6 +327,137 @@ class MainActivityTest {
         onView(withId(R.id.text_tv_not_found)).check(matches(isDisplayed()))
     }
 
+    @Test
+    fun shouldMovieDetailsCanBeRefreshed() {
+        onView(withId(R.id.navigation_movies)).perform(click())
+        Thread.sleep(HOLD_PAGING_TIME)
+        onView(withId(R.id.rec_movies_trending_today)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0,
+                click()
+            )
+        )
+        onView(withId(R.id.menu_refresh)).perform(click())
+        Espresso.pressBack()
+
+        onView(withId(R.id.navigation_movies)).perform(click())
+        Thread.sleep(HOLD_PAGING_TIME)
+        onView(withId(R.id.rec_movies_trending_weekly)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0,
+                click()
+            )
+        )
+        onView(withId(R.id.menu_refresh)).perform(click())
+    }
+
+    @Test
+    fun shouldTelevisionShowDetailsCanBeRefreshed() {
+        onView(withId(R.id.navigation_television)).perform(click())
+        Thread.sleep(HOLD_PAGING_TIME)
+        onView(withId(R.id.rec_tv_trending_today)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0,
+                click()
+            )
+        )
+        onView(withId(R.id.menu_refresh)).perform(click())
+        Espresso.pressBack()
+
+        onView(withId(R.id.navigation_television)).perform(click())
+        Thread.sleep(HOLD_PAGING_TIME)
+        onView(withId(R.id.rec_tv_trending_weekly)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0,
+                click()
+            )
+        )
+        onView(withId(R.id.menu_refresh)).perform(click())
+    }
+
+    @Test
+    fun shouldMovieDetailsCanBeShared() {
+        onView(withId(R.id.navigation_movies)).perform(click())
+        Thread.sleep(HOLD_PAGING_TIME)
+        onView(withId(R.id.rec_movies_trending_today)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0,
+                click()
+            )
+        )
+        onView(withId(R.id.menu_share)).perform(click())
+        intended(hasAction(Intent.ACTION_CHOOSER))
+        uiDevice.pressBack()
+    }
+
+    @Test
+    fun shouldTelevisionShowDetailsCanBeShared() {
+        onView(withId(R.id.navigation_television)).perform(click())
+        Thread.sleep(HOLD_PAGING_TIME)
+        onView(withId(R.id.rec_tv_trending_today)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0,
+                click()
+            )
+        )
+        onView(withId(R.id.menu_share)).perform(click())
+        intended(hasAction(Intent.ACTION_CHOOSER))
+        uiDevice.pressBack()
+    }
+
+    @Test
+    fun shouldAboutAllFeatureWorked() {
+        val packageName = uiDevice.launcherPackageName
+        val myFacebook = Uri.parse("https://web.facebook.com/CdrScNET89")
+        val myGitHub = Uri.parse("https://github.com/dwichan0905")
+        val myEmail = Uri.parse("mailto:dwichan@outlook.com")
+
+        onView(withId(R.id.navigation_about)).perform(click())
+
+        // Visit Facebook
+        onView(withId(R.id.list_options)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0,
+                click()
+            )
+        )
+        intended(allOf(hasAction(Intent.ACTION_VIEW), hasData(myFacebook)))
+        uiDevice.pressBack()
+        uiDevice.wait(
+            Until.hasObject(By.pkg(packageName).depth(0)),
+            LAUNCH_TIMEOUT
+        )
+
+        // Visit GitHub
+        onView(withId(R.id.list_options)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                1,
+                click()
+            )
+        )
+        intended(allOf(hasAction(Intent.ACTION_VIEW), hasData(myGitHub)))
+        uiDevice.pressBack()
+        uiDevice.wait(
+            Until.hasObject(By.pkg(packageName).depth(0)),
+            LAUNCH_TIMEOUT
+        )
+
+        // Send me an Email
+        onView(withId(R.id.list_options)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                2,
+                click()
+            )
+        )
+        intended(allOf(hasAction(Intent.ACTION_SENDTO), hasData(myEmail)))
+        uiDevice.pressBack()
+        uiDevice.pressBack()
+        uiDevice.wait(
+            Until.hasObject(By.pkg(packageName).depth(0)),
+            LAUNCH_TIMEOUT
+        )
+    }
+
     private fun selectTabAtPosition(tabIndex: Int): ViewAction {
         return object : ViewAction {
             override fun getConstraints(): Matcher<View> =
@@ -338,5 +484,6 @@ class MainActivityTest {
         const val ABOUT_TITLE = "About"
 
         const val HOLD_PAGING_TIME = 1000L // 1 second
+        const val LAUNCH_TIMEOUT = 1000L // 1 second
     }
 }

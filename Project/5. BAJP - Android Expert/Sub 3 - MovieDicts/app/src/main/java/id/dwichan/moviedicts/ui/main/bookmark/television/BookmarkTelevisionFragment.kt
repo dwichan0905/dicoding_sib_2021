@@ -21,62 +21,66 @@ class BookmarkTelevisionFragment : Fragment() {
     private val viewModel: BookmarkTelevisionViewModel by viewModels()
 
     private var _binding: FragmentBookmarkTelevisionBinding? = null
-    val binding get() = _binding!!
+    val binding get() = _binding
 
     private var adapter: BookmarkTelevisionAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentBookmarkTelevisionBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
-            adapter = BookmarkTelevisionAdapter()
-            recTvBookmarks.layoutManager =
-                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            recTvBookmarks.adapter = adapter
-            adapter?.itemAction = object : BookmarkTelevisionAdapter.OnItemActionListener {
-                override fun onItemClick(
-                    position: Int,
-                    itemBind: ItemBookmarkBinding,
-                    item: MovieTelevisionDataEntity
-                ) {
-                    val intent = Intent(context, DetailTelevisionShowActivity::class.java)
-                    intent.putExtra(DetailTelevisionShowActivity.EXTRA_TELEVISION_ENTITY, item)
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        requireActivity(), itemBind.imageMoviePoster, "posterIcon"
-                    )
-                    startActivity(intent, options.toBundle())
+            if (this != null) {
+                adapter = BookmarkTelevisionAdapter()
+                recTvBookmarks.layoutManager =
+                    StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                recTvBookmarks.adapter = adapter
+                adapter?.itemAction = object : BookmarkTelevisionAdapter.OnItemActionListener {
+                    override fun onItemClick(
+                        position: Int,
+                        itemBind: ItemBookmarkBinding,
+                        item: MovieTelevisionDataEntity
+                    ) {
+                        val intent = Intent(context, DetailTelevisionShowActivity::class.java)
+                        intent.putExtra(DetailTelevisionShowActivity.EXTRA_TELEVISION_ENTITY, item)
+                        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            requireActivity(), itemBind.imageMoviePoster, "posterIcon"
+                        )
+                        startActivity(intent, options.toBundle())
+                    }
                 }
-            }
 
-            viewModel.bookmarkList.observe(viewLifecycleOwner) { data ->
-                if (data.isEmpty()) {
-                    showNotFoundMessage(true)
-                } else {
-                    showNotFoundMessage(false)
+                viewModel.bookmarkList.observe(viewLifecycleOwner) { data ->
+                    if (data.isEmpty()) {
+                        showNotFoundMessage(true)
+                    } else {
+                        showNotFoundMessage(false)
+                    }
+                    adapter?.submitList(data)
                 }
-                adapter?.submitList(data)
             }
         }
     }
 
     private fun showNotFoundMessage(state: Boolean) {
         binding.apply {
-            if (state) {
-                animTvNotFound.visibility = View.VISIBLE
-                textTvNotFound.visibility = View.VISIBLE
-                animTvNotFound.progress = 0f
-                animTvNotFound.playAnimation()
-            } else {
-                animTvNotFound.visibility = View.GONE
-                textTvNotFound.visibility = View.GONE
+            if (this != null) {
+                if (state) {
+                    animTvNotFound.visibility = View.VISIBLE
+                    textTvNotFound.visibility = View.VISIBLE
+                    animTvNotFound.progress = 0f
+                    animTvNotFound.playAnimation()
+                } else {
+                    animTvNotFound.visibility = View.GONE
+                    textTvNotFound.visibility = View.GONE
+                }
             }
         }
     }

@@ -27,7 +27,7 @@ class MoviesFragment : Fragment() {
 
     // fix memory leak
     private var _binding: FragmentMoviesBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
     private var trendingTodayObserver: Observer<Resource<PagedList<TrendingResultsDataEntity>>>? =
         null
     private var trendingWeeklyObserver: Observer<Resource<PagedList<TrendingResultsDataEntity>>>? =
@@ -62,9 +62,9 @@ class MoviesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentMoviesBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,110 +74,116 @@ class MoviesFragment : Fragment() {
         val trendingWeeklyAdapter = TrendingMoviesAdapter()
 
         binding.apply {
-            recMoviesTrendingToday.layoutManager = LinearLayoutManager(
-                context, LinearLayoutManager.HORIZONTAL, false
-            )
-            recMoviesTrendingToday.adapter = trendingTodayAdapter
-            recMoviesTrendingWeekly.layoutManager = LinearLayoutManager(
-                context, LinearLayoutManager.HORIZONTAL, false
-            )
-            recMoviesTrendingWeekly.adapter = trendingWeeklyAdapter
+            if (this != null) {
+                recMoviesTrendingToday.layoutManager = LinearLayoutManager(
+                    context, LinearLayoutManager.HORIZONTAL, false
+                )
+                recMoviesTrendingToday.adapter = trendingTodayAdapter
+                recMoviesTrendingWeekly.layoutManager = LinearLayoutManager(
+                    context, LinearLayoutManager.HORIZONTAL, false
+                )
+                recMoviesTrendingWeekly.adapter = trendingWeeklyAdapter
 
-            trendingTodayObserver = Observer { response ->
-                if (response != null) {
-                    when (response.status) {
-                        Status.SUCCESS -> {
-                            animLoadingTrendingToday.visibility = View.GONE
-                            showError(false)
-                            showContent(true)
-                            trendingTodayAdapter.submitList(response.data)
-                            trendingTodayAdapter.itemAction = itemAction
-                        }
-                        Status.ERROR -> {
-                            animLoadingTrendingToday.visibility = View.GONE
-                            showError(true, response.message)
-                            showContent(false)
-                        }
-                        Status.LOADING -> {
-                            animLoadingTrendingToday.visibility = View.VISIBLE
-                            showError(false)
-                            showContent(false)
-                        }
-                    }
-                }
-            }
-
-            trendingWeeklyObserver = Observer { response ->
-                if (response != null) {
-                    when (response.status) {
-                        Status.SUCCESS -> {
-                            animLoadingTrendingWeekly.visibility = View.GONE
-                            showError(false)
-                            showContent(true)
-                            trendingWeeklyAdapter.submitList(response.data)
-                            trendingWeeklyAdapter.itemAction = itemAction
-                        }
-                        Status.ERROR -> {
-                            animLoadingTrendingWeekly.visibility = View.GONE
-                            showError(true, response.message)
-                            showContent(false)
-                        }
-                        Status.LOADING -> {
-                            animLoadingTrendingWeekly.visibility = View.VISIBLE
-                            showError(false)
-                            showContent(false)
+                trendingTodayObserver = Observer { response ->
+                    if (response != null) {
+                        when (response.status) {
+                            Status.SUCCESS -> {
+                                animLoadingTrendingToday.visibility = View.GONE
+                                showError(false)
+                                showContent(true)
+                                trendingTodayAdapter.submitList(response.data)
+                                trendingTodayAdapter.itemAction = itemAction
+                            }
+                            Status.ERROR -> {
+                                animLoadingTrendingToday.visibility = View.GONE
+                                showError(true, response.message)
+                                showContent(false)
+                            }
+                            Status.LOADING -> {
+                                animLoadingTrendingToday.visibility = View.VISIBLE
+                                showError(false)
+                                showContent(false)
+                            }
                         }
                     }
                 }
-            }
 
-            viewModel.trendingToday.observe(viewLifecycleOwner, trendingTodayObserver!!)
+                trendingWeeklyObserver = Observer { response ->
+                    if (response != null) {
+                        when (response.status) {
+                            Status.SUCCESS -> {
+                                animLoadingTrendingWeekly.visibility = View.GONE
+                                showError(false)
+                                showContent(true)
+                                trendingWeeklyAdapter.submitList(response.data)
+                                trendingWeeklyAdapter.itemAction = itemAction
+                            }
+                            Status.ERROR -> {
+                                animLoadingTrendingWeekly.visibility = View.GONE
+                                showError(true, response.message)
+                                showContent(false)
+                            }
+                            Status.LOADING -> {
+                                animLoadingTrendingWeekly.visibility = View.VISIBLE
+                                showError(false)
+                                showContent(false)
+                            }
+                        }
+                    }
+                }
 
-            viewModel.trendingWeekly.observe(viewLifecycleOwner, trendingWeeklyObserver!!)
+                viewModel.trendingToday.observe(viewLifecycleOwner, trendingTodayObserver!!)
 
-            viewModel.reload()
+                viewModel.trendingWeekly.observe(viewLifecycleOwner, trendingWeeklyObserver!!)
 
-            fragmentMovie.setOnRefreshListener {
                 viewModel.reload()
-                fragmentMovie.isRefreshing = false
+
+                fragmentMovie.setOnRefreshListener {
+                    viewModel.reload()
+                    fragmentMovie.isRefreshing = false
+                }
             }
         }
     }
 
     private fun showError(state: Boolean, message: String? = "") {
         binding.apply {
-            if (state) {
-                val reasonText = """
+            if (this != null) {
+                if (state) {
+                    val reasonText = """
                     An error were occurred. We will fix it immediately!
                     Reason: $message
                 """.trimIndent()
-                animError.visibility = View.VISIBLE
-                textError.visibility = View.VISIBLE
-                textError.text = reasonText
-            } else {
-                animError.visibility = View.GONE
-                textError.visibility = View.GONE
-                textError.text = ""
+                    animError.visibility = View.VISIBLE
+                    textError.visibility = View.VISIBLE
+                    textError.text = reasonText
+                } else {
+                    animError.visibility = View.GONE
+                    textError.visibility = View.GONE
+                    textError.text = ""
+                }
             }
         }
     }
 
     private fun showContent(state: Boolean) {
         binding.apply {
-            if (state) {
-                textTrendingToday.visibility = View.VISIBLE
-                textTrendingTodayDesc.visibility = View.VISIBLE
-                recMoviesTrendingToday.visibility = View.VISIBLE
-                textTrendingWeekly.visibility = View.VISIBLE
-                textTrendingWeeklyDesc.visibility = View.VISIBLE
-                recMoviesTrendingWeekly.visibility = View.VISIBLE
-            } else {
-                textTrendingToday.visibility = View.GONE
-                textTrendingTodayDesc.visibility = View.GONE
-                recMoviesTrendingToday.visibility = View.GONE
-                textTrendingWeekly.visibility = View.GONE
-                textTrendingWeeklyDesc.visibility = View.GONE
-                recMoviesTrendingWeekly.visibility = View.GONE
+            if (this != null) {
+                if (state) {
+                    textTrendingToday.visibility = View.VISIBLE
+                    textTrendingTodayDesc.visibility = View.VISIBLE
+                    recMoviesTrendingToday.visibility = View.VISIBLE
+                    textTrendingWeekly.visibility = View.VISIBLE
+                    textTrendingWeeklyDesc.visibility = View.VISIBLE
+                    recMoviesTrendingWeekly.visibility = View.VISIBLE
+                } else {
+                    textTrendingToday.visibility = View.GONE
+                    textTrendingTodayDesc.visibility = View.GONE
+                    recMoviesTrendingToday.visibility = View.GONE
+                    textTrendingWeekly.visibility = View.GONE
+                    textTrendingWeeklyDesc.visibility = View.GONE
+                    recMoviesTrendingWeekly.visibility = View.GONE
+                }
             }
         }
     }

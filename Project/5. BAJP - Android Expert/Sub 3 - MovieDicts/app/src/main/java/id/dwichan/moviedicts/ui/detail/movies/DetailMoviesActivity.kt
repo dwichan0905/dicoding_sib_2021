@@ -46,12 +46,12 @@ class DetailMoviesActivity : AppCompatActivity() {
 
     // fix memory leak
     private var _binding: ActivityDetailMoviesBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityDetailMoviesBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.movie_details)
@@ -60,12 +60,12 @@ class DetailMoviesActivity : AppCompatActivity() {
 
         productionCompanyAdapter = ProductionCompanyAdapter()
 
-        binding.content.recProductionCompany.layoutManager = LinearLayoutManager(
+        binding?.content?.recProductionCompany?.layoutManager = LinearLayoutManager(
             this,
             LinearLayoutManager.HORIZONTAL,
             false
         )
-        binding.content.recProductionCompany.adapter = productionCompanyAdapter
+        binding?.content?.recProductionCompany?.adapter = productionCompanyAdapter
 
         detailsObserver = Observer { response ->
             if (response != null) {
@@ -79,11 +79,13 @@ class DetailMoviesActivity : AppCompatActivity() {
                     }
                     Status.ERROR -> {
                         showLoading(false)
-                        Snackbar.make(
-                            binding.root,
-                            "An error occurred with reason: ${response.message}",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        binding?.root?.let {
+                            Snackbar.make(
+                                it,
+                                "An error occurred with reason: ${response.message}",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
                         supportFinishAfterTransition()
                     }
                     Status.LOADING -> {
@@ -93,11 +95,10 @@ class DetailMoviesActivity : AppCompatActivity() {
             }
         }
         favoriteObserver = Observer { state ->
-            binding.content.apply {
-                if (state != null) {
-                    stateFavoriteButton(state)
-                }
+            if (state != null) {
+                stateFavoriteButton(state)
             }
+
         }
 
         val bundle = intent.extras
@@ -117,17 +118,17 @@ class DetailMoviesActivity : AppCompatActivity() {
             ).show()
             supportFinishAfterTransition()
         }
-        val bottomSheet = BottomSheetBehavior.from(binding.content.root)
-        bottomSheet.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        val bottomSheet = binding?.content?.let { BottomSheetBehavior.from(it.root) }
+        bottomSheet?.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
-                        binding.content.lottieSwipeIndicator.visibility = View.GONE
-                        binding.content.textLottieSwipeIndicator.visibility = View.GONE
+                        binding?.content?.lottieSwipeIndicator?.visibility = View.GONE
+                        binding?.content?.textLottieSwipeIndicator?.visibility = View.GONE
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        binding.content.lottieSwipeIndicator.visibility = View.VISIBLE
-                        binding.content.textLottieSwipeIndicator.visibility = View.VISIBLE
+                        binding?.content?.lottieSwipeIndicator?.visibility = View.VISIBLE
+                        binding?.content?.textLottieSwipeIndicator?.visibility = View.VISIBLE
                     }
                     BottomSheetBehavior.STATE_DRAGGING -> {}
                     BottomSheetBehavior.STATE_HALF_EXPANDED -> {}
@@ -143,40 +144,42 @@ class DetailMoviesActivity : AppCompatActivity() {
     }
 
     private fun stateFavoriteButton(state: Boolean) {
-        binding.content.apply {
-            if (state) {
-                buttonBookmark.setIconResource(R.drawable.ic_baseline_bookmark_24)
-                buttonBookmark.text = getString(R.string.button_remove_from_bookmark)
-                buttonBookmark.setBackgroundColor(
-                    ContextCompat.getColor(
-                        this@DetailMoviesActivity, R.color.remove_button
+        binding?.content.apply {
+            if (this != null) {
+                if (state) {
+                    buttonBookmark.setIconResource(R.drawable.ic_baseline_bookmark_24)
+                    buttonBookmark.text = getString(R.string.button_remove_from_bookmark)
+                    buttonBookmark.setBackgroundColor(
+                        ContextCompat.getColor(
+                            this@DetailMoviesActivity, R.color.remove_button
+                        )
                     )
-                )
-                buttonBookmark.setOnClickListener {
-                    viewModel.removeFromBookmark(movieTelevisionDataEntity)
-                    stateFavoriteButton(!state)
-                    Toast.makeText(
-                        this@DetailMoviesActivity,
-                        R.string.bookmark_remove_success,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            } else {
-                buttonBookmark.setIconResource(R.drawable.ic_baseline_bookmark_border_24)
-                buttonBookmark.text = getString(R.string.button_add_to_bookmark)
-                buttonBookmark.setBackgroundColor(
-                    ContextCompat.getColor(
-                        this@DetailMoviesActivity, R.color.colorPrimary
+                    buttonBookmark.setOnClickListener {
+                        viewModel.removeFromBookmark(movieTelevisionDataEntity)
+                        stateFavoriteButton(!state)
+                        Toast.makeText(
+                            this@DetailMoviesActivity,
+                            R.string.bookmark_remove_success,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    buttonBookmark.setIconResource(R.drawable.ic_baseline_bookmark_border_24)
+                    buttonBookmark.text = getString(R.string.button_add_to_bookmark)
+                    buttonBookmark.setBackgroundColor(
+                        ContextCompat.getColor(
+                            this@DetailMoviesActivity, R.color.colorPrimary
+                        )
                     )
-                )
-                buttonBookmark.setOnClickListener {
-                    viewModel.setAsBookmark(movieTelevisionDataEntity)
-                    stateFavoriteButton(!state)
-                    Toast.makeText(
-                        this@DetailMoviesActivity,
-                        R.string.bookmark_add_success,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    buttonBookmark.setOnClickListener {
+                        viewModel.setAsBookmark(movieTelevisionDataEntity)
+                        stateFavoriteButton(!state)
+                        Toast.makeText(
+                            this@DetailMoviesActivity,
+                            R.string.bookmark_add_success,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         }
@@ -202,12 +205,12 @@ class DetailMoviesActivity : AppCompatActivity() {
     private fun loadReceivedData() {
         movieDetailsResponse.apply {
             // images
-            binding.imageBackdrop.loadImage(this.backdropPath)
-            binding.content.imageMoviePoster.loadImage(this.posterPath)
+            binding?.imageBackdrop?.loadImage(this.backdropPath)
+            binding?.content?.imageMoviePoster?.loadImage(this.posterPath)
 
             // title
             val title = this.title ?: this.originalTitle ?: "Unknown"
-            binding.content.textMovieTitle.text = title
+            binding?.content?.textMovieTitle?.text = title
             supportActionBar?.title = title
 
             // status
@@ -225,14 +228,14 @@ class DetailMoviesActivity : AppCompatActivity() {
             if (duration != 0) {
                 durationStringBuilder.append(" · ").append(formattedDuration)
             }
-            binding.content.textReleasedDuration.text = durationStringBuilder.toString()
+            binding?.content?.textReleasedDuration?.text = durationStringBuilder.toString()
 
             // adult status
             if (this.adult != null) {
                 if (this.adult!!) {
-                    binding.content.textMovieAdultStatus.visibility = View.VISIBLE
+                    binding?.content?.textMovieAdultStatus?.visibility = View.VISIBLE
                 } else {
-                    binding.content.textMovieAdultStatus.visibility = View.GONE
+                    binding?.content?.textMovieAdultStatus?.visibility = View.GONE
                 }
             }
 
@@ -240,26 +243,26 @@ class DetailMoviesActivity : AppCompatActivity() {
             val formattedGenres = Converter.Movies.listGenresToStringList(
                 this.genres as List<GenresDataEntity>
             )
-            binding.content.textGenres.text = formattedGenres
+            binding?.content?.textGenres?.text = formattedGenres
 
             // user score
             val userScore = this.voteAverage?.times(10)
-            binding.content.pbUserScore.progress = floor(userScore ?: 0.0).toInt()
-            binding.content.textUserScore.text = (this.voteAverage ?: 0.0).toString()
+            binding?.content?.pbUserScore?.progress = floor(userScore ?: 0.0).toInt()
+            binding?.content?.textUserScore?.text = (this.voteAverage ?: 0.0).toString()
 
             // tagline
             if (this.tagline != null) {
                 if (this.tagline != "") {
-                    binding.content.textTagline.text = this.tagline
+                    binding?.content?.textTagline?.text = this.tagline
                 } else {
-                    binding.content.textTagline.visibility = View.GONE
+                    binding?.content?.textTagline?.visibility = View.GONE
                 }
             } else {
-                binding.content.textTagline.visibility = View.GONE
+                binding?.content?.textTagline?.visibility = View.GONE
             }
 
             // overview
-            binding.content.textOverview.text = this.overview ?: ""
+            binding?.content?.textOverview?.text = this.overview ?: ""
 
             // production companies
             productionCompanyAdapter.setCompanies(
@@ -277,7 +280,7 @@ class DetailMoviesActivity : AppCompatActivity() {
         when (item.itemId) {
             android.R.id.home -> onBackPressed()
             R.id.menu_refresh -> {
-                viewModel.movieDetails.observe(this, detailsObserver)
+                viewModel.setMovieId(movieTelevisionDataEntity.id)
             }
             R.id.menu_share -> {
                 val mimeType = "text/plain"
@@ -287,8 +290,8 @@ class DetailMoviesActivity : AppCompatActivity() {
                     setText(
                         """
                         *${movieDetailsResponse.title}*
-                        ${binding.content.textReleasedDuration.text}
-                        Genre: ${binding.content.textGenres.text}
+                        ${binding?.content?.textReleasedDuration?.text}
+                        Genre: ${binding?.content?.textGenres?.text}
                         Vote: ${movieDetailsResponse.voteAverage}
                         ${movieDetailsResponse.tagline}
                         

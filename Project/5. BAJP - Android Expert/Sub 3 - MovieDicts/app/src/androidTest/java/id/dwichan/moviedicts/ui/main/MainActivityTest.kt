@@ -136,6 +136,11 @@ class MainActivityTest {
 
         onView(withId(R.id.text_genres)).check(matches(isDisplayed()))
         onView(withId(R.id.text_genres)).check(matches(not(withText(""))))
+
+        onView(withId(R.id.pb_user_score)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.text_user_score)).check(matches(isDisplayed()))
+        onView(withId(R.id.text_user_score)).check(matches(not(withText(""))))
     }
 
     @Test
@@ -160,6 +165,11 @@ class MainActivityTest {
 
         onView(withId(R.id.text_genres)).check(matches(isDisplayed()))
         onView(withId(R.id.text_genres)).check(matches(not(withText(""))))
+
+        onView(withId(R.id.pb_user_score)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.text_user_score)).check(matches(isDisplayed()))
+        onView(withId(R.id.text_user_score)).check(matches(not(withText(""))))
     }
 
     @Test
@@ -184,6 +194,11 @@ class MainActivityTest {
 
         onView(withId(R.id.text_genres)).check(matches(isDisplayed()))
         onView(withId(R.id.text_genres)).check(matches(not(withText(""))))
+
+        onView(withId(R.id.pb_user_score)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.text_user_score)).check(matches(isDisplayed()))
+        onView(withId(R.id.text_user_score)).check(matches(not(withText(""))))
     }
 
     @Test
@@ -208,6 +223,11 @@ class MainActivityTest {
 
         onView(withId(R.id.text_genres)).check(matches(isDisplayed()))
         onView(withId(R.id.text_genres)).check(matches(not(withText(""))))
+
+        onView(withId(R.id.pb_user_score)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.text_user_score)).check(matches(isDisplayed()))
+        onView(withId(R.id.text_user_score)).check(matches(not(withText(""))))
     }
 
     @Test

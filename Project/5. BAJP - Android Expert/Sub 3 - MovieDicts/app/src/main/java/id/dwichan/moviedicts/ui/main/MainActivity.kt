@@ -15,12 +15,12 @@ class MainActivity : AppCompatActivity() {
 
     // fix memory leak
     private var _binding: ActivityMainBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
 
         val navController = findNavController(R.id.nav_host_fragment)
         val appBarConfiguration = AppBarConfiguration.Builder(
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         ).build()
 
         setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.bottomNavView.setupWithNavController(navController)
+        binding?.bottomNavView?.setupWithNavController(navController)
 
         supportActionBar?.elevation = 0f
     }

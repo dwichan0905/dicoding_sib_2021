@@ -14,12 +14,12 @@ class SplashActivity : AppCompatActivity() {
 
     // fix memory leak
     private var _binding: ActivitySplashBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivitySplashBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
 
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, MainActivity::class.java)

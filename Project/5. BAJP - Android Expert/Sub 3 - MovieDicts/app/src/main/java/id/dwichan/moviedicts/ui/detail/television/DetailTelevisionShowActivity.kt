@@ -45,13 +45,13 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
 
     // fix memory leak
     private var _binding: ActivityDetailTelevisionShowBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY)
         _binding = ActivityDetailTelevisionShowBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
 
         detailsObserver = Observer { response ->
             if (response != null) {
@@ -62,21 +62,25 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
                             detailsResponse = response.data
                             loadReceivedData()
                         } else {
-                            Snackbar.make(
-                                binding.root,
-                                "An error occurred with unknown reason.",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
+                            binding?.root?.let {
+                                Snackbar.make(
+                                    it,
+                                    "An error occurred with unknown reason.",
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                            }
                             supportFinishAfterTransition()
                         }
                     }
                     Status.ERROR -> {
                         showLoading(false)
-                        Snackbar.make(
-                            binding.root,
-                            "An error occurred with reason: ${response.message}",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        binding?.root?.let {
+                            Snackbar.make(
+                                it,
+                                "An error occurred with reason: ${response.message}",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
                         supportFinishAfterTransition()
                     }
                     Status.LOADING -> {
@@ -86,10 +90,8 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
             }
         }
         favoriteObserver = Observer { state ->
-            binding.content.apply {
-                if (state != null) {
-                    setBookmarkButton(state)
-                }
+            if (state != null) {
+                setBookmarkButton(state)
             }
         }
 
@@ -101,19 +103,19 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
         creatorAdapter = CreatorAdapter()
         productionCompanyAdapter = ProductionCompanyAdapter()
 
-        binding.content.recCreator.layoutManager = LinearLayoutManager(
+        binding?.content?.recCreator?.layoutManager = LinearLayoutManager(
             this,
             LinearLayoutManager.HORIZONTAL,
             false
         )
-        binding.content.recCreator.adapter = creatorAdapter
+        binding?.content?.recCreator?.adapter = creatorAdapter
 
-        binding.content.recProductionCompany.layoutManager = LinearLayoutManager(
+        binding?.content?.recProductionCompany?.layoutManager = LinearLayoutManager(
             this,
             LinearLayoutManager.HORIZONTAL,
             false
         )
-        binding.content.recProductionCompany.adapter = productionCompanyAdapter
+        binding?.content?.recProductionCompany?.adapter = productionCompanyAdapter
 
         val bundle = intent.extras
         if (bundle != null) {
@@ -133,17 +135,17 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
             supportFinishAfterTransition()
         }
 
-        val bottomSheet = BottomSheetBehavior.from(binding.content.root)
-        bottomSheet.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        val bottomSheet = binding?.content?.let { BottomSheetBehavior.from(it.root) }
+        bottomSheet?.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
-                        binding.content.lottieSwipeIndicator.visibility = View.GONE
-                        binding.content.textLottieSwipeIndicator.visibility = View.GONE
+                        binding?.content?.lottieSwipeIndicator?.visibility = View.GONE
+                        binding?.content?.textLottieSwipeIndicator?.visibility = View.GONE
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        binding.content.lottieSwipeIndicator.visibility = View.VISIBLE
-                        binding.content.textLottieSwipeIndicator.visibility = View.VISIBLE
+                        binding?.content?.lottieSwipeIndicator?.visibility = View.VISIBLE
+                        binding?.content?.textLottieSwipeIndicator?.visibility = View.VISIBLE
                     }
                     BottomSheetBehavior.STATE_DRAGGING -> {}
                     BottomSheetBehavior.STATE_HALF_EXPANDED -> {}
@@ -178,12 +180,12 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
     private fun loadReceivedData() {
         detailsResponse.apply {
             // images
-            binding.imageBackdrop.loadImage(this.backdropPath)
-            binding.content.imageTvPoster.loadImage(this.posterPath)
+            binding?.imageBackdrop?.loadImage(this.backdropPath)
+            binding?.content?.imageTvPoster?.loadImage(this.posterPath)
 
             // title
             val tvName = this.name ?: this.originalName ?: "Unknown"
-            binding.content.textTvTitle.text = tvName
+            binding?.content?.textTvTitle?.text = tvName
             supportActionBar?.title = tvName
 
             // status
@@ -200,28 +202,28 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
             if (duration != 0) {
                 durationStringBuilder.append(" · ").append(formattedDuration)
             }
-            binding.content.textFirstAirDuration.text = durationStringBuilder.toString()
+            binding?.content?.textFirstAirDuration?.text = durationStringBuilder.toString()
 
             // genre
             val formattedGenres = Converter.TelevisionShow.listGenresToStringList(
                 this.genres as List<GenresDataEntity>
             )
-            binding.content.textGenres.text = formattedGenres
+            binding?.content?.textGenres?.text = formattedGenres
 
             // user score
             val userScore = this.voteAverage?.times(10)
-            binding.content.pbUserScore.progress = floor(userScore ?: 0.0).toInt()
-            binding.content.textUserScore.text = (this.voteAverage ?: 0.0).toString()
+            binding?.content?.pbUserScore?.progress = floor(userScore ?: 0.0).toInt()
+            binding?.content?.textUserScore?.text = (this.voteAverage ?: 0.0).toString()
 
             // tagline
             if (this.tagline != null) {
                 if (this.tagline != "") {
-                    binding.content.textTagline.text = this.tagline
+                    binding?.content?.textTagline?.text = this.tagline
                 } else {
-                    binding.content.textTagline.visibility = View.GONE
+                    binding?.content?.textTagline?.visibility = View.GONE
                 }
             } else {
-                binding.content.textTagline.visibility = View.GONE
+                binding?.content?.textTagline?.visibility = View.GONE
             }
 
             // episodes & seasons
@@ -244,22 +246,22 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
                     }
                 }
             }
-            binding.content.textEpisodes.text = episodeStringBuilder.toString()
+            binding?.content?.textEpisodes?.text = episodeStringBuilder.toString()
 
             // overview
-            binding.content.textOverview.text = this.overview ?: ""
+            binding?.content?.textOverview?.text = this.overview ?: ""
 
             // creative teams
             if (this.createdBy != null) {
                 if (this.createdBy!!.isNotEmpty()) {
                     creatorAdapter.setCreators(this.createdBy as List<CreatedByDataEntity>)
                 } else {
-                    binding.content.textLabelCreativeTeam.visibility = View.GONE
-                    binding.content.recCreator.visibility = View.GONE
+                    binding?.content?.textLabelCreativeTeam?.visibility = View.GONE
+                    binding?.content?.recCreator?.visibility = View.GONE
                 }
             } else {
-                binding.content.textLabelCreativeTeam.visibility = View.GONE
-                binding.content.recCreator.visibility = View.GONE
+                binding?.content?.textLabelCreativeTeam?.visibility = View.GONE
+                binding?.content?.recCreator?.visibility = View.GONE
             }
 
             // production companies
@@ -270,40 +272,42 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
     }
 
     private fun setBookmarkButton(state: Boolean) {
-        binding.content.apply {
-            if (state) {
-                buttonBookmark.setIconResource(R.drawable.ic_baseline_bookmark_24)
-                buttonBookmark.text = getString(R.string.button_remove_from_bookmark)
-                buttonBookmark.setBackgroundColor(
-                    ContextCompat.getColor(
-                        this@DetailTelevisionShowActivity, R.color.remove_button
+        binding?.content.apply {
+            if (this != null) {
+                if (state) {
+                    buttonBookmark.setIconResource(R.drawable.ic_baseline_bookmark_24)
+                    buttonBookmark.text = getString(R.string.button_remove_from_bookmark)
+                    buttonBookmark.setBackgroundColor(
+                        ContextCompat.getColor(
+                            this@DetailTelevisionShowActivity, R.color.remove_button
+                        )
                     )
-                )
-                buttonBookmark.setOnClickListener {
-                    viewModel.removeFromBookmark(movieTelevisionDataEntity)
-                    setBookmarkButton(!state)
-                    Toast.makeText(
-                        this@DetailTelevisionShowActivity,
-                        R.string.bookmark_remove_success,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            } else {
-                buttonBookmark.setIconResource(R.drawable.ic_baseline_bookmark_border_24)
-                buttonBookmark.text = getString(R.string.button_add_to_bookmark)
-                buttonBookmark.setBackgroundColor(
-                    ContextCompat.getColor(
-                        this@DetailTelevisionShowActivity, R.color.colorPrimary
+                    buttonBookmark.setOnClickListener {
+                        viewModel.removeFromBookmark(movieTelevisionDataEntity)
+                        setBookmarkButton(!state)
+                        Toast.makeText(
+                            this@DetailTelevisionShowActivity,
+                            R.string.bookmark_remove_success,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    buttonBookmark.setIconResource(R.drawable.ic_baseline_bookmark_border_24)
+                    buttonBookmark.text = getString(R.string.button_add_to_bookmark)
+                    buttonBookmark.setBackgroundColor(
+                        ContextCompat.getColor(
+                            this@DetailTelevisionShowActivity, R.color.colorPrimary
+                        )
                     )
-                )
-                buttonBookmark.setOnClickListener {
-                    viewModel.setAsBookmark(movieTelevisionDataEntity)
-                    setBookmarkButton(!state)
-                    Toast.makeText(
-                        this@DetailTelevisionShowActivity,
-                        R.string.bookmark_add_success,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    buttonBookmark.setOnClickListener {
+                        viewModel.setAsBookmark(movieTelevisionDataEntity)
+                        setBookmarkButton(!state)
+                        Toast.makeText(
+                            this@DetailTelevisionShowActivity,
+                            R.string.bookmark_add_success,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         }
@@ -318,7 +322,7 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
         when (item.itemId) {
             android.R.id.home -> super.onBackPressed()
             R.id.menu_refresh -> {
-                viewModel.tvShowDetails.observe(this, detailsObserver)
+                viewModel.setTelevisionId(movieTelevisionDataEntity.id)
             }
             R.id.menu_share -> {
                 val mimeType = "text/plain"
@@ -328,8 +332,8 @@ class DetailTelevisionShowActivity : AppCompatActivity() {
                     setText(
                         """
                         *${detailsResponse.name ?: detailsResponse.originalName ?: "Unknown TV Show"}*
-                        ${binding.content.textFirstAirDuration.text}
-                        Genre: ${binding.content.textGenres.text}
+                        ${binding?.content?.textFirstAirDuration?.text}
+                        Genre: ${binding?.content?.textGenres?.text}
                         Vote: ${detailsResponse.voteAverage}
                         ${detailsResponse.tagline}
                         

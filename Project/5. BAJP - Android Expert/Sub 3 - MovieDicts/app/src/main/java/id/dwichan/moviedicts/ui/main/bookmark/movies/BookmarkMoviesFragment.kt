@@ -22,60 +22,64 @@ class BookmarkMoviesFragment : Fragment() {
     private lateinit var adapter: BookmarkMoviesAdapter
 
     private var _binding: FragmentBookmarkMoviesBinding? = null
-    val binding get() = _binding!!
+    val binding get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentBookmarkMoviesBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
-            adapter = BookmarkMoviesAdapter()
-            recMovieBookmarks.layoutManager =
-                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            recMovieBookmarks.adapter = adapter
-            adapter.itemAction = object : BookmarkMoviesAdapter.OnItemActionListener {
-                override fun onItemClick(
-                    position: Int,
-                    itemBind: ItemBookmarkBinding,
-                    item: MovieTelevisionDataEntity
-                ) {
-                    val intent = Intent(context, DetailMoviesActivity::class.java)
-                    intent.putExtra(DetailMoviesActivity.EXTRA_MOVIE_ENTITY, item)
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        requireActivity(), itemBind.imageMoviePoster, "posterIcon"
-                    )
-                    startActivity(intent, options.toBundle())
+            if (this != null) {
+                adapter = BookmarkMoviesAdapter()
+                recMovieBookmarks.layoutManager =
+                    StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                recMovieBookmarks.adapter = adapter
+                adapter.itemAction = object : BookmarkMoviesAdapter.OnItemActionListener {
+                    override fun onItemClick(
+                        position: Int,
+                        itemBind: ItemBookmarkBinding,
+                        item: MovieTelevisionDataEntity
+                    ) {
+                        val intent = Intent(context, DetailMoviesActivity::class.java)
+                        intent.putExtra(DetailMoviesActivity.EXTRA_MOVIE_ENTITY, item)
+                        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            requireActivity(), itemBind.imageMoviePoster, "posterIcon"
+                        )
+                        startActivity(intent, options.toBundle())
+                    }
                 }
-            }
 
-            viewModel.bookmarkList.observe(viewLifecycleOwner) { data ->
-                if (data.isEmpty()) {
-                    showNotFoundMessage(true)
-                } else {
-                    showNotFoundMessage(false)
+                viewModel.bookmarkList.observe(viewLifecycleOwner) { data ->
+                    if (data.isEmpty()) {
+                        showNotFoundMessage(true)
+                    } else {
+                        showNotFoundMessage(false)
+                    }
+                    adapter.submitList(data)
                 }
-                adapter.submitList(data)
             }
         }
     }
 
     private fun showNotFoundMessage(state: Boolean) {
         binding.apply {
-            if (state) {
-                animMovieNotFound.visibility = View.VISIBLE
-                textMovieNotFound.visibility = View.VISIBLE
-                animMovieNotFound.progress = 0f
-                animMovieNotFound.playAnimation()
-            } else {
-                animMovieNotFound.visibility = View.GONE
-                textMovieNotFound.visibility = View.GONE
+            if (this != null) {
+                if (state) {
+                    animMovieNotFound.visibility = View.VISIBLE
+                    textMovieNotFound.visibility = View.VISIBLE
+                    animMovieNotFound.progress = 0f
+                    animMovieNotFound.playAnimation()
+                } else {
+                    animMovieNotFound.visibility = View.GONE
+                    textMovieNotFound.visibility = View.GONE
+                }
             }
         }
     }

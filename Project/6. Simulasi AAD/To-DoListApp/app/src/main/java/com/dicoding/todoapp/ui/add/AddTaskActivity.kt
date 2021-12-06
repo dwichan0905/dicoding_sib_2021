@@ -5,9 +5,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.dicoding.todoapp.R
+import com.dicoding.todoapp.data.Task
+import com.dicoding.todoapp.ui.ViewModelFactory
 import com.dicoding.todoapp.utils.DatePickerFragment
+import com.google.android.material.textfield.TextInputEditText
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -31,6 +36,31 @@ class AddTaskActivity : AppCompatActivity(), DatePickerFragment.DialogDateListen
         return when (item.itemId) {
             R.id.action_save -> {
                 //TODO 12 : Create AddTaskViewModel and insert new task to database
+                val title = findViewById<TextInputEditText>(R.id.add_ed_title)
+                val description = findViewById<TextInputEditText>(R.id.add_ed_description)
+
+                if (title.text?.isEmpty()!! || description.text?.isEmpty()!!) {
+                    Toast.makeText(
+                        this,
+                        R.string.empty_task_message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                val factory = ViewModelFactory.getInstance(this)
+                val viewModel = ViewModelProvider(this, factory)[
+                        AddTaskViewModel::class.java
+                ]
+
+                val task = Task(
+                    title = title.text.toString(),
+                    description = description.text.toString(),
+                    dueDateMillis = dueDateMillis
+                )
+
+                viewModel.setTask(task)
+                viewModel.insertTask()
+                finish()
                 true
             }
             else -> super.onOptionsItemSelected(item)

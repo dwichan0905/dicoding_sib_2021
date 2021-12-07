@@ -4,19 +4,30 @@ CATATAN:
 Submission 1 - ToDo App
 Durasi Pengerjaan: 3 jam 5 menit
 Link Pertanyaan:
-1. What project have you worked about?
-2. Which part is hardest?
-3. What components have been used to show a list of tasks?
+1. What project have you worked about? Todo App, for managing our task
+2. Which part is hardest? Notification and WorkManager
+3. What components have been used to show a list of tasks? RecyclerView with Paging (PagedList)
 4. How does notification reminder work?
 5. Why do we need a Custom View?
 
 ---
 
 Submission 2 - Course Scheduler App
+Durasi Pengerjaan: 6 jam 24 menit
+Link Pertanyaan:
+1. What project have you worked about? Course Scheduler App, for daily course scheduler and reminder
+2. Which part is hardest? Notification and AlarmManager
+3. How is the flow to change the theme to a dark theme?
+4. How does notification reminder work?
+5. Why do we need LiveData?
+
+---
+
+Submission 3 - Habit Tracker App
 Durasi Pengerjaan: -
 Link Pertanyaan:
 1. What project have you worked about?
 2. Which part is hardest?
-3. How is the flow to change the theme to a dark theme?
+3. How is the flow of showing random habit using ViewPager2?
 4. How does notification reminder work?
-5. Why do we need LiveData?
+5. Why do we need a ViewModel?

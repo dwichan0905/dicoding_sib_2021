@@ -4,22 +4,39 @@ CATATAN:
 Submission 1 - ToDo App
 Durasi Pengerjaan: 3 jam 5 menit
 Link Pertanyaan:
-1. What project have you worked about? Todo App, for managing our task
-2. Which part is hardest? Notification and WorkManager
-3. What components have been used to show a list of tasks? RecyclerView with Paging (PagedList)
-4. How does notification reminder work?
-5. Why do we need a Custom View?
+https://drive.google.com/drive/folders/1RUkXH1nJ6bJkIAPE6_nz-Mm12z74nn0Y?usp=sharing
+
+1. What project have you worked about? 
+   - Todo App, for managing our daily task with reminder
+   - https://drive.google.com/file/d/15PtJAbQbe1NASxI7FFGB4WiF1Sffyvwj/view?usp=sharing
+2. Which part is hardest? 
+   - Notification and WorkManager, I think it's hard to understand
+   - https://drive.google.com/file/d/1gbVXrrilvWACsMs_enGx8HgJEI7Nb-0q/view?usp=sharing
+3. What components have been used to show a list of tasks? 
+   - RecyclerView with PagedListAdapter
+   - https://drive.google.com/file/d/1XH_wvAhrmTEMFvyr3GspgYXDDQlt9OVp/view?usp=sharing
+4. How does notification reminder work? 
+   - If notification preference is on, then the app will notify the user about the nearest task daily
+   - https://drive.google.com/file/d/1FHQ28-Hms2UBXvfVL1fzzDBgmVZGot30/view?usp=sharing
+5. Why do we need a Custom View? 
+   - Because sometimes we need a view that not available in a view class, like a widget for controlling a volume that created with 2D Graphics and simillar with an electronic analog volume control.
+   - https://drive.google.com/file/d/11aSIXP5ubZEinJayrr-9cPguD6ZHVaOU/view?usp=sharing
 
 ---
 
 Submission 2 - Course Scheduler App
 Durasi Pengerjaan: 6 jam 24 menit
 Link Pertanyaan:
-1. What project have you worked about? Course Scheduler App, for daily course scheduler and reminder
-2. Which part is hardest? Notification and AlarmManager
+1. What project have you worked about? 
+   - Course Scheduler App, a daily course scheduler and reminder
+2. Which part is hardest? 
+   - Notification and AlarmManager, I can't understand how the AlarmManager works
 3. How is the flow to change the theme to a dark theme?
+   - Click the three dots in top-right corner > Click Settings > on the Display group, click Dark Mode > then choose Dark Mode.
 4. How does notification reminder work?
+   - If notification preference is on, then the app will notify the user about daily course schedule everyday
 5. Why do we need LiveData?
+   - Because LiveData can keep the data on configuration change like rotating the screen without memory leak
 
 ---
 

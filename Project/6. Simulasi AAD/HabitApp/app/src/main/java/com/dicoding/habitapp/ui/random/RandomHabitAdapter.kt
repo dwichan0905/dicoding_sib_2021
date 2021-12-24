@@ -41,7 +41,11 @@ class RandomHabitAdapter(
         //TODO 14 : Create view and bind data to item view
 
         fun bind(pageType: PageType, pageData: Habit) {
-
+            with (itemView) {
+                setOnClickListener {
+                    onClick(pageData)
+                }
+            }
         }
     }
 }

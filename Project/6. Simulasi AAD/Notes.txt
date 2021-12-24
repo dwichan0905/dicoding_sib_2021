@@ -10,10 +10,10 @@ https://drive.google.com/drive/folders/1RUkXH1nJ6bJkIAPE6_nz-Mm12z74nn0Y?usp=sha
    - Todo App, for managing our daily task with reminder
    - https://drive.google.com/file/d/15PtJAbQbe1NASxI7FFGB4WiF1Sffyvwj/view?usp=sharing
 2. Which part is hardest? 
-   - Notification and WorkManager, I think it's hard to understand
+   - Notification and WorkManager, I think it's hard to understand because it's too many scripts that I need to write, and still confusing about choosing One Time or Periodic in WorkManager
    - https://drive.google.com/file/d/1gbVXrrilvWACsMs_enGx8HgJEI7Nb-0q/view?usp=sharing
 3. What components have been used to show a list of tasks? 
-   - RecyclerView with PagedListAdapter
+   - RecyclerView, with PagedListAdapter to implement Paging Library
    - https://drive.google.com/file/d/1XH_wvAhrmTEMFvyr3GspgYXDDQlt9OVp/view?usp=sharing
 4. How does notification reminder work? 
    - If notification preference is on, then the app will notify the user about the nearest task daily
@@ -27,16 +27,23 @@ https://drive.google.com/drive/folders/1RUkXH1nJ6bJkIAPE6_nz-Mm12z74nn0Y?usp=sha
 Submission 2 - Course Scheduler App
 Durasi Pengerjaan: 6 jam 24 menit
 Link Pertanyaan:
+https://drive.google.com/drive/folders/17LIc3MyiLLGZLR2G5FF5CjDVSZwFAkmu?usp=sharing
+
 1. What project have you worked about? 
    - Course Scheduler App, a daily course scheduler and reminder
+   - https://drive.google.com/file/d/1jcWZ_vaqHEEvDyg385ghKQ3RpHHkC0wm/view?usp=sharing
 2. Which part is hardest? 
    - Notification and AlarmManager, I can't understand how the AlarmManager works
+   - https://drive.google.com/file/d/1NAHFBxRGzvqN7h2TOCSorg_gfXuYSsxx/view?usp=sharing
 3. How is the flow to change the theme to a dark theme?
    - Click the three dots in top-right corner > Click Settings > on the Display group, click Dark Mode > then choose Dark Mode.
+   - https://drive.google.com/file/d/1seWNObCjAx15HKT86VKgvZnkxwe-2XN3/view?usp=sharing
 4. How does notification reminder work?
    - If notification preference is on, then the app will notify the user about daily course schedule everyday
+   - https://drive.google.com/file/d/1PQHJ36UOjHLtk3wBZQM3gpFV7w-T6ewB/view?usp=sharing
 5. Why do we need LiveData?
-   - Because LiveData can keep the data on configuration change like rotating the screen without memory leak
+   - Because ViewModel will keep the data from configuration changes, and LiveData will tell to ViewModel if the data need to change
+   - https://drive.google.com/file/d/1JNcHCNuFs0jV5fi6-cAbQAdiD1hS141F/view?usp=sharing
 
 ---
 
@@ -48,3 +55,4 @@ Link Pertanyaan:
 3. How is the flow of showing random habit using ViewPager2?
 4. How does notification reminder work?
 5. Why do we need a ViewModel?
+   - Because ViewModel can keep the data on configuration change like rotating the screen without memory leak

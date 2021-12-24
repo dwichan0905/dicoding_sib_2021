@@ -23,6 +23,14 @@ class CountDownActivity : AppCompatActivity() {
         val viewModel = ViewModelProvider(this).get(CountDownViewModel::class.java)
 
         //TODO 10 : Set initial time and observe current time. Update button state when countdown is finished
+        val tvCountDownTimer = findViewById<TextView>(R.id.tv_count_down)
+        viewModel.currentTimeString.observe(this) { timeString ->
+            tvCountDownTimer.text = timeString
+        }
+
+        viewModel.eventCountDownFinish.observe(this) { state ->
+            updateButtonState(state)
+        }
 
         //TODO 13 : Start and cancel One Time Request WorkManager to notify when time is up.
 

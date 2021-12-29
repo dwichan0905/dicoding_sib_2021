@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -42,6 +43,19 @@ class HabitAdapter(
             tvTitle.text = habit.title
             tvStartTime.text = habit.startTime
             tvMinutes.text = habit.minutesFocus.toString()
+
+            when(habit.priorityLevel) {
+                "Low" -> ivPriority.setImageDrawable(
+                    ContextCompat.getDrawable(itemView.context, R.drawable.ic_priority_low)
+                )
+                "Medium" -> ivPriority.setImageDrawable(
+                    ContextCompat.getDrawable(itemView.context, R.drawable.ic_priority_medium)
+                )
+                "High" -> ivPriority.setImageDrawable(
+                    ContextCompat.getDrawable(itemView.context, R.drawable.ic_priority_high)
+                )
+            }
+
             itemView.setOnClickListener {
                 onClick(habit)
             }

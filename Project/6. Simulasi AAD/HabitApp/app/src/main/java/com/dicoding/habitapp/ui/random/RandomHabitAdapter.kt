@@ -3,9 +3,13 @@ package com.dicoding.habitapp.ui.random
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.habitapp.R
 import com.dicoding.habitapp.data.Habit
+import com.google.android.material.button.MaterialButton
 
 class RandomHabitAdapter(
     private val onClick: (Habit) -> Unit
@@ -42,7 +46,29 @@ class RandomHabitAdapter(
 
         fun bind(pageType: PageType, pageData: Habit) {
             with (itemView) {
-                setOnClickListener {
+                val tvTitle = findViewById<TextView>(R.id.pager_tv_title)
+                val tvStartTime = findViewById<TextView>(R.id.pager_tv_start_time)
+                val tvMinutes = findViewById<TextView>(R.id.pager_tv_minutes)
+                val imgPriorityLevel = findViewById<ImageView>(R.id.item_priority_level)
+                val btnOpenCountDown = findViewById<MaterialButton>(R.id.pager_button_open_count_down)
+
+                tvTitle.text = pageData.title
+                tvStartTime.text = pageData.startTime
+                tvMinutes.text = pageData.minutesFocus.toString()
+
+                when(pageType) {
+                    PageType.LOW -> imgPriorityLevel.setImageDrawable(
+                        ContextCompat.getDrawable(itemView.context, R.drawable.ic_priority_low)
+                    )
+                    PageType.MEDIUM -> imgPriorityLevel.setImageDrawable(
+                        ContextCompat.getDrawable(itemView.context, R.drawable.ic_priority_medium)
+                    )
+                    PageType.HIGH -> imgPriorityLevel.setImageDrawable(
+                        ContextCompat.getDrawable(itemView.context, R.drawable.ic_priority_high)
+                    )
+                }
+
+                btnOpenCountDown.setOnClickListener {
                     onClick(pageData)
                 }
             }

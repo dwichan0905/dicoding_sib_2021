@@ -51,8 +51,11 @@ Submission 3 - Habit Tracker App
 Durasi Pengerjaan: -
 Link Pertanyaan:
 1. What project have you worked about?
+   - The project that I have been worked is Habit App. Habit App is a habit management application that helps you control your habits with a timer, and notify you when the habit must be ended or times up.
 2. Which part is hardest?
+   - Notification is the hardest part, because I must remember what must I code for different Android version
 3. How is the flow of showing random habit using ViewPager2?
+   - When the user click the "Random Habit" menu, then the RandomHabitActivity is showed. RandomHabitViewModel with ViewModelFactory are initialized after TabLayout completely initialized. Then, RandomHabitViewModel will get the habit by priority level randomly. The first Habit is showed with High Priority, second is showed the Medium Priority, and the last is showed with Low Priority. The Random Habit is showed after ViewModel is successfully submitted data to the ViewPager's Adapter
 4. How does notification reminder work?
    - The notification will be worked depend on the countdown timer and notification preference. If countdown timer is up and notification preference is on, then the notification will show to notify the user when the time is up.
 5. Why do we need a ViewModel?

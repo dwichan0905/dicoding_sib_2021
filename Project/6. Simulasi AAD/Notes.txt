@@ -51,7 +51,7 @@ Submission 3 - Habit Tracker App
 Durasi Pengerjaan: -
 Link Pertanyaan:
 1. What project have you worked about?
-   - The project that I have been worked is Habit App. Habit App is a habit management application that helps you control your habits with a timer, and notify you when the habit must be ended or times up.
+   - The project that I have been worked is Habit App. Habit App is a habit management application that helps you control your habits with a timer, and notify you when the time is up and stop what habit you do 
 2. Which part is hardest?
    - Notification is the hardest part, because I must remember what must I code for different Android version
 3. How is the flow of showing random habit using ViewPager2?

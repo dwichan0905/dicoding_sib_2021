@@ -48,15 +48,22 @@ https://drive.google.com/drive/folders/17LIc3MyiLLGZLR2G5FF5CjDVSZwFAkmu?usp=sha
 ---
 
 Submission 3 - Habit Tracker App
-Durasi Pengerjaan: -
+Durasi Pengerjaan: 6 jam 35 menit
 Link Pertanyaan:
+https://drive.google.com/drive/folders/1Xpzh2S_xCxO5bJOShYpG2KD69atQauP4?usp=sharing
+
 1. What project have you worked about?
    - The project that I have been worked is Habit App. Habit App is a habit management application that helps you control your habits with a timer, and notify you when the time is up and stop what habit you do 
+   - https://drive.google.com/file/d/1gx33YFjw33aYEy92yws7jon0L9XINnZ5/view?usp=sharing
 2. Which part is hardest?
    - Notification is the hardest part, because I must remember what must I code for different Android version
+   - https://drive.google.com/file/d/1NTSwjRcdG3F_cu6tjkJD36sE6XQxKGy_/view?usp=sharing
 3. How is the flow of showing random habit using ViewPager2?
    - When the user click the "Random Habit" menu, then the RandomHabitActivity is showed. RandomHabitViewModel with ViewModelFactory are initialized after TabLayout completely initialized. Then, RandomHabitViewModel will get the habit by priority level randomly. The first Habit is showed with High Priority, second is showed the Medium Priority, and the last is showed with Low Priority. The Random Habit is showed after ViewModel is successfully submitted data to the ViewPager's Adapter
+   - https://drive.google.com/file/d/11ziyZD_2hjaQsDrUy8wBpifn2DxON7R4/view?usp=sharing
 4. How does notification reminder work?
    - The notification will be worked depend on the countdown timer and notification preference. If countdown timer is up and notification preference is on, then the notification will show to notify the user when the time is up.
+   - https://drive.google.com/file/d/1AQIl1klVT4JC1CLf14CBWOZiV_bFWz9m/view?usp=sharing
 5. Why do we need a ViewModel?
    - Because ViewModel can keep the data on configuration change like rotating the screen without memory leak
+   - https://drive.google.com/file/d/1MzzxgaN2aD_dp_J0EjEIIDdq6uP0FAp2/view?usp=sharing
